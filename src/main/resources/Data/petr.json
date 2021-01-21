@@ -1,0 +1,36 @@
+{
+  "firmwareVersion": "1.0.0",
+  "username": "petr",
+  "password": "cafourek",
+  "passwordHint": "city of birth",
+  "avatar": "male",
+  "taskCategory": {
+    "School": {
+      "1": {
+        "name": "homework from java",
+        "text": "dont forget do complete your hw from java",
+        "creationDate": "1.1.1970",
+        "deadline": "1.1.1970",
+        "completed": false
+      },
+      "2": {
+        "taskID": "2",
+        "name": "homework from java",
+        "text": "dont forget do complete your hw from java",
+        "creationDate": "1.1.1970",
+        "deadline": "1.1.1970",
+        "completed": false
+      }
+    },
+    "Work": {
+      "2": {
+        "taskID": "2",
+        "name": "homework from java",
+        "text": "dont forget do complete your hw from java",
+        "creationDate": "1.1.1970",
+        "deadline": "1.1.1970",
+        "completed": false
+      }
+    }
+  }
+}
