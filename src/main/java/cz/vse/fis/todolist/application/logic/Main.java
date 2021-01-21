@@ -1,4 +1,4 @@
-package cz.vse.fis.todolist.application.main;
+package cz.vse.fis.todolist.application.logic;
 
 public class Main {
     public static void main(String[] args) {

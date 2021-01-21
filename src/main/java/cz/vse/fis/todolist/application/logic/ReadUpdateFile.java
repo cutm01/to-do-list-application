@@ -1,4 +1,4 @@
-package cz.vse.fis.todolist.application.main;
+package cz.vse.fis.todolist.application.logic;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
