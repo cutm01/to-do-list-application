@@ -8,7 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 /**
- * MainWindowSceneController class with method to handle changes in main window od To-Do List application.
+ * MainWindowSceneController class with methods to handle changes in main window od To-Do List application.
  *
  * @version 1.0.0
  */
