@@ -4,16 +4,16 @@ public class Task {
     String taskID;
     String name;
     String text;
-    String creationDate;
-    String deadline;
+    long taskCreationTimestamp;
+    long taskDeadlineTimestamp;
     Boolean completed;
 
-    public Task(String taskID, String name, String text, String creationDate, String deadline, Boolean completed) {
+    public Task(String taskID, String name, String text, long taskCreationTimestamp, long taskDeadlineTimestamp, Boolean completed) {
         this.taskID = taskID;
         this.name = name;
         this.text = text;
-        this.creationDate = creationDate;
-        this.deadline = deadline;
+        this.taskCreationTimestamp = taskCreationTimestamp;
+        this.taskDeadlineTimestamp = taskDeadlineTimestamp;
         this.completed = completed;
     }
 
@@ -41,20 +41,20 @@ public class Task {
         this.text = text;
     }
 
-    public String getCreationDate() {
-        return creationDate;
+    public long getTaskCreationTimestamp() {
+        return taskCreationTimestamp;
     }
 
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
+    public void setTaskCreationTimestamp(long taskCreationTimestamp) {
+        this.taskCreationTimestamp = taskCreationTimestamp;
     }
 
-    public String getDeadline() {
-        return deadline;
+    public long getTaskDeadlineTimestamp() {
+        return taskDeadlineTimestamp;
     }
 
-    public void setDeadline(String deadline) {
-        this.deadline = deadline;
+    public void setTaskDeadlineTimestamp(long taskDeadlineTimestamp) {
+        this.taskDeadlineTimestamp = taskDeadlineTimestamp;
     }
 
     public Boolean getCompleted() {
