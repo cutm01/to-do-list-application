@@ -10,10 +10,10 @@ import java.io.Reader;
 
 public class ReadUpdateFile {
 
-    String path = "src/main/resources/Data/";
+    private static String path = "src/main/resources/Data/";
 
 
-    public UserData readDataFromJSON(String username)
+    public static UserData readDataFromJSON(String username)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -28,7 +28,7 @@ public class ReadUpdateFile {
         return null;
     }
 
-    public void writeDataToJSON(UserData userData)
+    public static void writeDataToJSON(UserData userData)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -39,6 +39,4 @@ public class ReadUpdateFile {
             e.printStackTrace();
         }
     }
-
-
 }
