@@ -1,5 +1,8 @@
 package cz.vse.fis.todolist.application.logic;
 
+import java.util.Comparator;
+import java.util.Date;
+
 public class Task {
     String taskID;
     String name;
@@ -63,5 +66,14 @@ public class Task {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", creation time=" + new Date(taskCreationTimestamp*1000).toString() +
+                ", deadline=" + new Date(taskDeadlineTimestamp*1000).toString() +
+                '}';
     }
 }
