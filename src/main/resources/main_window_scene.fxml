@@ -1,11 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="rootBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.MainWindowSceneController">
    <top>
-      <TextField text="To-Do List Application" BorderPane.alignment="CENTER" />
+      <HBox fx:id="topPanel" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="avatarImageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="usernameLabel" text="Username" />
+            <Button fx:id="newTaskButton" mnemonicParsing="false" text="New Task" />
+            <Button fx:id="newCategoryButton" mnemonicParsing="false" text="New Category" />
+            <Button fx:id="manualButton" mnemonicParsing="false" text="Manual" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" />
+            <Button fx:id="logoutButton" mnemonicParsing="false" text="Log Out" />
+         </children>
+      </HBox>
    </top>
+   <left>
+      <VBox fx:id="leftPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <ComboBox fx:id="categoriesComboBox" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <ComboBox fx:id="sortTasksComboBox" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="tasksListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <HBox alignment="CENTER_LEFT">
+               <children>
+                  <CheckBox fx:id="markAllTasksCheckBox" mnemonicParsing="false" />
+                  <Button fx:id="markSelectedTasksAsCompletedButton" mnemonicParsing="false" text="Done" />
+                  <Button mnemonicParsing="false" text="Move to" />
+                  <Button mnemonicParsing="false" text="New category" />
+                  <Button mnemonicParsing="false" text="Delete" />
+               </children></HBox>
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <VBox fx:id="rightPanel" maxHeight="1.7976931348623157E308" prefHeight="150.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="markTaskAsCompletedButton" mnemonicParsing="false" text="Mark as done" />
+            <Button fx:id="editTaskButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Edit" />
+            <Button fx:id="moveTask" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Move to" />
+            <Button fx:id="deleteTask" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Delete" />
+         </children></VBox>
+   </right>
+   <center>
+      <VBox fx:id="centerPanel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label fx:id="taskNameLabel" text="Task Name" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label alignment="CENTER" text="Category:" />
+                  <Label fx:id="taskCategoryLabel" text="CategoryName" />
+                  <Label alignment="CENTER" text="Created on:" />
+                  <Label fx:id="taskCreationDateLabel" text="CreationDate" />
+                  <Label text="Deadline:" />
+                  <Label fx:id="taskDeadlineDateLabel" text="DeadlineDate" />
+               </children>
+            </HBox>
+            <ScrollPane fx:id="currentlyOpenedTask" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+              </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox fx:id="bottomPanel" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>
