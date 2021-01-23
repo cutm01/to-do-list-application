@@ -16,7 +16,7 @@
                <children>
                   <Label text="Username *:" />
                   <TextField fx:id="usernameTextField" promptText="at least 6 characters long" />
-                  <Label text="at least 6 characters long" />
+                  <Label text="alphanumeric and 6 - 25 characters long" />
                </children>
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="53.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
