@@ -32,14 +32,14 @@ public class LoginWindowSceneController {
     public void showPasswordHint(ActionEvent actionEvent) {
         String userName = usernameTextField.getText();
         if (userName.isEmpty()) {
-            ApplicationAlert.USERNAME_FIELD_IS_EMPTY().showAndWait();
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.USERNAME_FIELD_IS_EMPTY_MESSAGE).showAndWait();
         }
         else {
             if (App.isPasswordHintSet(userName)) {
-                ApplicationAlert.SHOW_PASSWORD_HINT(App.getPasswordHintForUser(userName)).showAndWait();
+                ApplicationAlert.SHOW_PASSWORD_HINT_ALERT(App.getPasswordHintForUser(userName)).showAndWait();
             }
             else {
-                ApplicationAlert.PASSWORD_HINT_NOT_SET().showAndWait();
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.PASSWORD_HINT_NOT_SET_MESSAGE).showAndWait();
             }
         }
     }
@@ -56,10 +56,10 @@ public class LoginWindowSceneController {
         String password = passwordField.getText();
 
         if (username.isEmpty()) {
-            ApplicationAlert.USERNAME_FIELD_IS_EMPTY().showAndWait();
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.USERNAME_FIELD_IS_EMPTY_MESSAGE).showAndWait();
         }
         else if (password.isEmpty()) {
-            ApplicationAlert.PASSWORD_FIELD_IS_EMPTY().showAndWait();
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.PASSWORD_FIELD_IS_EMPTY_MESSAGE).showAndWait();
         }
         else {
             boolean areLoginCredentialsValid = App.validateLoginCredentials(username, password);
@@ -69,7 +69,7 @@ public class LoginWindowSceneController {
                 App.activateScene("main");
             }
             else {
-                ApplicationAlert.INVALID_USER_CREDENTIALS().showAndWait();
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.INVALID_USER_CREDENTIALS_MESSAGE).showAndWait();
             }
         }
     }
@@ -80,6 +80,8 @@ public class LoginWindowSceneController {
      * @param actionEvent
      */
     public void showRegisterWindow(ActionEvent actionEvent) {
+        usernameTextField.clear();
+        passwordField.clear();
         App.activateScene("register");
     }
 
