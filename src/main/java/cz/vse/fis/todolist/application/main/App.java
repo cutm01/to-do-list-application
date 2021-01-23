@@ -1,5 +1,6 @@
 package cz.vse.fis.todolist.application.main;
 
+import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.ReadUpdateFile;
 import cz.vse.fis.todolist.application.logic.UserData;
 import cz.vse.fis.todolist.application.ui.LoginWindowSceneController;
@@ -50,28 +51,18 @@ public class App extends Application {
     }
 
     /**
-     * Method to load all application scenes which user can switch between within GUI
+     * Method for creating new user account
      *
-     * @return HashMap with scene name as key and FXML scene file as value
+     * @param username
+     * @param password
+     * @param confirmPassword
+     * @param passwordHint
      */
-    private Map<String, Pane> loadApplicationScenes() {
-        applicationScenes = new HashMap<>();
-        String[] scenesNames = {"login", "main", "manual", "register", "settings"};
-
-        for (String scenesName : scenesNames) {
-            try {
-                String sceneToLoad = scenesName + "_window_scene.fxml";
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream(sceneToLoad);
-                applicationScenes.put(scenesName, fxmlLoader.load(sceneInputStream));
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return applicationScenes;
+    public static void createNewAccount(String username, String password, String confirmPassword, String passwordHint) {
+        UserData newAccountData = new UserData(username, password, passwordHint, Avatar.MALE.getAvatarIdentifier(), 0);
+        ReadUpdateFile.writeDataToJSON(newAccountData);
     }
+
 
     /**
      * Method to validate login credentials provided by user
@@ -118,6 +109,17 @@ public class App extends Application {
     }
 
     /**
+     * Method to check whether account with given username already exists
+     *
+     * @param username
+     * @return true if account with given username already exists, false otherwise
+     */
+    public static boolean doesAccountAlreadyExist(String username) {
+        return new File(ReadUpdateFile.USER_DATA_PATH + username + ".json").exists();
+    }
+
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded
@@ -131,5 +133,29 @@ public class App extends Application {
         }
 
         return null;
+    }
+
+    /**
+     * Method to load all application scenes which user can switch between within GUI
+     *
+     * @return HashMap with scene name as key and FXML scene file as value
+     */
+    private Map<String, Pane> loadApplicationScenes() {
+        applicationScenes = new HashMap<>();
+        String[] scenesNames = {"login", "main", "manual", "register", "settings"};
+
+        for (String scenesName : scenesNames) {
+            try {
+                String sceneToLoad = scenesName + "_window_scene.fxml";
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream(sceneToLoad);
+                applicationScenes.put(scenesName, fxmlLoader.load(sceneInputStream));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return applicationScenes;
     }
 }
