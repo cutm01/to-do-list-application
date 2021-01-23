@@ -132,6 +132,15 @@ public class UserData {
     public boolean areLoginCredentialsValid(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
     }
+
+    /**
+     * Method to get whether password hint is set for user account
+     *
+     * @return true if password hint is set, false otherwise
+     */
+    public boolean isPasswordHintSet() {
+        return passwordHint != null || passwordHint.equals("");
+    }
 }
 
 

@@ -21,7 +21,26 @@ public class LoginWindowSceneController {
     public TextField usernameTextField;
     public PasswordField passwordField;
 
+    /**
+     * Method to show password hint to user. It shows JavaFX alert to user with
+     * password hint which was set during registration or inform him that no
+     * password hint is set
+     *
+     * @param actionEvent
+     */
     public void showPasswordHint(ActionEvent actionEvent) {
+        String userName = usernameTextField.getText();
+        if (userName.isEmpty()) {
+            ApplicationAlert.USERNAME_FIELD_IS_EMPTY().showAndWait();
+        }
+        else {
+            if (App.isPasswordHintSet(userName)) {
+                ApplicationAlert.SHOW_PASSWORD_HINT(App.getPasswordHintForUser(userName)).showAndWait();
+            }
+            else {
+                ApplicationAlert.PASSWORD_HINT_NOT_SET().showAndWait();
+            }
+        }
     }
 
     /**

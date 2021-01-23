@@ -86,6 +86,28 @@ public class App extends Application {
     }
 
     /**
+     * Method to check if password hint is set for user account
+     *
+     * @param username username input from GUI
+     * @return true if password is set for user account, false
+     */
+    public static boolean isPasswordHintSet(String username) {
+        userData = loadUserData(username);
+        return userData != null && userData.isPasswordHintSet();
+    }
+
+    /**
+     * Getter for user account's password hint
+     *
+     * @param username username input from GUI
+     * @return String representing password hint which was set for account during registration
+     */
+    public static String getPasswordHintForUser(String username) {
+        userData = loadUserData(username);
+        return userData.getPasswordHint();
+    }
+
+    /**
      * Method to activate different window of application by changing
      * root element of main scene
      *
