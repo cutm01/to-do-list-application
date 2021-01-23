@@ -82,7 +82,7 @@ public class App extends Application {
      */
     public static boolean validateLoginCredentials(String username, String password) {
         userData = loadUserData(username);
-        return userData != null && userData.getPassword().equals(password);
+        return userData != null && userData.areLoginCredentialsValid(username, password);
     }
 
     /**

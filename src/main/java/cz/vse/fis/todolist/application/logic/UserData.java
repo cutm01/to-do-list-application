@@ -121,6 +121,17 @@ public class UserData {
     public String createTaskUniqueID() {
         return String.valueOf(lastTaskID.incrementAndGet());
     }
+
+    /**
+     * Method to validate login credentials provided by user
+     *
+     * @param username username provided by user
+     * @param password password provided by user
+     * @return true if login credentials are valid, false otherwise
+     */
+    public boolean areLoginCredentialsValid(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
 }
 
 
