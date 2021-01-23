@@ -26,6 +26,10 @@ public enum Avatar {
         }
     }
 
+    public String getAvatarIdentifier() {
+        return avatarIdentifier;
+    }
+
     public static Image getImageForAvatar(String avatarIdentifier) {
         return AVATAR_IMAGES.get(avatarIdentifier);
     }
