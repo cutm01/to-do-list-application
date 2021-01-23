@@ -1,5 +1,6 @@
 package cz.vse.fis.todolist.application.main;
 
+import cz.vse.fis.todolist.application.logic.ReadUpdateFile;
 import cz.vse.fis.todolist.application.logic.UserData;
 import cz.vse.fis.todolist.application.ui.LoginWindowSceneController;
 import cz.vse.fis.todolist.application.ui.MainWindowSceneController;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -23,7 +25,7 @@ import java.util.Map;
  * @version 1.0.0
  */
 public class App extends Application {
-    private UserData userData;
+    private static UserData userData;
     private static Scene mainScene;
     private static HashMap<String, Pane> applicationScenes;
 
@@ -72,6 +74,18 @@ public class App extends Application {
     }
 
     /**
+     * Method to validate login credentials provided by user
+     *
+     * @param username username input from GUI
+     * @param password password input from GUI
+     * @return true if login credentials are valid, false otherwise
+     */
+    public static boolean validateLoginCredentials(String username, String password) {
+        userData = loadUserData(username);
+        return userData != null && userData.getPassword().equals(password);
+    }
+
+    /**
      * Method to activate different window of application by changing
      * root element of main scene
      *
@@ -79,5 +93,21 @@ public class App extends Application {
      */
     public static void activateScene(String sceneName) {
         mainScene.setRoot(applicationScenes.get(sceneName));
+    }
+
+    /**
+     * Method to load user information stored in JSON file
+     *
+     * @param username username which data will be loaded
+     * @return UserData containing user information (e.g. password, task categories or avatar type) or null if account
+     * does not exist
+     */
+    private static UserData loadUserData(String username) {
+        File file = new File(ReadUpdateFile.USER_DATA_PATH + username + ".json");
+        if (file.isFile()) {
+            return ReadUpdateFile.readDataFromJSON(username);
+        }
+
+        return null;
     }
 }

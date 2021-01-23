@@ -10,14 +10,14 @@ import java.io.Reader;
 
 public class ReadUpdateFile {
 
-    private static String path = "src/main/resources/Data/";
+    public static String USER_DATA_PATH = "src/main/resources/Data/";
 
 
     public static UserData readDataFromJSON(String username)
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try (Reader reader = new FileReader(path + username + ".json")) {
+        try (Reader reader = new FileReader(USER_DATA_PATH + username + ".json")) {
 
             // Convert JSON File to Java Object
             return gson.fromJson(reader, UserData.class);
@@ -32,7 +32,7 @@ public class ReadUpdateFile {
     {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        try (FileWriter writer = new FileWriter(path + userData.getUsername() + ".json")) {
+        try (FileWriter writer = new FileWriter(USER_DATA_PATH + userData.getUsername() + ".json")) {
             gson.toJson(userData, writer);
 
         } catch (IOException e) {
