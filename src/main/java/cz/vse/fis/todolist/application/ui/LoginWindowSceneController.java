@@ -1,6 +1,7 @@
 package cz.vse.fis.todolist.application.ui;
 
 import cz.vse.fis.todolist.application.main.App;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -73,9 +74,21 @@ public class LoginWindowSceneController {
         }
     }
 
+    /**
+     * Method moves user to registration window of application where he can create new account
+     *
+     * @param actionEvent
+     */
     public void showRegisterWindow(ActionEvent actionEvent) {
+        App.activateScene("register");
     }
 
+    /**
+     * Method to close application from login window of application
+     *
+     * @param actionEvent
+     */
     public void closeApplication(ActionEvent actionEvent) {
+        Platform.exit();
     }
 }
