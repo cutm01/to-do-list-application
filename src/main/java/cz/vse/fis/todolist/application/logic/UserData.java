@@ -1,6 +1,7 @@
 package cz.vse.fis.todolist.application.logic;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class UserData {
 
@@ -9,13 +10,15 @@ public class UserData {
     private String password;
     private String passwordHint;
     private String avatar;
+    private AtomicLong lastTaskID; //incremented whenever new task is added to ensure unique task IDs
     private HashMap<String, HashMap<String, Task>> taskCategory = new HashMap<>();
 
-    public UserData(String username, String password, String passwordHint, String avatar) {
+    public UserData(String username, String password, String passwordHint, String avatar, long lastTaskID) {
         this.username = username;
         this.password = password;
         this.passwordHint = passwordHint;
         this.avatar = avatar;
+        this.lastTaskID = new AtomicLong(lastTaskID);
     }
 
     public UserData(String username) {
@@ -27,6 +30,7 @@ public class UserData {
         this.passwordHint = userData.getPasswordHint();
         this.avatar = userData.getAvatar();
         this.taskCategory = userData.getTaskCategory();
+        this.lastTaskID = new AtomicLong(userData.getLastTaskID());
     }
 
     public void createTaskCategory(String categoryName)
@@ -103,6 +107,19 @@ public class UserData {
 
     public void setTaskCategory(HashMap<String, HashMap<String, Task>> taskCategory) {
         this.taskCategory = taskCategory;
+    }
+
+    public long getLastTaskID() {
+        return lastTaskID.longValue();
+    }
+
+    /**
+     * Method for creating unique task IDs.
+     *
+     * @return numeric String representing unique ID for new task
+     */
+    public String createTaskUniqueID() {
+        return String.valueOf(lastTaskID.incrementAndGet());
     }
 }
 

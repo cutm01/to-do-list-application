@@ -11,12 +11,10 @@ import java.util.*;
 public class Category {
     private String categoryName;
     private Map<String, Task> categoryTasks; //where key is task's uniqueID
-    private int lastTaskId;
 
-    public Category(String categoryName, Map<String, Task> categoryTasks, int lastTaskId) {
+    public Category(String categoryName, Map<String, Task> categoryTasks) {
         this.categoryName = categoryName;
         this.categoryTasks = categoryTasks == null? new HashMap<>() : categoryTasks;
-        this.lastTaskId = lastTaskId;
     }
 
     //Getters
@@ -35,10 +33,7 @@ public class Category {
      * @param task task to add
      */
     public void addTask(Task task) {
-        lastTaskId++;
-        String addedTaskUniqueId = Integer.toString(lastTaskId);
-
-        categoryTasks.put(addedTaskUniqueId, task);
+        categoryTasks.put(task.getTaskID(), task);
     }
 
     /**
