@@ -18,9 +18,13 @@ public class ReadUpdateFile {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         try (Reader reader = new FileReader(USER_DATA_PATH + username + ".json")) {
+            //convert JSON File to Java Object
+            UserData userData = gson.fromJson(reader, UserData.class);
+            //load categories with tasks into userCategories attribute, this attribute is used
+            //to reflect actual state of user's categories and tasks while using application
+            userData.loadUserCategoriesWithTasks();
 
-            // Convert JSON File to Java Object
-            return gson.fromJson(reader, UserData.class);
+            return userData;
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,11 +34,13 @@ public class ReadUpdateFile {
 
     public static void writeDataToJSON(UserData userData)
     {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
         try (FileWriter writer = new FileWriter(USER_DATA_PATH + userData.getUsername() + ".json")) {
+            //update attribute which will be written to JSON file according to performed operations
+            //while using application
+            userData.updateTaskCategory();
             gson.toJson(userData, writer);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
