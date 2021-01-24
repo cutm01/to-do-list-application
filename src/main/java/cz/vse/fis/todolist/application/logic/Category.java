@@ -14,7 +14,7 @@ public class Category {
 
     public Category(String categoryName, Map<String, Task> categoryTasks) {
         this.categoryName = categoryName;
-        this.categoryTasks = categoryTasks == null? new HashMap<>() : categoryTasks;
+        this.categoryTasks = categoryTasks == null? new LinkedHashMap<>() : categoryTasks;
     }
 
     //Getters
