@@ -10,6 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 
+import java.util.Optional;
+
 /**
  * MainWindowSceneController class with methods to handle changes in main window od To-Do List application.
  *
@@ -32,7 +34,6 @@ public class MainWindowSceneController {
     public Label taskDeadlineDateLabel;
     public WebView taskView;
 
-
     /**
      * Method moves user to create new task window scene
      *
@@ -48,6 +49,15 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showNewCategoryDialog(ActionEvent actionEvent) {
+        ApplicationAlert.CREATE_NEW_CATEGORY_DIALOG().showAndWait().ifPresent(response -> {
+            if (App.doesCategoryAlreadyExist(response.toString())) {
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_MESSAGE).showAndWait();
+            }
+            else {
+                App.createNewCategory(response.toString());
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.NEW_CATEGORY_SUCCESSFULLY_CREATED_MESSAGE).showAndWait();
+            }
+        });
     }
 
     /**

@@ -59,11 +59,25 @@ public class UserData {
         this.lastTaskID = new AtomicLong(userData.getLastTaskID());
     }
 
+    /**
+     * Method to create new category for user's tasks
+     *
+     * @param categoryName
+     */
     public void createTaskCategory(String categoryName)
     {
-        Map<String, Task> category = new LinkedHashMap<>();
+        Category newCategory = new Category(categoryName, null);
+        userCategories.put(categoryName, newCategory);
+    }
 
-        taskCategory.putIfAbsent(categoryName, category);
+    /**
+     * Method to check whether category with same name already exists
+     *
+     * @param categoryName
+     * @return true if category with same name already exists, false otherwise
+     */
+    public boolean doesCategoryExists(String categoryName) {
+        return userCategories.containsKey(categoryName);
     }
 
     public void deleteTaskCategory(String categoryName)

@@ -63,6 +63,24 @@ public class App extends Application {
         ReadUpdateFile.writeDataToJSON(newAccountData);
     }
 
+    /**
+     * Method to create new empty category for user tasks
+     *
+     * @param categoryName
+     */
+    public static void createNewCategory(String categoryName) {
+        userData.createTaskCategory(categoryName);
+    }
+
+    /**
+     * Method to check whether category with same name already exists
+     *
+     * @param categoryName
+     * @return true if category with same name already exists, false otherwise
+     */
+    public static boolean doesCategoryAlreadyExist(String categoryName) {
+        return userData.doesCategoryExists(categoryName);
+    }
 
     /**
      * Method to validate login credentials provided by user
