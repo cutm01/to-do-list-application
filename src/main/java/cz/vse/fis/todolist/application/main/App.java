@@ -142,7 +142,7 @@ public class App extends Application {
      */
     private Map<String, Pane> loadApplicationScenes() {
         applicationScenes = new HashMap<>();
-        String[] scenesNames = {"login", "main", "manual", "register", "settings"};
+        String[] scenesNames = {"login", "main", "manual", "register", "settings", "create_new_task"};
 
         for (String scenesName : scenesNames) {
             try {

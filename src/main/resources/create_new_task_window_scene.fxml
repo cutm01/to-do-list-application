@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.CreateNewTaskWindowSceneController">
+   <top>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="New task" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+               <children>
+                  <ComboBox fx:id="chooseCategoryComboBox" prefWidth="150.0" promptText="Choose category" />
+                  <TextField fx:id="taskNameTextField" promptText="Task name" HBox.hgrow="ALWAYS" />
+                  <Label text="Deadline:" />
+                  <DatePicker fx:id="deadlineDatePicker" promptText="Select deadline date" />
+                  <TextField fx:id="deadlineTimeTextField" layoutX="160.0" layoutY="10.0" promptText="HH:mm" />
+               </children>
+            </HBox>
+            <Separator maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+   </top>
+   <bottom>
+      <HBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#createNewTask" text="Create" />
+            <Button mnemonicParsing="false" onAction="#showMainWindow" text="Cancel" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <HTMLEditor fx:id="newTaskHTMLEditor" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
