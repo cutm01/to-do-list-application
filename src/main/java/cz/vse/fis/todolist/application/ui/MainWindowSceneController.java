@@ -85,6 +85,8 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void logOut(ActionEvent actionEvent) {
+        App.savePerformedChanges();
+        App.activateScene("login");
     }
 
     /**

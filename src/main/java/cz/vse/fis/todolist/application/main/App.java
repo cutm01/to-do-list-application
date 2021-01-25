@@ -136,6 +136,10 @@ public class App extends Application {
         return new File(ReadUpdateFile.USER_DATA_PATH + username + ".json").exists();
     }
 
+    public static void savePerformedChanges() {
+        ReadUpdateFile.writeDataToJSON(userData);
+    }
+
 
     /**
      * Method to load user information stored in JSON file
