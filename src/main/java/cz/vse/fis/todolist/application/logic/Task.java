@@ -4,12 +4,12 @@ import java.util.Comparator;
 import java.util.Date;
 
 public class Task {
-    String taskID;
-    String name;
-    String text;
-    long taskCreationTimestamp;
-    long taskDeadlineTimestamp;
-    Boolean completed;
+    private String taskID;
+    private String name;
+    private String text;
+    private long taskCreationTimestamp;
+    private long taskDeadlineTimestamp;
+    private Boolean completed;
 
     public Task(String taskID, String name, String text, long taskCreationTimestamp, long taskDeadlineTimestamp, Boolean completed) {
         this.taskID = taskID;
