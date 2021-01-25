@@ -7,6 +7,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.web.HTMLEditor;
 
+/**
+ * CreateNewTaskWindowSceneController class with methods for creating new task
+ *
+ * @version 1.0.0
+ */
 public class CreateNewTaskWindowSceneController {
     //scene elements
     public ComboBox chooseCategoryComboBox;
