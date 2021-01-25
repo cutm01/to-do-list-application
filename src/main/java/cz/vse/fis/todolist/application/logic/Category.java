@@ -173,7 +173,7 @@ public class Category {
      */
     public List<Task> getListOfTasksInAscendingDeadlineDateOrder() {
         List<Task> ascendingDeadlineDate = new ArrayList<>(categoryTasks.values());
-        ascendingDeadlineDate.sort(Comparator.comparing(Task::getTaskCreationTimestamp));
+        ascendingDeadlineDate.sort(Comparator.comparing(Task::getTaskDeadlineTimestamp));
 
         return ascendingDeadlineDate;
     }
@@ -185,7 +185,7 @@ public class Category {
      */
     public List<Task> getListOfTasksInDescendingDeadlineDateOrder() {
         List<Task> descendingDeadlineDate = new ArrayList<>(categoryTasks.values());
-        descendingDeadlineDate.sort(Comparator.comparing(Task::getTaskCreationTimestamp).reversed());
+        descendingDeadlineDate.sort(Comparator.comparing(Task::getTaskDeadlineTimestamp).reversed());
 
         return descendingDeadlineDate;
     }
