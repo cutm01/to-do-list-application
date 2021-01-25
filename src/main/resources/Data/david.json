@@ -2,27 +2,34 @@
   "firmwareVersion": "1.0.0",
   "username": "david",
   "password": "cafourek",
-  "passwordHint": "city of birth",
+  "passwordHint": "",
   "avatar": "male",
-  "taskCategory": {
-    "School": {
-      "2": {
-        "taskID": "2",
-        "name": "homework from java",
-        "text": "dont forget do complete your hw from java",
-        "creationDate": "1.1.1970",
-        "deadline": "1.1.1970",
-        "completed": false
+  "lastTaskID": 2,
+  "userTaskCategories": {
+    "category1": {
+      "categoryName": "category1",
+      "categoryTasks": {
+        "1": {
+          "taskID": "1",
+          "name": "task1",
+          "text": "text1",
+          "taskCreationTimestamp": 646444,
+          "taskDeadlineTimestamp": 55545141,
+          "completed": false
+        }
       }
     },
-    "Work": {
-      "2": {
-        "taskID": "2",
-        "name": "homework from java",
-        "text": "dont forget do complete your hw from java",
-        "creationDate": "1.1.1970",
-        "deadline": "1.1.1970",
-        "completed": false
+    "category2": {
+      "categoryName": "category2",
+      "categoryTasks": {
+        "2": {
+          "taskID": "2",
+          "name": "task2",
+          "text": "text2",
+          "taskCreationTimestamp": 646444,
+          "taskDeadlineTimestamp": 55545141,
+          "completed": false
+        }
       }
     }
   }
