@@ -2,6 +2,7 @@ package cz.vse.fis.todolist.application.main;
 
 import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.ReadUpdateFile;
+import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.logic.UserData;
 import cz.vse.fis.todolist.application.ui.LoginWindowSceneController;
 import cz.vse.fis.todolist.application.ui.MainWindowSceneController;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -159,14 +161,34 @@ public class App extends Application {
     }
 
     /**
-     * Method to get useranem for currently logged in account
+     * Method to get username for currently logged in account
      *
-     * @return String representing username of actually logged in acocunt
+     * @return String representing username of actually logged in account
      */
     public static String getUsername() {
         return userData.getUsername();
     }
 
+    /**
+     * Method to get names of categories which are currently created for account
+     *
+     * @return ArrayList containing names of all user account categories
+     */
+    public static List<String> getCategoriesForAccount() {
+        return userData.getUserCategoryNames();
+    }
+
+    /**
+     * Method to get all task from category ordered by one of sorting option which
+     * is specified in SortingOptions class
+     *
+     * @param categoryName name of category which will tasks be obtained from
+     * @param sortingOption ordering option as specified in SortingOptions class
+     * @return List of tasks in order specified by sorting option (e.g. from A->Z, newest->oldest)
+     */
+    public static List<Task> getTaskFromCategory(String categoryName, String sortingOption) {
+        return userData.getTasksFromCategory(categoryName, sortingOption);
+    }
 
     /**
      * Method to load user information stored in JSON file

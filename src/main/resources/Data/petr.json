@@ -11,10 +11,34 @@
       "categoryTasks": {
         "1": {
           "taskID": "1",
-          "name": "task1",
+          "name": "AAAA",
           "text": "text1",
-          "taskCreationTimestamp": 646444,
-          "taskDeadlineTimestamp": 55545141,
+          "taskCreationTimestamp": 1000,
+          "taskDeadlineTimestamp": 1612137600,
+          "completed": false
+        },
+        "3": {
+          "taskID": "1",
+          "name": "BBB",
+          "text": "text1",
+          "taskCreationTimestamp": 2000,
+          "taskDeadlineTimestamp": 1812137600,
+          "completed": false
+        },
+        "4": {
+          "taskID": "1",
+          "name": "DDD",
+          "text": "text1",
+          "taskCreationTimestamp": 3000,
+          "taskDeadlineTimestamp": 1912137600,
+          "completed": false
+        },
+        "5": {
+          "taskID": "1",
+          "name": "CCC",
+          "text": "text1",
+          "taskCreationTimestamp": 4000,
+          "taskDeadlineTimestamp": 1712137600,
           "completed": false
         }
       }
@@ -32,8 +56,8 @@
         }
       }
     },
-    "testing": {
-      "categoryName": "testing",
+    "Completed tasks": {
+      "categoryName": "Completed tasks",
       "categoryTasks": {}
     }
   }

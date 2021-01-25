@@ -1,18 +1,25 @@
 package cz.vse.fis.todolist.application.ui;
 
 import cz.vse.fis.todolist.application.logic.Avatar;
+import cz.vse.fis.todolist.application.logic.SortingOptions;
+import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.main.App;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import org.w3c.dom.events.MouseEvent;
 
+import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -37,8 +44,13 @@ public class MainWindowSceneController {
     public Label taskDeadlineDateLabel;
     public WebView taskView;
 
+    //observable attributes
+    private ObservableList<String> categories = FXCollections.observableArrayList();
+    private ObservableList<Task> displayedTasks = FXCollections.observableArrayList();
+
     public void init() {
         initTopPanel();
+        initLeftPanel();
     }
 
     /**
@@ -61,7 +73,9 @@ public class MainWindowSceneController {
                 ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_MESSAGE).showAndWait();
             }
             else {
-                App.createNewCategory(response.toString());
+                String categoryName = response.toString();
+                App.createNewCategory(categoryName);
+                categories.add(categoryName);
                 ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.NEW_CATEGORY_SUCCESSFULLY_CREATED_MESSAGE).showAndWait();
             }
         });
@@ -181,5 +195,96 @@ public class MainWindowSceneController {
     private void initTopPanel() {
         avatarImageView.setImage(Avatar.getImageForAvatar(App.getUserAvatarIdentifier()));
         usernameLabel.setText(App.getUsername());
+    }
+
+    private void initLeftPanel() {
+        populateCategoriesComboBox();
+        populateSortTasksComboBox();
+        populateTasksListView();
+
+        //listener to change displayed tasks according to user selection of category and sorting option
+        categoriesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedCategory, newSelectedCategory) -> {
+            updateDisplayedTaskAfterNewCategorySelection(newSelectedCategory.toString());
+        });
+        sortTasksComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedSortingOption, newSelectedSortingOption) -> {
+            updateDisplayedTaskAfterNewSortingOptionSelection(newSelectedSortingOption.toString());
+        });
+    }
+
+    private void populateCategoriesComboBox() {
+        categories.setAll(App.getCategoriesForAccount());
+        categoriesComboBox.setItems(categories);
+        categoriesComboBox.setPromptText("Categories");
+    }
+
+    private void populateSortTasksComboBox() {
+        ObservableList<String> sortingOptions = FXCollections.observableArrayList();
+        sortingOptions.addAll(SortingOptions.BY_NAME_FROM_A_TO_Z,
+                              SortingOptions.BY_NAME_FROM_Z_TO_A,
+                              SortingOptions.BY_CREATION_TIME_FROM_NEWEST_TO_OLDEST,
+                              SortingOptions.BY_CREATION_TIME_FROM_OLDEST_TO_NEWEST,
+                              SortingOptions.BY_DEADLINE_FROM_EARLIEST_TO_LATEST,
+                              SortingOptions.BY_DEADLINE_FROM_LATEST_TO_OLDEST);
+
+        sortTasksComboBox.setItems(sortingOptions);
+        sortTasksComboBox.setPromptText("Order by");
+    }
+
+    private void populateTasksListView() {
+        tasksListView.setItems(displayedTasks);
+        tasksListView.setCellFactory(param -> new ListCell<Task>() {
+            @Override
+            public void updateItem(Task task, boolean empty) {
+                super.updateItem(task, empty);
+
+                if (empty || task == null) {
+                    setText(null);
+                    setGraphic(null);
+                }
+                else {
+                    setGraphic(new VBox(new Label(task.getName()),
+                                        new Label("Creation: " + new Date(task.getTaskCreationTimestamp()*1000).toString()),
+                                        new Label("Deadline: " + new Date(task.getTaskDeadlineTimestamp()*1000).toString())));
+                }
+            }
+        });
+
+        tasksListView.setPlaceholder(new Label("Select one of the categories"));
+    }
+
+    private void updateDisplayedTaskAfterNewCategorySelection(String selectedCategoryName) {
+        //get currently selected sorting option from GUI to obtain tasks in this order
+        String sortingOption = sortTasksComboBox.getSelectionModel().getSelectedItem() == null ? null : sortTasksComboBox.getSelectionModel().getSelectedItem().toString();
+
+        //no sorting option is currently selected, tasks will be obtained in their insertion order
+        if (sortingOption == null) {
+            displayedTasks.setAll(App.getTaskFromCategory(selectedCategoryName, SortingOptions.NONE));
+        }
+        else {
+            displayedTasks.setAll(App.getTaskFromCategory(selectedCategoryName, sortingOption));
+        }
+
+        //show placeholder when category is empty
+        if (displayedTasks.size() == 0) {
+            tasksListView.setPlaceholder(new Label("Category is empty"));
+        }
+        else {
+            tasksListView.setItems(displayedTasks);
+        }
+    }
+
+    private void updateDisplayedTaskAfterNewSortingOptionSelection(String selectedSortingOption) {
+        //get currently selected category from GUI to obtain tasks from this category
+        String currentlySelectedCategory = categoriesComboBox.getSelectionModel().getSelectedItem() == null ? null : categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+
+        //no category is currently selected, list view will show placeholder
+        if (currentlySelectedCategory == null) {
+            tasksListView.setPlaceholder(new Label("Select one of the categories"));
+        }
+        else {
+            displayedTasks.setAll(App.getTaskFromCategory(currentlySelectedCategory, selectedSortingOption));
+        }
+
+        tasksListView.setItems(displayedTasks);
     }
 }

@@ -3,10 +3,7 @@ package cz.vse.fis.todolist.application.logic;
 import com.google.gson.annotations.Expose;
 import javafx.scene.chart.CategoryAxis;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class UserData {
@@ -190,6 +187,55 @@ public class UserData {
      */
     public boolean isPasswordHintSet() {
         return passwordHint != null || passwordHint.equals("");
+    }
+
+    /**
+     * Method to get names of categories which are currently created for account
+     *
+     * @return ArrayList containing names of all user account categories
+     */
+    public List<String> getUserCategoryNames() {
+        return new ArrayList<>(userTaskCategories.keySet());
+    }
+
+    /**
+     * Method to get all tasks from category ordered by one of sorting option which
+     * is specified in SortingOptions class
+     *
+     * @param categoryName name of category which will tasks be obtained from
+     * @param sortingOption ordering option as specified in SortingOptions class
+     * @return List of tasks in order specified by sorting option (e.g. from A->Z, newest->oldest)
+     */
+    public List<Task> getTasksFromCategory(String categoryName, String sortingOption) {
+        List<Task> obtainedTasks = new ArrayList<>();
+
+        switch (sortingOption) {
+            case SortingOptions.BY_NAME_FROM_A_TO_Z:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInAlphabeticalOrder();
+                break;
+            case SortingOptions.BY_NAME_FROM_Z_TO_A:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInUnalphabeticalOrder();
+                break;
+            case SortingOptions.BY_CREATION_TIME_FROM_NEWEST_TO_OLDEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInDescendingCreationDateOrder();
+                break;
+            case SortingOptions.BY_CREATION_TIME_FROM_OLDEST_TO_NEWEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInAscendingCreationDateOrder();
+                break;
+            case SortingOptions.BY_DEADLINE_FROM_EARLIEST_TO_LATEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInAscendingDeadlineDateOrder();
+                break;
+            case SortingOptions.BY_DEADLINE_FROM_LATEST_TO_OLDEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInDescendingDeadlineDateOrder();
+                break;
+            case SortingOptions.NONE:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasks();
+                break;
+            default:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasks();
+        }
+
+        return obtainedTasks;
     }
 }
 
