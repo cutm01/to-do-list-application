@@ -1,5 +1,6 @@
 package cz.vse.fis.todolist.application.ui;
 
+import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.main.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ public class MainWindowSceneController {
     public WebView taskView;
 
     public void init() {
-        usernameLabel.setText("test");
+        initTopPanel();
     }
 
     /**
@@ -172,5 +173,13 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void deleteCurrentlyOpenedTask(ActionEvent actionEvent) {
+    }
+
+    /**
+     * Method for initializing the top panel of main application window. It sets user avatar and username
+     */
+    private void initTopPanel() {
+        avatarImageView.setImage(Avatar.getImageForAvatar(App.getUserAvatarIdentifier()));
+        usernameLabel.setText(App.getUsername());
     }
 }

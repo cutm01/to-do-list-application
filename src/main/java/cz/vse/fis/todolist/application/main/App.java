@@ -149,6 +149,24 @@ public class App extends Application {
         ReadUpdateFile.writeDataToJSON(userData);
     }
 
+    /**
+     * Method to get avatar identifier which is currently set for user account
+     *
+     * @return String representing avatar identifier as defined in Avatar enum
+     */
+    public static String getUserAvatarIdentifier() {
+        return userData.getAvatar();
+    }
+
+    /**
+     * Method to get useranem for currently logged in account
+     *
+     * @return String representing username of actually logged in acocunt
+     */
+    public static String getUsername() {
+        return userData.getUsername();
+    }
+
 
     /**
      * Method to load user information stored in JSON file
