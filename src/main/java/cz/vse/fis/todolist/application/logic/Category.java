@@ -28,6 +28,16 @@ public class Category {
 
     //Class methods
     /**
+     * Method to check whether task specified by its ID is currently placed in category
+     *
+     * @param taskID unique ID of task
+     * @return true if category contains task specified by its ID, false otherwise
+     */
+    public boolean isTaskInCategory(String taskID) {
+        return categoryTasks.containsKey(taskID);
+    }
+
+    /**
      * Method to add new task to category. Task is put in hash map with its unique ID as a key
      *
      * @param task task to add
