@@ -149,6 +149,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void editCurrentlyOpenedTask(ActionEvent actionEvent) {
+        App.activateScene("edit_task");
     }
 
     /**
