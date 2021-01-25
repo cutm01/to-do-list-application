@@ -1,40 +1,24 @@
 package cz.vse.fis.todolist.application.logic;
 
 import com.google.gson.annotations.Expose;
+import javafx.scene.chart.CategoryAxis;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class UserData {
-
-    private Map<String, Category> userCategories = new LinkedHashMap<>();
-
     //following attributes are written into JSON file containing user data
-    @Expose
     private String firmwareVersion = "1.0.0";
-    @Expose
     private String username;
-    @Expose
     private String password;
-    @Expose
     private String passwordHint;
-    @Expose
     private String avatar;
     //incremented whenever new task is added to ensure unique task IDs
-    @Expose
     private AtomicLong lastTaskID;
-    /* taskCategory represents all user categories with their tasks as one JSON object, e.g.:
-      "taskCategory": {
-        "School": { //category name
-          "2": { //task unique ID
-            //task data
-          }
-        },
-    */
-    @Expose
-    private Map<String, Map<String, Task>> taskCategory = new LinkedHashMap<>();
+    private Map<String, Category> userTaskCategories = new LinkedHashMap<>();
 
     public UserData(String username, String password, String passwordHint, String avatar, long lastTaskID) {
         this.username = username;
@@ -62,42 +46,66 @@ public class UserData {
     /**
      * Method to create new category for user's tasks
      *
-     * @param categoryName
+     * @param categoryName name of the new category to add
      */
     public void createTaskCategory(String categoryName)
     {
         Category newCategory = new Category(categoryName, null);
-        userCategories.put(categoryName, newCategory);
+        userTaskCategories.put(categoryName, newCategory);
     }
 
     /**
      * Method to check whether category with same name already exists
      *
-     * @param categoryName
+     * @param categoryName name of category to check
      * @return true if category with same name already exists, false otherwise
      */
     public boolean doesCategoryExists(String categoryName) {
-        return userCategories.containsKey(categoryName);
+        return userTaskCategories.containsKey(categoryName);
     }
 
+    /**
+     * Method to remove existing category. All tasks in this category will be remove too
+     *
+     * @param categoryName name of category to remove
+     */
     public void deleteTaskCategory(String categoryName)
     {
-        taskCategory.remove(categoryName);
+        userTaskCategories.remove(categoryName);
     }
 
+    /**
+     * Method to add task to existing category
+     *
+     * @param task task instance which will be added to category
+     * @param categoryName name of category where task will be added
+     */
     public void addTaskToCategory(Task task, String categoryName)
     {
-        taskCategory.get(categoryName).put(task.getTaskID(), task);
+        userTaskCategories.get(categoryName).addTask(task);
     }
 
-    public void deleteTask(Task task, String categoryName)
+    /**
+     * Method to remove task from existing category
+     *
+     * @param task task instance to remove
+     * @param categoryName name of category which task should be removed from
+     */
+    public void deleteTaskFromCategory(Task task, String categoryName)
     {
-        taskCategory.get(categoryName).remove(task.getTaskID());
+        userTaskCategories.get(categoryName).removeTask(task.getTaskID());
     }
 
+    /**
+     * Method to check whether task specified by its ID is currently placed in category
+     *
+     * @param taskID unique ID of task
+     * @param categoryName category name which be checked whether it contains task
+     * @return true if category contains task specified by its ID, false otherwise
+     */
     public boolean isTaskInCategory(String taskID, String categoryName)
     {
-        return taskCategory.get(categoryName).containsKey(taskID);
+        return userTaskCategories.get(categoryName).isTaskInCategory(taskID);
     }
 
     public String getFirmwareVersion() {
@@ -141,12 +149,14 @@ public class UserData {
         this.avatar = avatar;
     }
 
-    public Map<String, Map<String, Task>> getTaskCategory() {
-        return taskCategory;
-    }
-
-    public void setTaskCategory(Map<String, Map<String, Task>> taskCategory) {
-        this.taskCategory = taskCategory;
+    /**
+     * Method to get category of tasks specified by its name
+     *
+     * @param categoryName name of the category which will be obtained
+     * @return instance of Category if category specified by name exists, null otherwise
+     */
+    public Category getUserCategory(String categoryName) {
+        return userTaskCategories.get(categoryName);
     }
 
     public long getLastTaskID() {
@@ -180,31 +190,6 @@ public class UserData {
      */
     public boolean isPasswordHintSet() {
         return passwordHint != null || passwordHint.equals("");
-    }
-
-    /**
-     * Method loads all user categories together with tasks they contain. Data are obtained from taskCategory JSON
-     * object placed in JSON file which contains all account information
-     */
-    void loadUserCategoriesWithTasks() {
-        userCategories = new LinkedHashMap<>();
-
-        //parse data from taskCategory JSON object where key is name of category
-        //and value is HashMap with task unique ID as key and task instance as value
-        for (String categoryName : taskCategory.keySet()) {
-            userCategories.put(categoryName, new Category(categoryName, taskCategory.get(categoryName)));
-        }
-    }
-
-    /**
-     * Method updates taskCategory attribute according to changes made by user (e.g. deleting category, adding or
-     * removing tasks). This attribute is later written to JSON file which holds all account information
-     */
-    void updateTaskCategory() {
-        taskCategory = new LinkedHashMap<>();
-        for (String categoryName : userCategories.keySet()) {
-            taskCategory.put(categoryName, userCategories.get(categoryName).getCategoryTasks());
-        }
     }
 }
 
