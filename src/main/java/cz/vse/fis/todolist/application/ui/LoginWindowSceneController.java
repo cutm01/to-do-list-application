@@ -3,12 +3,16 @@ package cz.vse.fis.todolist.application.ui;
 import cz.vse.fis.todolist.application.main.App;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 
 /**
@@ -66,7 +70,8 @@ public class LoginWindowSceneController {
             if (areLoginCredentialsValid) {
                 usernameTextField.clear();
                 passwordField.clear();
-                App.activateScene("main");
+
+                initializeMainWindow();
             }
             else {
                 ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.INVALID_USER_CREDENTIALS_MESSAGE).showAndWait();
@@ -92,5 +97,24 @@ public class LoginWindowSceneController {
      */
     public void closeApplication(ActionEvent actionEvent) {
         Platform.exit();
+    }
+
+    /**
+     * Method for moving to main window of application and its initialization with currently logged in user
+     */
+    private void initializeMainWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("main_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            MainWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

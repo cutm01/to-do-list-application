@@ -127,6 +127,15 @@ public class App extends Application {
     }
 
     /**
+     * Method to set new Parent element to application main scene
+     *
+     * @param root Parent element to set
+     */
+    public static void setNewMainSceneParentElement(Parent root) {
+        mainScene.setRoot(root);
+    }
+
+    /**
      * Method to check whether account with given username already exists
      *
      * @param username
