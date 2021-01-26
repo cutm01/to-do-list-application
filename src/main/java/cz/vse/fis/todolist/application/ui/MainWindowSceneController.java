@@ -7,6 +7,8 @@ import cz.vse.fis.todolist.application.main.App;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,13 +51,21 @@ public class MainWindowSceneController {
     public Label taskDeadlineDateLabel;
     public WebView taskView;
 
-    //observable attributes
+    //observable attributes to react to changes made in left application panel
     private ObservableList<String> categories = FXCollections.observableArrayList();
     private ObservableList<Task> displayedTasks = FXCollections.observableArrayList();
+
+    //currently displayed task in center panel, its attributes can be changed from left panel
+    //(e.g. category name when user moves this task to different category) and center panel has to react to this changes
+    private StringProperty uniqueIDOfDisplayedTask;
+    private StringProperty nameOfDisplayedTask;
+    private StringProperty categoryOfDisplayedTask;
+    private StringProperty deadlineOfDisplayedTask;
 
     public void init() {
         initTopPanel();
         initLeftPanel();
+        initCenterPanel();
     }
 
     /**
@@ -137,6 +147,12 @@ public class MainWindowSceneController {
                 task.setCompleted(true);
                 App.moveTasksToCategory(task, fromCategory, toCategory);
                 tasksToRemoveFromDisplayedTasks.add(task);
+
+                //check if currently opened task from center panel is not between selected tasks
+                //and change her category String property if so
+                if (task.getTaskID().equals(uniqueIDOfDisplayedTask.getValue())) {
+                    categoryOfDisplayedTask.setValue(toCategory);
+                }
             }
         }
 
@@ -165,6 +181,12 @@ public class MainWindowSceneController {
                 if (task.isSelected()) {
                     App.moveTasksToCategory(task, fromCategory, toCategory);
                     tasksToRemoveFromDisplayedTasks.add(task);
+
+                    //check if currently opened task from center panel is not between selected tasks
+                    //and change her category String property if so
+                    if (task.getTaskID().equals(uniqueIDOfDisplayedTask.getValue())) {
+                        categoryOfDisplayedTask.setValue(toCategory);
+                    }
                 }
             }
 
@@ -202,6 +224,12 @@ public class MainWindowSceneController {
                     if (task.isSelected()) {
                         App.moveTasksToCategory(task, fromCategory, toCategory);
                         tasksToRemoveFromDisplayedTasks.add(task);
+
+                        //check if currently opened task from center panel is not between selected tasks
+                        //and change her category String property if so
+                        if (task.getTaskID().equals(uniqueIDOfDisplayedTask.getValue())) {
+                            categoryOfDisplayedTask.setValue(toCategory);
+                        }
                     }
                 }
 
@@ -231,6 +259,12 @@ public class MainWindowSceneController {
                     if (task.isSelected()) {
                         App.deleteTaskFromCategory(task, fromCategory);
                         tasksToRemoveFromDisplayedTasks.add(task);
+
+                        //check if currently opened task from center panel is not between selected tasks
+                        //if so, ID of currently displayed task and content of center panel will be changed
+                        if (task.getTaskID().equals(uniqueIDOfDisplayedTask.getValue())) {
+                            uniqueIDOfDisplayedTask.setValue("");
+                        }
                     }
                 }
 
@@ -377,6 +411,14 @@ public class MainWindowSceneController {
 
         tasksListView.setCellFactory(CheckBoxListCell.forListView(Task::selectedProperty, converter));
         tasksListView.setItems(displayedTasks);
+
+        //add listener to update center panel when new task is selected from ListView
+        tasksListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedTask, newSelectedTask) -> {
+            if (newSelectedTask != null) {
+                uniqueIDOfDisplayedTask.setValue(((Task) newSelectedTask).getTaskID());
+            }
+        });
+
         tasksListView.setPlaceholder(new Label("Select one of the categories"));
     }
 
@@ -420,5 +462,75 @@ public class MainWindowSceneController {
 
         unmarkAllCurrentlyDisplayedTasks();
         markAllTasksCheckBox.setSelected(false);
+    }
+
+    /**
+     * Method to init center panel of GUI. Content is set to correspond to last opened tasks before
+     * logged out or closing application
+     */
+    private void initCenterPanel() {
+        Task lastOpenedTask = App.getLastOpenedTask();
+
+        //initialize StringProperties of currently displayed task in center panel
+        uniqueIDOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getTaskID());
+        nameOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getName());
+        categoryOfDisplayedTask = new SimpleStringProperty("");
+        deadlineOfDisplayedTask = new SimpleStringProperty(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+
+        //add listener to currently displayed task StringProperties so center panel can be dynamically changed
+        uniqueIDOfDisplayedTask.addListener((observableValue, oldID, newID) -> {
+            updateTaskViewInCenterPanel();
+        });
+
+        nameOfDisplayedTask.addListener((observableValue, oldName, newName) -> {
+            taskNameLabel.setText(newName);
+        });
+
+        categoryOfDisplayedTask.addListener((observableValue, oldCategoryName, newCategoryName) -> {
+            taskCategoryLabel.setText(newCategoryName);
+        });
+
+        deadlineOfDisplayedTask.addListener((observableValue, oldDeadline, newDeadline) -> {
+            taskDeadlineDateLabel.setText(newDeadline);
+        });
+
+        //initialize center panel
+        taskNameLabel.setText(lastOpenedTask.getName());
+        taskCategoryLabel.setText("");
+        taskCreationDateLabel.setText(new Date(lastOpenedTask.getTaskCreationTimestamp()).toString());
+        taskDeadlineDateLabel.setText(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+        taskView.getEngine().loadContent(lastOpenedTask.getText());
+    }
+
+    /**
+     * Method to update center panel of main window which contains currently displayed task.
+     * If previous currently displayed task was removed (and therefore uniqueIDOfDisplayedTask set to empty String),
+     * task view in center panel will be update to inform user about this action.
+     * Center panel is also updated when user selects another task from left panel, labels in center panel are then
+     * updated to match newly selected task.
+     */
+    private void updateTaskViewInCenterPanel() {
+        if (uniqueIDOfDisplayedTask.getValue().isEmpty()) {
+            taskNameLabel.setText("No task is currently selected :(");
+            taskCategoryLabel.setText("-----");
+            taskCreationDateLabel.setText("-----");
+            taskDeadlineDateLabel.setText("-----");
+            taskView.getEngine().loadContent("<p style=\"text-align: center;\">It looks like you deleted the previously displayed task</p>\n"
+                                             + "<p style=\"text-align: center;\">Feel free to selected another task from the left panel of the"
+                                             + "application or create a completely new one to keep track of your duties :)</p>");
+        }
+        else {
+            Task currentlySelectedTask = (Task)tasksListView.getSelectionModel().getSelectedItem();
+
+            //update values of StringProperty attributes so changes can be made automatically
+            uniqueIDOfDisplayedTask.setValue(currentlySelectedTask.getTaskID());
+            nameOfDisplayedTask.setValue(currentlySelectedTask.getName());
+            categoryOfDisplayedTask.setValue(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
+            deadlineOfDisplayedTask.setValue(new Date(currentlySelectedTask.getTaskDeadlineTimestamp()).toString());
+
+            //update rest of elements from center panel
+            taskCreationDateLabel.setText(new Date(currentlySelectedTask.getTaskCreationTimestamp()).toString());
+            taskView.getEngine().loadContent(currentlySelectedTask.getText());
+        }
     }
 }

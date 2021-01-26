@@ -5,6 +5,9 @@
   "passwordHint": "",
   "avatar": "male",
   "lastTaskID": 2,
+  "lastOpenedTask": {
+    "category1": "1"
+  },
   "userTaskCategories": {
     "category1": {
       "categoryName": "category1",

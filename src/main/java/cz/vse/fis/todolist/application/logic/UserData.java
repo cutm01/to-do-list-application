@@ -2,6 +2,7 @@ package cz.vse.fis.todolist.application.logic;
 
 import com.google.gson.annotations.Expose;
 import javafx.scene.chart.CategoryAxis;
+import javafx.util.Pair;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -18,11 +19,17 @@ public class UserData {
     private String passwordHint;
     @Expose
     private String avatar;
-    //incremented whenever new task is added to ensure unique task IDs
     @Expose
-    private AtomicLong lastTaskID;
+    private AtomicLong lastTaskID;     //incremented whenever new task is added to ensure unique task IDs
+    @Expose
+    private Map<String, String> lastOpenedTask; //<category name, task id>...GUI center panel is initialized with this task
     @Expose
     private Map<String, Category> userTaskCategories = new LinkedHashMap<>();
+
+    public UserData() {
+        lastOpenedTask = new HashMap<>();
+        lastOpenedTask.put("category1", "1");
+    }
 
     public UserData(String username, String password, String passwordHint, String avatar, long lastTaskID) {
         this.username = username;
@@ -163,6 +170,34 @@ public class UserData {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    /**
+     * Method to get last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return last opened task instance
+     */
+    public Task getLastOpenedTask() {
+        String category = "";
+        String taskID = "";
+        for (Map.Entry<String, String> categoryNameTaskIDEntry : lastOpenedTask.entrySet()) {
+            category = categoryNameTaskIDEntry.getKey();
+            taskID = categoryNameTaskIDEntry.getValue();
+        }
+
+        return getTaskFromCategory(category, taskID);
+    }
+
+    /**
+     * Method to obtain task specified by its ID from given category
+     *
+     * @param categoryName category name which task will be obtained from
+     * @param taskID ID of task which will be obtained
+     * @return Task instance
+     */
+    public Task getTaskFromCategory(String categoryName, String taskID) {
+        return userTaskCategories.get(categoryName).getTaskByUniqueID(taskID);
     }
 
     /**

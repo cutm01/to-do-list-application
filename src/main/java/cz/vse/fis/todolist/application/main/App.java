@@ -212,6 +212,16 @@ public class App extends Application {
     }
 
     /**
+     * Method to get last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return last opened task instance
+     */
+    public static Task getLastOpenedTask() {
+        return userData.getLastOpenedTask();
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded
