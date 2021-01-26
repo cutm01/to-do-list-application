@@ -4,11 +4,13 @@ import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.SortingOptions;
 import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.main.App;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,6 +41,7 @@ public class MainWindowSceneController {
     public ComboBox sortTasksComboBox;
     public ListView tasksListView;
     public CheckBox markAllTasksCheckBox;
+    
     //center panel
     public Label taskNameLabel;
     public Label taskCategoryLabel;
@@ -280,6 +283,9 @@ public class MainWindowSceneController {
                 unmarkAllCurrentlyDisplayedTasks();
             }
         });
+
+        //listener to disable checkbox when no tasks are displayed
+        markAllTasksCheckBox.disableProperty().bind(Bindings.isEmpty(displayedTasks));
     }
 
     /**
