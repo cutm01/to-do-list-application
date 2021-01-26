@@ -41,7 +41,7 @@ public class MainWindowSceneController {
     public ComboBox sortTasksComboBox;
     public ListView tasksListView;
     public CheckBox markAllTasksCheckBox;
-    
+
     //center panel
     public Label taskNameLabel;
     public Label taskCategoryLabel;
@@ -217,6 +217,26 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void deleteSelectedTasks(ActionEvent actionEvent) {
+        if (displayedTasks.filtered(Task::isSelected).size() == 0) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.NO_TASK_WAS_SELECTED_TO_DELETE_MESSAGE).showAndWait();
+            return;
+        }
+
+        ApplicationAlert.CONFIRM_TASKS_DELETION_ALERT().showAndWait().ifPresent(response -> {
+            if (response.getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                String fromCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+
+                List<Task> tasksToRemoveFromDisplayedTasks = new ArrayList<>();
+                for (Task task : displayedTasks) {
+                    if (task.isSelected()) {
+                        App.deleteTaskFromCategory(task, fromCategory);
+                        tasksToRemoveFromDisplayedTasks.add(task);
+                    }
+                }
+
+                displayedTasks.removeAll(tasksToRemoveFromDisplayedTasks);
+            }
+        });
     }
 
     /**

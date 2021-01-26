@@ -202,6 +202,16 @@ public class App extends Application {
     }
 
     /**
+     * Method to delete selected task from category
+     *
+     * @param task task which will be deleted
+     * @param fromCategory category name which task will be deleted from
+     */
+    public static void deleteTaskFromCategory(Task task, String fromCategory) {
+        userData.deleteTaskFromCategory(task, fromCategory);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded

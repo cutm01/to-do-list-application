@@ -47,6 +47,8 @@ public class ApplicationAlert {
     public static final String NO_TASK_WAS_SELECTED_TO_MOVE_TO_NEW_CATEGORY_MESSAGE = "Please select at least one task which will be moved to new category";
     public static final String CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_NO_TASKS_MOVED_MESSAGE = "Category with same name already exists. No tasks were moved";
     public static final String TASK_SUCCESSFULLY_MOVED_TO_NEWLY_CREATED_CATEGORY_MESSAGE = "All selected tasks were successfully moved to newly created category";
+    public static final String NO_TASK_WAS_SELECTED_TO_DELETE_MESSAGE = "Please select at least one task which will be deleted";
+    public static final String CONFIRM_TASKS_DELETION_ALERT_MESSAGE = "Selected tasks will be definitely deleted. Do you want to continue?";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";
@@ -226,6 +228,23 @@ public class ApplicationAlert {
         });
 
         return dialog;
+    }
+
+    /**
+     * Method to create alert to inform user that selected tasks are about to delete. User has to confirm
+     * that he wants to delete selected, otherwise no action will be performed
+     *
+     * @return alert where user has to confirm that he want to delete all selected tasks
+     */
+    public static final Alert CONFIRM_TASKS_DELETION_ALERT() {
+        Alert alert = new Alert(AlertType.NONE);
+        alert.getDialogPane().setContent(new Label(CONFIRM_TASKS_DELETION_ALERT_MESSAGE));
+
+        ButtonType confirmButtonType = new ButtonType("Delete selected tasks", ButtonBar.ButtonData.YES);
+        alert.getButtonTypes().add(confirmButtonType);
+        alert.getButtonTypes().add(ButtonType.CLOSE);
+
+        return alert;
     }
 
     /**
