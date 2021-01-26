@@ -1,0 +1,61 @@
+. {
+    -fx-font-family: Arial;
+}
+
+AnchorPane {
+    -fx-pref-width: 500;
+    -fx-pref-height: 250;
+    -fx-background-color: white;
+}
+.label {
+    -fx-font-size: 20;
+}
+#login {
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+}
+#login_box {
+    -fx-padding: -40 0 50 -20;
+}
+#username_box {
+    -fx-padding: -20 0 30 -30;
+}
+#password_box {
+    -fx-padding: -20 0 30 -30;
+}
+.field {
+    -fx-padding: 5 5 2 5;
+    -fx-border-insets: 0 0 0 5;
+    -fx-background-insets: 0 0 0 5;
+    -fx-font-size: 15;
+    -fx-background-color: -fx-text-box-border, -fx-background;
+    -fx-border-color: grey;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+}
+.field:focused {
+    -fx-border-color: #3e8eac;
+}
+#button_box {
+    -fx-padding: 10 0 0 0;
+    -fx-spacing: 5;
+}
+.button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 3,2,2,3;
+    -fx-background-insets: 0 5 0 5;
+    -fx-background-radius: 0;
+    -fx-padding: 10 25 10 25;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 15;
+}
+.button:hover {
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+
+
+
+
