@@ -51,6 +51,12 @@ public class MainWindowSceneController {
     public Label taskDeadlineDateLabel;
     public WebView taskView;
 
+    //right panel
+    public Button markTaskAsCompletedButton;
+    public Button editTaskButton;
+    public Button moveTaskButton;
+    public Button deleteTaskButton;
+
     //observable attributes to react to changes made in left application panel
     private ObservableList<String> categories = FXCollections.observableArrayList();
     private ObservableList<Task> displayedTasks = FXCollections.observableArrayList();
@@ -66,6 +72,7 @@ public class MainWindowSceneController {
         initTopPanel();
         initLeftPanel();
         initCenterPanel();
+        initRightPanel();
     }
 
     /**
@@ -532,5 +539,17 @@ public class MainWindowSceneController {
             taskCreationDateLabel.setText(new Date(currentlySelectedTask.getTaskCreationTimestamp()).toString());
             taskView.getEngine().loadContent(currentlySelectedTask.getText());
         }
+    }
+
+    /**
+     * Method to init right panel of main window of application. This panel contains buttons which can be used to
+     * perform actions on currently displayed task (e.g. editing, moving or deleting it). This method set listeners
+     * to disable this button when no task is currently selected.
+     */
+    private void initRightPanel() {
+        markTaskAsCompletedButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+        editTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+        moveTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+        deleteTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
     }
 }

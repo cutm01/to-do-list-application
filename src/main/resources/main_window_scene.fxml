@@ -41,8 +41,8 @@
          <children>
             <Button fx:id="markTaskAsCompletedButton" mnemonicParsing="false" onAction="#markCurrentlyOpenedTaskAsCompleted" text="Mark as done" />
             <Button fx:id="editTaskButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editCurrentlyOpenedTask" text="Edit" />
-            <Button fx:id="moveTask" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveCurrentlyOpenedTaskToExistingCategory" text="Move to" />
-            <Button fx:id="deleteTask" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCurrentlyOpenedTask" text="Delete" />
+            <Button fx:id="moveTaskButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#moveCurrentlyOpenedTaskToExistingCategory" text="Move to" />
+            <Button fx:id="deleteTaskButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#deleteCurrentlyOpenedTask" text="Delete" />
          </children></VBox>
    </right>
    <center>
