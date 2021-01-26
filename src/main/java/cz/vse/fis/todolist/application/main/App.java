@@ -191,6 +191,17 @@ public class App extends Application {
     }
 
     /**
+     * Method to move task to another category
+     *
+     * @param task task instance to move
+     * @param fromCategory category name where task will be moved from
+     * @param  toCategory category name where task will be moved to
+     */
+    public static void moveTasksToCategory(Task task, String fromCategory, String toCategory) {
+        userData.moveTaskToCategory(task, fromCategory, toCategory);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded

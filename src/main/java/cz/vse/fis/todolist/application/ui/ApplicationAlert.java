@@ -38,6 +38,7 @@ public class ApplicationAlert {
     //main window alert messages
     public static final String CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_MESSAGE = "Category with same name already exists";
     public static final String NEW_CATEGORY_SUCCESSFULLY_CREATED_MESSAGE = "New category was successfully created!";
+    public static final String NO_TASK_WAS_SELECTED_TO_MARK_AS_COMPLETED_MESSAGE = "Please select at least one task which will be marked as completed";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";

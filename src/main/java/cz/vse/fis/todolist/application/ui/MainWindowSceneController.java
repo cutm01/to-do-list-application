@@ -22,10 +22,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.w3c.dom.events.MouseEvent;
 
-import java.util.Date;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * MainWindowSceneController class with methods to handle changes in main window od To-Do List application.
@@ -122,6 +119,25 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void markSelectedTasksAsCompleted(ActionEvent actionEvent) {
+        //no task were selected from left panel
+        if (displayedTasks.filtered(Task::isSelected).size() == 0) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.NO_TASK_WAS_SELECTED_TO_MARK_AS_COMPLETED_MESSAGE).showAndWait();
+            return;
+        }
+
+        String fromCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+        String toCategory = "Completed tasks";
+
+        List<Task> tasksToRemoveFromDisplayedTasks = new ArrayList<>();
+        for (Task task : displayedTasks) {
+            if (task.isSelected()) {
+                task.setCompleted(true);
+                App.moveTasksToCategory(task, fromCategory, toCategory);
+                tasksToRemoveFromDisplayedTasks.add(task);
+            }
+        }
+
+        displayedTasks.removeAll(tasksToRemoveFromDisplayedTasks);
     }
 
     /**

@@ -112,6 +112,18 @@ public class UserData {
         return userTaskCategories.get(categoryName).isTaskInCategory(taskID);
     }
 
+    /**
+     * Method to move task to another category
+     *
+     * @param task task instance to move
+     * @param fromCategory category name where task will be moved from
+     * @param  toCategory category name where task will be moved to
+     */
+    public void moveTaskToCategory(Task task, String fromCategory, String toCategory) {
+        addTaskToCategory(task, toCategory);
+        deleteTaskFromCategory(task, fromCategory);
+    }
+
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
