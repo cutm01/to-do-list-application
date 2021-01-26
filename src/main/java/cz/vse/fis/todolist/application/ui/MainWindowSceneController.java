@@ -116,15 +116,6 @@ public class MainWindowSceneController {
     }
 
     /**
-     * Method to mark all tasks which are currently shown in left panel of main window.
-     * User can perform actions with these selected task such as delete them or move to another category
-     *
-     * @param actionEvent
-     */
-    public void markAllCurrentlyDisplayedTasks(ActionEvent actionEvent) {
-    }
-
-    /**
      * Method to mark all selected tasks from left panel of main window as completed.
      * These tasks are moved to category "Completed Tasks"
      *
@@ -214,6 +205,35 @@ public class MainWindowSceneController {
         sortTasksComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedSortingOption, newSelectedSortingOption) -> {
             updateDisplayedTaskAfterNewSortingOptionSelection(newSelectedSortingOption.toString());
         });
+
+        //lister to checkbox to mark or unmark all currently displayed tasks
+        markAllTasksCheckBox.selectedProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(newValue) {
+                markAllCurrentlyDisplayedTasks();
+            } else {
+                unmarkAllCurrentlyDisplayedTasks();
+            }
+        });
+    }
+
+    /**
+     * Method to mark all tasks which are currently shown in left panel of main window.
+     * User can perform actions with these selected task such as delete them or move to another category
+     */
+    private void markAllCurrentlyDisplayedTasks() {
+        for (Task task : displayedTasks) {
+            task.setSelected(true);
+        }
+    }
+
+    /**
+     * Method to unmark all tasks which are currently shown in left panel of main window.
+     * User can perform actions with these selected task such as delete them or move to another category
+     */
+    private void unmarkAllCurrentlyDisplayedTasks() {
+        for (Task task : displayedTasks) {
+            task.setSelected(false);
+        }
     }
 
     private void populateCategoriesComboBox() {
@@ -287,6 +307,9 @@ public class MainWindowSceneController {
         else {
             tasksListView.setItems(displayedTasks);
         }
+
+        unmarkAllCurrentlyDisplayedTasks();
+        markAllTasksCheckBox.setSelected(false);
     }
 
     private void updateDisplayedTaskAfterNewSortingOptionSelection(String selectedSortingOption) {
@@ -302,5 +325,8 @@ public class MainWindowSceneController {
         }
 
         tasksListView.setItems(displayedTasks);
+
+        unmarkAllCurrentlyDisplayedTasks();
+        markAllTasksCheckBox.setSelected(false);
     }
 }
