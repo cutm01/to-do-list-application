@@ -8,13 +8,20 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class UserData {
     //following attributes are written into JSON file containing user data
+    @Expose
     private String firmwareVersion = "1.0.0";
+    @Expose
     private String username;
+    @Expose
     private String password;
+    @Expose
     private String passwordHint;
+    @Expose
     private String avatar;
     //incremented whenever new task is added to ensure unique task IDs
+    @Expose
     private AtomicLong lastTaskID;
+    @Expose
     private Map<String, Category> userTaskCategories = new LinkedHashMap<>();
 
     public UserData(String username, String password, String passwordHint, String avatar, long lastTaskID) {

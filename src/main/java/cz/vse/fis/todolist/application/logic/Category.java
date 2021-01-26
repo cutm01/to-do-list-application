@@ -1,5 +1,7 @@
 package cz.vse.fis.todolist.application.logic;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.*;
 
 /**
@@ -9,7 +11,9 @@ import java.util.*;
  * @version 1.0.0
  */
 public class Category {
+    @Expose
     private String categoryName;
+    @Expose
     private Map<String, Task> categoryTasks; //where key is task's uniqueID
 
     public Category(String categoryName, Map<String, Task> categoryTasks) {

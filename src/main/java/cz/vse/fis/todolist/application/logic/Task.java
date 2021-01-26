@@ -1,15 +1,27 @@
 package cz.vse.fis.todolist.application.logic;
 
+import com.google.gson.annotations.Expose;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.Comparator;
 import java.util.Date;
 
 public class Task {
+    @Expose
     private String taskID;
+    @Expose
     private String name;
+    @Expose
     private String text;
+    @Expose
     private long taskCreationTimestamp;
+    @Expose
     private long taskDeadlineTimestamp;
+    @Expose
     private Boolean completed;
+
+    private final BooleanProperty selected = new SimpleBooleanProperty();
 
     public Task(String taskID, String name, String text, long taskCreationTimestamp, long taskDeadlineTimestamp, Boolean completed) {
         this.taskID = taskID;
@@ -18,6 +30,7 @@ public class Task {
         this.taskCreationTimestamp = taskCreationTimestamp;
         this.taskDeadlineTimestamp = taskDeadlineTimestamp;
         this.completed = completed;
+        setSelected(false);
     }
 
     public String getTaskID() {
@@ -75,5 +88,19 @@ public class Task {
                 ", creation time=" + new Date(taskCreationTimestamp*1000).toString() +
                 ", deadline=" + new Date(taskDeadlineTimestamp*1000).toString() +
                 '}';
+    }
+
+    public final BooleanProperty selectedProperty() {
+        return this.selected;
+    }
+
+
+    public final boolean isSelected() {
+        return this.selectedProperty().get();
+    }
+
+
+    public final void setSelected(final boolean selected) {
+        this.selectedProperty().set(selected);
     }
 }
