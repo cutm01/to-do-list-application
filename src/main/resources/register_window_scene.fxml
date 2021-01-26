@@ -15,29 +15,25 @@
             <HBox styleClass="HBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Username *:" />
-                  <TextField fx:id="usernameTextField" promptText="alphanumeric + 6 - 25 long" styleClass="field"/>
-                  <!-- <Label text="alphanumeric and 6 - 25 characters long" /> -->
+                  <TextField fx:id="usernameTextField" promptText="6-25 characters" styleClass="field"/>
                </children>
             </HBox>
             <HBox styleClass="HBox" layoutX="10.0" layoutY="53.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Password *:" />
-                  <PasswordField fx:id="passwordField" styleClass="field"/>
-                  <!--<Label text="at least 10 characters long" /> -->
+                  <PasswordField fx:id="passwordField" promptText="at least 10 characters" styleClass="field"/>
                </children>
             </HBox>
             <HBox styleClass="HBox" layoutX="10.0" layoutY="104.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Confirm password *:" />
-                  <PasswordField fx:id="confirmPasswordField" styleClass="field"/>
-                  <!--<Label text="please confirm your password" /> -->
+                  <PasswordField fx:id="confirmPasswordField" promptText="confirm your password" styleClass="field"/>
                </children>
             </HBox>
             <HBox styleClass="HBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Password hint:" />
-                  <TextField fx:id="passwordHintTextField" styleClass="field"/>
-                  <!--<Label text="optional, has to be different from password" /> -->
+                  <TextField fx:id="passwordHintTextField" promptText="different from password" styleClass="field"/>
                </children>
             </HBox>
             <HBox id="button_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">

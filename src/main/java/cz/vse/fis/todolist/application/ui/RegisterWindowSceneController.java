@@ -4,6 +4,7 @@ import cz.vse.fis.todolist.application.main.App;
 import javafx.event.ActionEvent;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 /**
  * RegisterWindowSceneController class contains methods to create new user account
