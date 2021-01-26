@@ -4,21 +4,26 @@ import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.SortingOptions;
 import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.main.App;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 import org.w3c.dom.events.MouseEvent;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -231,24 +236,35 @@ public class MainWindowSceneController {
     }
 
     private void populateTasksListView() {
-        tasksListView.setItems(displayedTasks);
-        tasksListView.setCellFactory(param -> new ListCell<Task>() {
+        StringConverter<Task> converter = new StringConverter<Task>() {
             @Override
-            public void updateItem(Task task, boolean empty) {
-                super.updateItem(task, empty);
+            public String toString(Task task) {
+                //get task text which will be displayed in ListView cell,
+                //if task name or text is longer than 25 characters, show just first 25 characters followed by dots
+                String taskName = task.getName().length() > 25 ? task.getName().toUpperCase().substring(0,25).concat("...")
+                                                               : task.getName().toUpperCase();
+                String taskText = task.getText().length() > 25 ? task.getText().substring(0,25).concat("...")
+                                                               : task.getText();
+                String delimiter = "-".repeat(45);
+                String creationTime =  "CREATED: " + new Date(task.getTaskCreationTimestamp()).toString();
+                String deadline = "DEADLINE: " + new Date(task.getTaskDeadlineTimestamp()).toString();
 
-                if (empty || task == null) {
-                    setText(null);
-                    setGraphic(null);
-                }
-                else {
-                    setGraphic(new VBox(new Label(task.getName()),
-                                        new Label("Creation: " + new Date(task.getTaskCreationTimestamp()*1000).toString()),
-                                        new Label("Deadline: " + new Date(task.getTaskDeadlineTimestamp()*1000).toString())));
-                }
+                return taskName + "\n"
+                       + taskText + "\n"
+                       + delimiter + "\n"
+                       + creationTime + "\n"
+                       + deadline + "\n"
+                       + "\n";
             }
-        });
 
+            @Override
+            public Task fromString(String s) {
+                return null;
+            }
+        };
+
+        tasksListView.setCellFactory(CheckBoxListCell.forListView(Task::selectedProperty, converter));
+        tasksListView.setItems(displayedTasks);
         tasksListView.setPlaceholder(new Label("Select one of the categories"));
     }
 
