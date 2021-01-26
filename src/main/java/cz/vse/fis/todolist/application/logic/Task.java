@@ -21,7 +21,15 @@ public class Task {
     @Expose
     private Boolean completed;
 
-    private final BooleanProperty selected = new SimpleBooleanProperty();
+    private BooleanProperty selected;
+
+    /**
+     * Constructor to set default values to attributes which are not present in JSON
+     * during deserialization
+     */
+    public Task() {
+        selected = new SimpleBooleanProperty(false);
+    }
 
     public Task(String taskID, String name, String text, long taskCreationTimestamp, long taskDeadlineTimestamp, Boolean completed) {
         this.taskID = taskID;
