@@ -67,6 +67,7 @@ public class MainWindowSceneController {
     private StringProperty nameOfDisplayedTask;
     private StringProperty categoryOfDisplayedTask;
     private StringProperty deadlineOfDisplayedTask;
+    private BooleanProperty isDisplayedTaskCompleted;
 
     public void init() {
         initTopPanel();
@@ -159,6 +160,7 @@ public class MainWindowSceneController {
                 //and change her category String property if so
                 if (task.getTaskID().equals(uniqueIDOfDisplayedTask.getValue())) {
                     categoryOfDisplayedTask.setValue(toCategory);
+                    isDisplayedTaskCompleted.setValue(true);
                 }
             }
         }
@@ -287,6 +289,18 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void markCurrentlyOpenedTaskAsCompleted(ActionEvent actionEvent) {
+        String fromCategory = categoryOfDisplayedTask.getValue();
+        String toCategory = "Completed tasks";
+
+        Task currentlyOpenedTask = App.getTaskByID(fromCategory, uniqueIDOfDisplayedTask.getValue());
+        currentlyOpenedTask.setCompleted(true);
+        isDisplayedTaskCompleted.setValue(true);
+        App.moveTasksToCategory(currentlyOpenedTask, fromCategory, toCategory);
+
+        categoryOfDisplayedTask.setValue(toCategory);
+
+        //if present, delete currently opened task from left panel list view
+        displayedTasks.remove(currentlyOpenedTask);
     }
 
     /**
@@ -435,10 +449,10 @@ public class MainWindowSceneController {
 
         //no sorting option is currently selected, tasks will be obtained in their insertion order
         if (sortingOption == null) {
-            displayedTasks.setAll(App.getTaskFromCategory(selectedCategoryName, SortingOptions.NONE));
+            displayedTasks.setAll(App.getTasksFromCategory(selectedCategoryName, SortingOptions.NONE));
         }
         else {
-            displayedTasks.setAll(App.getTaskFromCategory(selectedCategoryName, sortingOption));
+            displayedTasks.setAll(App.getTasksFromCategory(selectedCategoryName, sortingOption));
         }
 
         //show placeholder when category is empty
@@ -462,7 +476,7 @@ public class MainWindowSceneController {
             tasksListView.setPlaceholder(new Label("Select one of the categories"));
         }
         else {
-            displayedTasks.setAll(App.getTaskFromCategory(currentlySelectedCategory, selectedSortingOption));
+            displayedTasks.setAll(App.getTasksFromCategory(currentlySelectedCategory, selectedSortingOption));
         }
 
         tasksListView.setItems(displayedTasks);
@@ -477,12 +491,14 @@ public class MainWindowSceneController {
      */
     private void initCenterPanel() {
         Task lastOpenedTask = App.getLastOpenedTask();
+        String lastOpenedTaskCategory = App.getLastOpenedTaskCategory();
 
         //initialize StringProperties of currently displayed task in center panel
         uniqueIDOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getTaskID());
         nameOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getName());
-        categoryOfDisplayedTask = new SimpleStringProperty("");
+        categoryOfDisplayedTask = new SimpleStringProperty(lastOpenedTaskCategory);
         deadlineOfDisplayedTask = new SimpleStringProperty(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+        isDisplayedTaskCompleted = new SimpleBooleanProperty(lastOpenedTask.getCompleted());
 
         //add listener to currently displayed task StringProperties so center panel can be dynamically changed
         uniqueIDOfDisplayedTask.addListener((observableValue, oldID, newID) -> {
@@ -503,7 +519,7 @@ public class MainWindowSceneController {
 
         //initialize center panel
         taskNameLabel.setText(lastOpenedTask.getName());
-        taskCategoryLabel.setText("");
+        taskCategoryLabel.setText(lastOpenedTaskCategory);
         taskCreationDateLabel.setText(new Date(lastOpenedTask.getTaskCreationTimestamp()).toString());
         taskDeadlineDateLabel.setText(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
         taskView.getEngine().loadContent(lastOpenedTask.getText());
@@ -525,6 +541,7 @@ public class MainWindowSceneController {
             taskView.getEngine().loadContent("<p style=\"text-align: center;\">It looks like you deleted the previously displayed task</p>\n"
                                              + "<p style=\"text-align: center;\">Feel free to selected another task from the left panel of the"
                                              + "application or create a completely new one to keep track of your duties :)</p>");
+            isDisplayedTaskCompleted.setValue(true);
         }
         else {
             Task currentlySelectedTask = (Task)tasksListView.getSelectionModel().getSelectedItem();
@@ -534,6 +551,7 @@ public class MainWindowSceneController {
             nameOfDisplayedTask.setValue(currentlySelectedTask.getName());
             categoryOfDisplayedTask.setValue(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
             deadlineOfDisplayedTask.setValue(new Date(currentlySelectedTask.getTaskDeadlineTimestamp()).toString());
+            isDisplayedTaskCompleted.setValue(currentlySelectedTask.getCompleted());
 
             //update rest of elements from center panel
             taskCreationDateLabel.setText(new Date(currentlySelectedTask.getTaskCreationTimestamp()).toString());
@@ -547,7 +565,8 @@ public class MainWindowSceneController {
      * to disable this button when no task is currently selected.
      */
     private void initRightPanel() {
-        markTaskAsCompletedButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+        //markTaskAsCompletedButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+        markTaskAsCompletedButton.disableProperty().bind(isDisplayedTaskCompleted);
         editTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         moveTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         deleteTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));

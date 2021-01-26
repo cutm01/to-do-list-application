@@ -190,6 +190,22 @@ public class UserData {
     }
 
     /**
+     * Method to get category name of last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return String representing category name of last opened task instance
+     */
+    public String getLastOpenedTaskCategory() {
+        String category = "";
+
+        for (Map.Entry<String, String> categoryNameTaskIDEntry : lastOpenedTask.entrySet()) {
+            category = categoryNameTaskIDEntry.getKey();
+        }
+
+        return category;
+    }
+
+    /**
      * Method to obtain task specified by its ID from given category
      *
      * @param categoryName category name which task will be obtained from

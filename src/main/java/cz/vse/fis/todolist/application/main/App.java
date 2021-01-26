@@ -186,7 +186,7 @@ public class App extends Application {
      * @param sortingOption ordering option as specified in SortingOptions class
      * @return List of tasks in order specified by sorting option (e.g. from A->Z, newest->oldest)
      */
-    public static List<Task> getTaskFromCategory(String categoryName, String sortingOption) {
+    public static List<Task> getTasksFromCategory(String categoryName, String sortingOption) {
         return userData.getTasksFromCategory(categoryName, sortingOption);
     }
 
@@ -219,6 +219,27 @@ public class App extends Application {
      */
     public static Task getLastOpenedTask() {
         return userData.getLastOpenedTask();
+    }
+
+    /**
+     * Method to get category name of last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return String representing category name of last opened task instance
+     */
+    public static String getLastOpenedTaskCategory() {
+        return userData.getLastOpenedTaskCategory();
+    }
+
+    /**
+     * Method to get task specified by its ID
+     *
+     * @param categoryName category name which task is placed in
+     * @param taskID unique ID of task we want to obtain
+     * @return Task instance with corresponding task ID
+     */
+    public static Task getTaskByID(String categoryName, String taskID) {
+        return userData.getTaskFromCategory(categoryName, taskID);
     }
 
     /**
