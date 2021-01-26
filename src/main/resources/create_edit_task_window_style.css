@@ -15,12 +15,12 @@
 .label {
     -fx-font-size: 17;
 }
-#new_task {
+#task_label {
     -fx-font-size: 30;
     -fx-font-weight: bold;
     -fx-padding: 0 0 10 0;
 }
-#new_task_box {
+#task_box {
     -fx-background-color: white;
     -fx-padding: 0 10 20 10;
 }
