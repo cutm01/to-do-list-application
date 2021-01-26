@@ -15,7 +15,7 @@ public class ReadUpdateFile {
 
     public static UserData readDataFromJSON(String username)
     {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
         try (Reader reader = new FileReader(USER_DATA_PATH + username + ".json")) {
             //convert JSON File to Java Object
@@ -30,7 +30,7 @@ public class ReadUpdateFile {
 
     public static void writeDataToJSON(UserData userData)
     {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
         try (FileWriter writer = new FileWriter(USER_DATA_PATH + userData.getUsername() + ".json")) {
             gson.toJson(userData, writer);
