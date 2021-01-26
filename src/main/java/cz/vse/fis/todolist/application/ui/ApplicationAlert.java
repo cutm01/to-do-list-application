@@ -1,7 +1,11 @@
 package cz.vse.fis.todolist.application.ui;
 
+import cz.vse.fis.todolist.application.main.App;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -39,9 +43,12 @@ public class ApplicationAlert {
     public static final String CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_MESSAGE = "Category with same name already exists";
     public static final String NEW_CATEGORY_SUCCESSFULLY_CREATED_MESSAGE = "New category was successfully created!";
     public static final String NO_TASK_WAS_SELECTED_TO_MARK_AS_COMPLETED_MESSAGE = "Please select at least one task which will be marked as completed";
+    public static final String NO_TASK_WAS_SELECTED_TO_MOVE_TO_EXISTING_CATEGORY_MESSAGE = "Please select at least one task which will be moved to another existing category";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";
+    private static final String CHOOSE_CATEGORY_DIALOG_TITLE = "Move tasks to existing category";
+    private static final String CHOOSE_CATEGORY_DIALOG_TEXT = "Please choose one category where tasks will be moved to";
 
     /**
      * Method to create alert with AlertType.NONE and custom message to inform user about
@@ -102,6 +109,60 @@ public class ApplicationAlert {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == createButtonType) {
                 return categoryName.getText().trim();
+            }
+            return null;
+        });
+
+        return dialog;
+    }
+
+    /**
+     * Method to create dialog for choosing category where selected tasks will be moved to. User has to choose
+     * one existing category from dropdown list
+     *
+     * @param currentlySelectedCategory category which is currently opened and therefore task(s) can be moved there
+     * @return dialog where user to choose category where selected task will be moved to
+     */
+    public static final Dialog CHOOSE_CATEGORY_TO_MOVE_TASKS_TO_DIALOG(String currentlySelectedCategory) {
+        Dialog<String> dialog = new Dialog<>();
+
+        dialog.setTitle(CHOOSE_CATEGORY_DIALOG_TITLE);
+        dialog.setHeaderText(CHOOSE_CATEGORY_DIALOG_TEXT);
+        dialog.setGraphic(new ImageView(ApplicationAlert.class.getResource(NEW_CATEGORY_DIALOG_ICON).toString()));
+
+        //add buttons
+        ButtonType confirmSelectionButtonType = new ButtonType("Move tasks", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(confirmSelectionButtonType, ButtonType.CANCEL);
+
+        //create grid pane with content
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        ObservableList<String> categories = FXCollections.observableArrayList(App.getCategoriesForAccount());
+        categories.remove(currentlySelectedCategory);
+        ComboBox chooseCategory = new ComboBox(categories);
+        chooseCategory.setPromptText("Categories");
+        grid.add(chooseCategory, 0, 0);
+
+        //disable move tasks button when no category was selected so far
+        Node moveTasksButton = dialog.getDialogPane().lookupButton(confirmSelectionButtonType);
+        moveTasksButton.setDisable(true);
+
+        chooseCategory.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            moveTasksButton.setDisable(observableValue == null);
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        //focus on choose category combo box
+        Platform.runLater(chooseCategory::requestFocus);
+
+        //get the result
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == confirmSelectionButtonType) {
+                return chooseCategory.getSelectionModel().getSelectedItem().toString();
             }
             return null;
         });

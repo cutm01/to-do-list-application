@@ -146,6 +146,27 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void moveSelectedTasksToExistingCategory(ActionEvent actionEvent) {
+        //no task were selected from left panel
+        if (displayedTasks.filtered(Task::isSelected).size() == 0) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.NO_TASK_WAS_SELECTED_TO_MOVE_TO_EXISTING_CATEGORY_MESSAGE).showAndWait();
+            return;
+        }
+
+        String currentlySelectedCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+        ApplicationAlert.CHOOSE_CATEGORY_TO_MOVE_TASKS_TO_DIALOG(currentlySelectedCategory).showAndWait().ifPresent(response -> {
+            String fromCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+            String toCategory = response.toString();
+
+            List<Task> tasksToRemoveFromDisplayedTasks = new ArrayList<>();
+            for (Task task : displayedTasks) {
+                if (task.isSelected()) {
+                    App.moveTasksToCategory(task, fromCategory, toCategory);
+                    tasksToRemoveFromDisplayedTasks.add(task);
+                }
+            }
+
+            displayedTasks.removeAll(tasksToRemoveFromDisplayedTasks);
+        });
     }
 
     /**
