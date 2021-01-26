@@ -177,6 +177,35 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void moveSelectedTasksToNewCategory(ActionEvent actionEvent) {
+        //no task were selected from left panel
+        if (displayedTasks.filtered(Task::isSelected).size() == 0) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.NO_TASK_WAS_SELECTED_TO_MOVE_TO_NEW_CATEGORY_MESSAGE).showAndWait();
+            return;
+        }
+
+        ApplicationAlert.CREATE_CATEGORY_TO_MOVE_TASKS_TO_DIALOG().showAndWait().ifPresent(response -> {
+            String toCategory = response.toString();
+
+            if (App.doesCategoryAlreadyExist(toCategory)) {
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_NO_TASKS_MOVED_MESSAGE).showAndWait();
+            }
+            else {
+                String fromCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+
+                List<Task> tasksToRemoveFromDisplayedTasks = new ArrayList<>();
+                App.createNewCategory(toCategory);
+                categories.add(toCategory);
+                for (Task task : displayedTasks) {
+                    if (task.isSelected()) {
+                        App.moveTasksToCategory(task, fromCategory, toCategory);
+                        tasksToRemoveFromDisplayedTasks.add(task);
+                    }
+                }
+
+                displayedTasks.removeAll(tasksToRemoveFromDisplayedTasks);
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.TASK_SUCCESSFULLY_MOVED_TO_NEWLY_CREATED_CATEGORY_MESSAGE).showAndWait();
+            }
+        });
     }
 
     /**

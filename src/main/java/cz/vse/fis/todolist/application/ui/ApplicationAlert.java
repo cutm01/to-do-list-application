@@ -44,11 +44,16 @@ public class ApplicationAlert {
     public static final String NEW_CATEGORY_SUCCESSFULLY_CREATED_MESSAGE = "New category was successfully created!";
     public static final String NO_TASK_WAS_SELECTED_TO_MARK_AS_COMPLETED_MESSAGE = "Please select at least one task which will be marked as completed";
     public static final String NO_TASK_WAS_SELECTED_TO_MOVE_TO_EXISTING_CATEGORY_MESSAGE = "Please select at least one task which will be moved to another existing category";
+    public static final String NO_TASK_WAS_SELECTED_TO_MOVE_TO_NEW_CATEGORY_MESSAGE = "Please select at least one task which will be moved to new category";
+    public static final String CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_NO_TASKS_MOVED_MESSAGE = "Category with same name already exists. No tasks were moved";
+    public static final String TASK_SUCCESSFULLY_MOVED_TO_NEWLY_CREATED_CATEGORY_MESSAGE = "All selected tasks were successfully moved to newly created category";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";
     private static final String CHOOSE_CATEGORY_DIALOG_TITLE = "Move tasks to existing category";
     private static final String CHOOSE_CATEGORY_DIALOG_TEXT = "Please choose one category where tasks will be moved to";
+    private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_DIALOG_TITLE = "Move tasks to new category";
+    private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_HEADER_TEXT = "Please enter name of the new category where selected tasks will be moved to";
 
     /**
      * Method to create alert with AlertType.NONE and custom message to inform user about
@@ -121,7 +126,7 @@ public class ApplicationAlert {
      * one existing category from dropdown list
      *
      * @param currentlySelectedCategory category which is currently opened and therefore task(s) can be moved there
-     * @return dialog where user to choose category where selected task will be moved to
+     * @return dialog where user has to choose category where selected task will be moved to
      */
     public static final Dialog CHOOSE_CATEGORY_TO_MOVE_TASKS_TO_DIALOG(String currentlySelectedCategory) {
         Dialog<String> dialog = new Dialog<>();
@@ -163,6 +168,59 @@ public class ApplicationAlert {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == confirmSelectionButtonType) {
                 return chooseCategory.getSelectionModel().getSelectedItem().toString();
+            }
+            return null;
+        });
+
+        return dialog;
+    }
+
+    /**
+     * Method to create dialog to provide new category name. This category will be created and all selected tasks will
+     * be moved into it. User has to input name between 1 and 30 characters long containing only alphanumeric characters,
+     * whitespaces or underscores
+     *
+     * @return dialog where user has to input new category name where selected tasks will be moved to
+     */
+    public static final Dialog CREATE_CATEGORY_TO_MOVE_TASKS_TO_DIALOG() {
+        Dialog<String> dialog = new Dialog<>();
+
+        dialog.setTitle(CREATE_NEW_CATEGORY_TO_MOVE_TASKS_DIALOG_TITLE);
+        dialog.setHeaderText(CREATE_NEW_CATEGORY_TO_MOVE_TASKS_HEADER_TEXT);
+        dialog.setGraphic(new ImageView(ApplicationAlert.class.getResource(NEW_CATEGORY_DIALOG_ICON).toString()));
+
+        //add buttons
+        ButtonType createButtonType = new ButtonType("Create category and move tasks", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(createButtonType, ButtonType.CANCEL);
+
+        //create grid pane with content
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField categoryName = new TextField();
+        grid.add(new Label(NEW_CATEGORY_NAME_RESTRICTIONS), 0, 0);
+        grid.add(categoryName, 0,1);
+
+        //disable create button when no input was provided or category name does not meet criteria for length or format
+        Node createButton = dialog.getDialogPane().lookupButton(createButtonType);
+        createButton.setDisable(true);
+
+        categoryName.textProperty().addListener((observable, oldValue, newValue) -> {
+            createButton.setDisable(newValue.trim().isEmpty()
+                                    || !newValue.trim().matches("[a-zA-Z0-9\\s_]{1,30}"));
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        //focus on category name text field
+        Platform.runLater(categoryName::requestFocus);
+
+        //get the result
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == createButtonType) {
+                return categoryName.getText().trim();
             }
             return null;
         });
