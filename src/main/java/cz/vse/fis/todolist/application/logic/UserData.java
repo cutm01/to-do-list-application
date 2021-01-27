@@ -2,23 +2,34 @@ package cz.vse.fis.todolist.application.logic;
 
 import com.google.gson.annotations.Expose;
 import javafx.scene.chart.CategoryAxis;
+import javafx.util.Pair;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class UserData {
     //following attributes are written into JSON file containing user data
+    @Expose
     private String firmwareVersion = "1.0.0";
+    @Expose
     private String username;
+    @Expose
     private String password;
+    @Expose
     private String passwordHint;
+    @Expose
     private String avatar;
-    //incremented whenever new task is added to ensure unique task IDs
-    private AtomicLong lastTaskID;
+    @Expose
+    private AtomicLong lastTaskID;     //incremented whenever new task is added to ensure unique task IDs
+    @Expose
+    private Map<String, String> lastOpenedTask; //<category name, task id>...GUI center panel is initialized with this task
+    @Expose
     private Map<String, Category> userTaskCategories = new LinkedHashMap<>();
+
+    public UserData() {
+        lastOpenedTask = new HashMap<>();
+        lastOpenedTask.put("category1", "1");
+    }
 
     public UserData(String username, String password, String passwordHint, String avatar, long lastTaskID) {
         this.username = username;
@@ -108,6 +119,18 @@ public class UserData {
         return userTaskCategories.get(categoryName).isTaskInCategory(taskID);
     }
 
+    /**
+     * Method to move task to another category
+     *
+     * @param task task instance to move
+     * @param fromCategory category name where task will be moved from
+     * @param  toCategory category name where task will be moved to
+     */
+    public void moveTaskToCategory(Task task, String fromCategory, String toCategory) {
+        addTaskToCategory(task, toCategory);
+        deleteTaskFromCategory(task, fromCategory);
+    }
+
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
@@ -147,6 +170,50 @@ public class UserData {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    /**
+     * Method to get last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return last opened task instance
+     */
+    public Task getLastOpenedTask() {
+        String category = "";
+        String taskID = "";
+        for (Map.Entry<String, String> categoryNameTaskIDEntry : lastOpenedTask.entrySet()) {
+            category = categoryNameTaskIDEntry.getKey();
+            taskID = categoryNameTaskIDEntry.getValue();
+        }
+
+        return getTaskFromCategory(category, taskID);
+    }
+
+    /**
+     * Method to get category name of last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return String representing category name of last opened task instance
+     */
+    public String getLastOpenedTaskCategory() {
+        String category = "";
+
+        for (Map.Entry<String, String> categoryNameTaskIDEntry : lastOpenedTask.entrySet()) {
+            category = categoryNameTaskIDEntry.getKey();
+        }
+
+        return category;
+    }
+
+    /**
+     * Method to obtain task specified by its ID from given category
+     *
+     * @param categoryName category name which task will be obtained from
+     * @param taskID ID of task which will be obtained
+     * @return Task instance
+     */
+    public Task getTaskFromCategory(String categoryName, String taskID) {
+        return userTaskCategories.get(categoryName).getTaskByUniqueID(taskID);
     }
 
     /**
@@ -190,6 +257,55 @@ public class UserData {
      */
     public boolean isPasswordHintSet() {
         return passwordHint != null || passwordHint.equals("");
+    }
+
+    /**
+     * Method to get names of categories which are currently created for account
+     *
+     * @return ArrayList containing names of all user account categories
+     */
+    public List<String> getUserCategoryNames() {
+        return new ArrayList<>(userTaskCategories.keySet());
+    }
+
+    /**
+     * Method to get all tasks from category ordered by one of sorting option which
+     * is specified in SortingOptions class
+     *
+     * @param categoryName name of category which will tasks be obtained from
+     * @param sortingOption ordering option as specified in SortingOptions class
+     * @return List of tasks in order specified by sorting option (e.g. from A->Z, newest->oldest)
+     */
+    public List<Task> getTasksFromCategory(String categoryName, String sortingOption) {
+        List<Task> obtainedTasks = new ArrayList<>();
+
+        switch (sortingOption) {
+            case SortingOptions.BY_NAME_FROM_A_TO_Z:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInAlphabeticalOrder();
+                break;
+            case SortingOptions.BY_NAME_FROM_Z_TO_A:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInUnalphabeticalOrder();
+                break;
+            case SortingOptions.BY_CREATION_TIME_FROM_NEWEST_TO_OLDEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInDescendingCreationDateOrder();
+                break;
+            case SortingOptions.BY_CREATION_TIME_FROM_OLDEST_TO_NEWEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInAscendingCreationDateOrder();
+                break;
+            case SortingOptions.BY_DEADLINE_FROM_EARLIEST_TO_LATEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInAscendingDeadlineDateOrder();
+                break;
+            case SortingOptions.BY_DEADLINE_FROM_LATEST_TO_OLDEST:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasksInDescendingDeadlineDateOrder();
+                break;
+            case SortingOptions.NONE:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasks();
+                break;
+            default:
+                obtainedTasks = userTaskCategories.get(categoryName).getListOfTasks();
+        }
+
+        return obtainedTasks;
     }
 }
 

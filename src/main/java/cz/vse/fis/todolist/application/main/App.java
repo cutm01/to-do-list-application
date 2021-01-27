@@ -2,6 +2,7 @@ package cz.vse.fis.todolist.application.main;
 
 import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.ReadUpdateFile;
+import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.logic.UserData;
 import cz.vse.fis.todolist.application.ui.LoginWindowSceneController;
 import cz.vse.fis.todolist.application.ui.MainWindowSceneController;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -127,6 +129,15 @@ public class App extends Application {
     }
 
     /**
+     * Method to set new Parent element to application main scene
+     *
+     * @param root Parent element to set
+     */
+    public static void setNewMainSceneParentElement(Parent root) {
+        mainScene.setRoot(root);
+    }
+
+    /**
      * Method to check whether account with given username already exists
      *
      * @param username
@@ -140,6 +151,96 @@ public class App extends Application {
         ReadUpdateFile.writeDataToJSON(userData);
     }
 
+    /**
+     * Method to get avatar identifier which is currently set for user account
+     *
+     * @return String representing avatar identifier as defined in Avatar enum
+     */
+    public static String getUserAvatarIdentifier() {
+        return userData.getAvatar();
+    }
+
+    /**
+     * Method to get username for currently logged in account
+     *
+     * @return String representing username of actually logged in account
+     */
+    public static String getUsername() {
+        return userData.getUsername();
+    }
+
+    /**
+     * Method to get names of categories which are currently created for account
+     *
+     * @return ArrayList containing names of all user account categories
+     */
+    public static List<String> getCategoriesForAccount() {
+        return userData.getUserCategoryNames();
+    }
+
+    /**
+     * Method to get all task from category ordered by one of sorting option which
+     * is specified in SortingOptions class
+     *
+     * @param categoryName name of category which will tasks be obtained from
+     * @param sortingOption ordering option as specified in SortingOptions class
+     * @return List of tasks in order specified by sorting option (e.g. from A->Z, newest->oldest)
+     */
+    public static List<Task> getTasksFromCategory(String categoryName, String sortingOption) {
+        return userData.getTasksFromCategory(categoryName, sortingOption);
+    }
+
+    /**
+     * Method to move task to another category
+     *
+     * @param task task instance to move
+     * @param fromCategory category name where task will be moved from
+     * @param  toCategory category name where task will be moved to
+     */
+    public static void moveTasksToCategory(Task task, String fromCategory, String toCategory) {
+        userData.moveTaskToCategory(task, fromCategory, toCategory);
+    }
+
+    /**
+     * Method to delete selected task from category
+     *
+     * @param task task which will be deleted
+     * @param fromCategory category name which task will be deleted from
+     */
+    public static void deleteTaskFromCategory(Task task, String fromCategory) {
+        userData.deleteTaskFromCategory(task, fromCategory);
+    }
+
+    /**
+     * Method to get last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return last opened task instance
+     */
+    public static Task getLastOpenedTask() {
+        return userData.getLastOpenedTask();
+    }
+
+    /**
+     * Method to get category name of last opened tasks before user logged out or closed application. Used to
+     * to set content of center panel in GUI
+     *
+     * @return String representing category name of last opened task instance
+     */
+    public static String getLastOpenedTaskCategory() {
+        return userData.getLastOpenedTaskCategory();
+    }
+
+    /**
+     * Method to get task specified by its ID
+     *
+     * @param categoryName category name which task is placed in
+     * @param taskID unique ID of task we want to obtain
+     * @return Task instance with corresponding task ID
+     */
+    public static Task getTaskByID(String categoryName, String taskID) {
+        return userData.getTaskFromCategory(categoryName, taskID);
+    }
 
     /**
      * Method to load user information stored in JSON file

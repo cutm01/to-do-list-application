@@ -5,16 +5,43 @@
   "passwordHint": "",
   "avatar": "male",
   "lastTaskID": 2,
+  "lastOpenedTask": {
+    "category1": "1"
+  },
   "userTaskCategories": {
     "category1": {
       "categoryName": "category1",
       "categoryTasks": {
         "1": {
           "taskID": "1",
-          "name": "task1",
-          "text": "text1",
-          "taskCreationTimestamp": 646444,
-          "taskDeadlineTimestamp": 55545141,
+          "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "text": "textA textA textA textA textA textA textA textA textA textA textA textA textA textA",
+          "taskCreationTimestamp": 1000,
+          "taskDeadlineTimestamp": 1612137600,
+          "completed": false
+        },
+        "3": {
+          "taskID": "3",
+          "name": "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+          "text": "textB textB textB textB textB textB textB textB textB textB textB textB textB textB textB textB",
+          "taskCreationTimestamp": 2000,
+          "taskDeadlineTimestamp": 1812137600,
+          "completed": false
+        },
+        "4": {
+          "taskID": "4",
+          "name": "DDD",
+          "text": "text D",
+          "taskCreationTimestamp": 3000,
+          "taskDeadlineTimestamp": 1912137600,
+          "completed": false
+        },
+        "5": {
+          "taskID": "5",
+          "name": "CCC",
+          "text": "text C",
+          "taskCreationTimestamp": 4000,
+          "taskDeadlineTimestamp": 1712137600,
           "completed": false
         }
       }
@@ -32,8 +59,12 @@
         }
       }
     },
-    "testing": {
-      "categoryName": "testing",
+    "Completed tasks": {
+      "categoryName": "Completed tasks",
+      "categoryTasks": {}
+    },
+    "testing functionality": {
+      "categoryName": "testing functionality",
       "categoryTasks": {}
     }
   }
