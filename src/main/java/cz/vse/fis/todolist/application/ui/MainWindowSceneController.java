@@ -18,6 +18,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.ImageView;
@@ -27,6 +29,8 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.w3c.dom.events.MouseEvent;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
 import java.util.*;
 
@@ -312,7 +316,8 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void editCurrentlyOpenedTask(ActionEvent actionEvent) {
-        App.activateScene("edit_task");
+        App.setLastOpenedTask(categoryOfDisplayedTask.getValue(), uniqueIDOfDisplayedTask.getValue());
+        initializeEditTaskWindow();
     }
 
     /**
@@ -607,5 +612,24 @@ public class MainWindowSceneController {
         editTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         moveTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         deleteTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+    }
+
+    /**
+     * Method for moving to edit task window of application and its initialization with currently opened task
+     */
+    private void initializeEditTaskWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("edit_task_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            EditTaskWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

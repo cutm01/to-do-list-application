@@ -269,6 +269,18 @@ public class UserData {
     }
 
     /**
+     * Method to set information about last opened task before user logged out, closed application or
+     * moved to another window of application
+     *
+     * @param categoryName category name where last opened task is placed
+     * @param taskID unique ID of last opened task
+     */
+    public void setLastOpenedTask(String categoryName, String taskID) {
+        lastOpenedTask.clear();
+        lastOpenedTask.put(categoryName, taskID);
+    }
+
+    /**
      * Method to get all tasks from category ordered by one of sorting option which
      * is specified in SortingOptions class
      *

@@ -243,6 +243,17 @@ public class App extends Application {
     }
 
     /**
+     * Method to set information about last opened task before user logged out, closed application or
+     * moved to another window of application
+     *
+     * @param categoryName category name where last opened task is placed
+     * @param taskID unique ID of last opened task
+     */
+    public static void setLastOpenedTask(String categoryName, String taskID) {
+        userData.setLastOpenedTask(categoryName, taskID);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded
