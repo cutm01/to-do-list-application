@@ -4,6 +4,7 @@ import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.SortingOptions;
 import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.main.App;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,6 +27,7 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 import org.w3c.dom.events.MouseEvent;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -338,6 +340,27 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void deleteCurrentlyOpenedTask(ActionEvent actionEvent) {
+        ApplicationAlert.CONFIRM_TASKS_DELETION_ALERT().showAndWait().ifPresent(response -> {
+            if (response.getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                String fromCategory = categoryOfDisplayedTask.getValue();
+                Task currentlyOpenedTask = App.getTaskByID(fromCategory, uniqueIDOfDisplayedTask.getValue());
+
+                App.deleteTaskFromCategory(currentlyOpenedTask, fromCategory);
+
+                //if present, delete currently opened task from left panel list view
+                displayedTasks.remove(currentlyOpenedTask);
+
+                //select another task from left panel if not empty, otherwise update center panel with default view
+                if (!displayedTasks.isEmpty()) {
+                    Platform.runLater(() -> {
+                        tasksListView.getSelectionModel().select(0);
+                    });
+                }
+                else {
+                    uniqueIDOfDisplayedTask.setValue("");
+                }
+            }
+        });
     }
 
     /**
@@ -448,6 +471,7 @@ public class MainWindowSceneController {
         tasksListView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedTask, newSelectedTask) -> {
             if (newSelectedTask != null) {
                 uniqueIDOfDisplayedTask.setValue(((Task) newSelectedTask).getTaskID());
+                categoryOfDisplayedTask.setValue(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
             }
         });
 
@@ -550,7 +574,7 @@ public class MainWindowSceneController {
             taskCreationDateLabel.setText("-----");
             taskDeadlineDateLabel.setText("-----");
             taskView.getEngine().loadContent("<p style=\"text-align: center;\">It looks like you deleted the previously displayed task</p>\n"
-                                             + "<p style=\"text-align: center;\">Feel free to selected another task from the left panel of the"
+                                             + "<p style=\"text-align: center;\">Feel free to selected another task from the left panel of the "
                                              + "application or create a completely new one to keep track of your duties :)</p>");
             isDisplayedTaskCompleted.setValue(true);
         }
@@ -567,6 +591,8 @@ public class MainWindowSceneController {
             //update rest of elements from center panel
             taskCreationDateLabel.setText(new Date(currentlySelectedTask.getTaskCreationTimestamp()).toString());
             taskView.getEngine().loadContent(currentlySelectedTask.getText());
+
+            taskCategoryLabel.setText(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
         }
     }
 

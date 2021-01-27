@@ -48,7 +48,7 @@ public class ApplicationAlert {
     public static final String CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_NO_TASKS_MOVED_MESSAGE = "Category with same name already exists. No tasks were moved";
     public static final String TASK_SUCCESSFULLY_MOVED_TO_NEWLY_CREATED_CATEGORY_MESSAGE = "All selected tasks were successfully moved to newly created category";
     public static final String NO_TASK_WAS_SELECTED_TO_DELETE_MESSAGE = "Please select at least one task which will be deleted";
-    public static final String CONFIRM_TASKS_DELETION_ALERT_MESSAGE = "Selected tasks will be definitely deleted. Do you want to continue?";
+    public static final String CONFIRM_TASKS_DELETION_ALERT_MESSAGE = "Selected task(s) will be definitely deleted. Do you want to continue?";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";
@@ -241,7 +241,7 @@ public class ApplicationAlert {
         Alert alert = new Alert(AlertType.NONE);
         alert.getDialogPane().setContent(new Label(CONFIRM_TASKS_DELETION_ALERT_MESSAGE));
 
-        ButtonType confirmButtonType = new ButtonType("Delete selected tasks", ButtonBar.ButtonData.YES);
+        ButtonType confirmButtonType = new ButtonType("Delete selected task(s)", ButtonBar.ButtonData.YES);
         alert.getButtonTypes().add(confirmButtonType);
         alert.getButtonTypes().add(ButtonType.CLOSE);
 
