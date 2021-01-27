@@ -91,7 +91,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showCreateNewTaskWindow(ActionEvent actionEvent) {
-        App.activateScene("create_new_task");
+        initializeCreateTaskWindow();
     }
 
     /**
@@ -631,6 +631,25 @@ public class MainWindowSceneController {
             Parent root = fxmlLoader.load(sceneInputStream);
 
             EditTaskWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method for moving to create task window of application and its initialization
+     */
+    private void initializeCreateTaskWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("create_new_task_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            CreateNewTaskWindowSceneController controller = fxmlLoader.getController();
             controller.init();
 
             App.setNewMainSceneParentElement(root);
