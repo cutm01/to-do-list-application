@@ -131,6 +131,39 @@ public class UserData {
         deleteTaskFromCategory(task, fromCategory);
     }
 
+    /**
+     * Method to rename task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task that will be renamed
+     * @param newName new name of task
+     */
+    public void renameTask(String categoryName, String taskID, String newName) {
+        userTaskCategories.get(categoryName).renameTask(taskID, newName);
+    }
+
+    /**
+     * Method to set new deadline timestamp for task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which deadline timestamp will be changed
+     * @param newDeadlineTimestamp new deadline timestamp
+     */
+    public void changeTaskDeadlineTimestamp(String categoryName, String taskID, long newDeadlineTimestamp) {
+        userTaskCategories.get(categoryName).getTaskByUniqueID(taskID).setTaskDeadlineTimestamp(newDeadlineTimestamp);
+    }
+
+    /**
+     * Method to change task text
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which text will be changed
+     * @param newText new task text
+     */
+    public void changeTaskText(String categoryName, String taskID, String newText) {
+        userTaskCategories.get(categoryName).getTaskByUniqueID(taskID).setText(newText);
+    }
+
     public String getFirmwareVersion() {
         return firmwareVersion;
     }

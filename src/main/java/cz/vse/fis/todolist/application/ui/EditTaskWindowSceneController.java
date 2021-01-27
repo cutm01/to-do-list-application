@@ -21,10 +21,7 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -48,7 +45,7 @@ public class EditTaskWindowSceneController {
     private static final Locale MY_LOCALE = Locale.getDefault(Locale.Category.FORMAT);
     private static final Pattern WHITE_SPACES_ONLY_REGEX = Pattern.compile("\\s*");
     private static final Pattern DEADLINE_TIME_REGEX = Pattern.compile("^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$"); //represents "HH:mm" time format
-    private static final Pattern DEADLINE_DATE_REGEX = Pattern.compile(""); //represent "d. M. yyyy" date format
+
     /**
      * Method to initialize scene elements to correspond with attributes of task which is currently being edited
      */
@@ -77,14 +74,54 @@ public class EditTaskWindowSceneController {
         });
     }
 
-
     /**
      * Method to save changes which was done during editing the task
      *
      * @param actionEvent
      */
     public void saveChanges(ActionEvent actionEvent) {
+        //task instance which is being edited
+        Task lastOpenedTask = App.getLastOpenedTask();
+        String lastOpenedTaskCategory = App.getLastOpenedTaskCategory();
 
+        //decide whether task has been renamed
+        String newName = taskNameTextField.getText();
+        if (!newName.equals(lastOpenedTask.getName())) {
+            App.renameTask(lastOpenedTaskCategory, lastOpenedTask.getTaskID(), newName);
+        }
+
+        //decide whether task deadline has been changed
+        String[] newDeadlineTime = deadlineTimeTextField.getText().split(":"); //hours at index 0, minutes at index 1
+        int newDeadlineHours = Integer.parseInt(newDeadlineTime[0]);
+        int newDeadlineMinutes = Integer.parseInt(newDeadlineTime[1]);
+
+        LocalDateTime newDeadlineLocalDateTime = LocalDateTime.of(deadlineDatePicker.getValue().getYear(),
+                                                                  deadlineDatePicker.getValue().getMonth(),
+                                                                  deadlineDatePicker.getValue().getDayOfMonth(),
+                                                                  newDeadlineHours,
+                                                                  newDeadlineMinutes)
+                                                            .atZone(ZoneId.systemDefault())
+                                                            .toLocalDateTime();
+
+        ZonedDateTime newDeadlineZonedDateTime = newDeadlineLocalDateTime.atZone(ZoneId.systemDefault());
+        long newTaskDeadlineTimestamp = newDeadlineZonedDateTime.toInstant().toEpochMilli();
+
+        if (newTaskDeadlineTimestamp != lastOpenedTask.getTaskDeadlineTimestamp()) {
+            App.changeTaskDeadlineTimestamp(lastOpenedTaskCategory, lastOpenedTask.getTaskID(), newTaskDeadlineTimestamp);
+        }
+
+        //change task text to avoid costly String comparison operation
+        String newText = taskHTMLEditor.getHtmlText();
+        App.changeTaskText(lastOpenedTaskCategory, lastOpenedTask.getTaskID(), newText);
+
+        //decide whether task has been moved to another category
+        String toCategory = chooseCategoryComboBox.getSelectionModel().getSelectedItem().toString();
+        if (!toCategory.equals(lastOpenedTaskCategory)) {
+            App.setLastOpenedTask(toCategory, lastOpenedTask.getTaskID());
+            App.moveTasksToCategory(lastOpenedTask, lastOpenedTaskCategory, toCategory);
+        }
+
+        initializeMainWindow();
     }
 
     /**
@@ -118,7 +155,7 @@ public class EditTaskWindowSceneController {
 
         //set value to correspond with actually set deadline
         deadlineDatePicker.setValue(localDateTime.toLocalDate());
-        deadlineTimeTextField.setText(localDateTime.getHour() + ":" + localDateTime.getMinute());
+        deadlineTimeTextField.setText(String.format("%02d:%02d", localDateTime.getHour(), localDateTime.getMinute()));
 
         //init html editor with task text
         taskHTMLEditor.setHtmlText(lastOpenedTask.getText());

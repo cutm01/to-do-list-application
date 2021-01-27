@@ -254,6 +254,39 @@ public class App extends Application {
     }
 
     /**
+     * Method to rename task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task that will be renamed
+     * @param newName new name of task
+     */
+    public static void renameTask(String categoryName, String taskID, String newName) {
+        userData.renameTask(categoryName, taskID, newName);
+    }
+
+    /**
+     * Method to set new deadline timestamp for task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which deadline timestamp will be changed
+     * @param newDeadlineTimestamp new deadline timestamp
+     */
+    public static void changeTaskDeadlineTimestamp(String categoryName, String taskID, long newDeadlineTimestamp) {
+        userData.changeTaskDeadlineTimestamp(categoryName, taskID, newDeadlineTimestamp);
+    }
+
+    /**
+     * Method to change task text
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which text will be changed
+     * @param newText new task text
+     */
+    public static void changeTaskText(String categoryName, String taskID, String newText) {
+        userData.changeTaskText(categoryName, taskID, newText);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded
