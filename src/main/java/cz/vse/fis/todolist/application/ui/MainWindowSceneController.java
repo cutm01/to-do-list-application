@@ -319,6 +319,17 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void moveCurrentlyOpenedTaskToExistingCategory(ActionEvent actionEvent) {
+        String fromCategory = categoryOfDisplayedTask.getValue();
+        ApplicationAlert.CHOOSE_CATEGORY_TO_MOVE_TASKS_TO_DIALOG(fromCategory).showAndWait().ifPresent(response -> {
+            String toCategory = response.toString();
+            Task currentlyOpenedTask = App.getTaskByID(fromCategory, uniqueIDOfDisplayedTask.getValue());
+
+            App.moveTasksToCategory(currentlyOpenedTask, fromCategory, toCategory);
+            categoryOfDisplayedTask.setValue(toCategory);
+
+            //if present, delete currently opened task from left panel list view
+            displayedTasks.remove(currentlyOpenedTask);
+        });
     }
 
     /**

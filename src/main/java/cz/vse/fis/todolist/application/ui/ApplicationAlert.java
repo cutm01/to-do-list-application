@@ -52,8 +52,8 @@ public class ApplicationAlert {
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";
-    private static final String CHOOSE_CATEGORY_DIALOG_TITLE = "Move tasks to existing category";
-    private static final String CHOOSE_CATEGORY_DIALOG_TEXT = "Please choose one category where tasks will be moved to";
+    private static final String CHOOSE_CATEGORY_DIALOG_TITLE = "Move task(s) to existing category";
+    private static final String CHOOSE_CATEGORY_DIALOG_TEXT = "Please choose one category where task(s) will be moved to";
     private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_DIALOG_TITLE = "Move tasks to new category";
     private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_HEADER_TEXT = "Please enter name of the new category where selected tasks will be moved to";
 
@@ -138,7 +138,7 @@ public class ApplicationAlert {
         dialog.setGraphic(new ImageView(ApplicationAlert.class.getResource(NEW_CATEGORY_DIALOG_ICON).toString()));
 
         //add buttons
-        ButtonType confirmSelectionButtonType = new ButtonType("Move tasks", ButtonBar.ButtonData.OK_DONE);
+        ButtonType confirmSelectionButtonType = new ButtonType("Move task(s)", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(confirmSelectionButtonType, ButtonType.CANCEL);
 
         //create grid pane with content
@@ -149,6 +149,7 @@ public class ApplicationAlert {
 
         ObservableList<String> categories = FXCollections.observableArrayList(App.getCategoriesForAccount());
         categories.remove(currentlySelectedCategory);
+        categories.remove("Completed tasks");
         ComboBox chooseCategory = new ComboBox(categories);
         chooseCategory.setPromptText("Categories");
         grid.add(chooseCategory, 0, 0);
