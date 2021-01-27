@@ -32,6 +32,9 @@ import org.w3c.dom.events.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -532,12 +535,14 @@ public class MainWindowSceneController {
     private void initCenterPanel() {
         Task lastOpenedTask = App.getLastOpenedTask();
         String lastOpenedTaskCategory = App.getLastOpenedTaskCategory();
+        LocalDateTime creationLocalDateTime = Instant.ofEpochMilli(lastOpenedTask.getTaskCreationTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime deadlineLocalDateTime = Instant.ofEpochMilli(lastOpenedTask.getTaskDeadlineTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         //initialize StringProperties of currently displayed task in center panel
         uniqueIDOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getTaskID());
         nameOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getName());
         categoryOfDisplayedTask = new SimpleStringProperty(lastOpenedTaskCategory);
-        deadlineOfDisplayedTask = new SimpleStringProperty(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+        deadlineOfDisplayedTask = new SimpleStringProperty(deadlineLocalDateTime.toLocalDate().toString()  + " " + deadlineLocalDateTime.toLocalTime().toString());
         isDisplayedTaskCompleted = new SimpleBooleanProperty(lastOpenedTask.getCompleted());
 
         //add listener to currently displayed task StringProperties so center panel can be dynamically changed
@@ -560,8 +565,8 @@ public class MainWindowSceneController {
         //initialize center panel
         taskNameLabel.setText(lastOpenedTask.getName());
         taskCategoryLabel.setText(lastOpenedTaskCategory);
-        taskCreationDateLabel.setText(new Date(lastOpenedTask.getTaskCreationTimestamp()).toString());
-        taskDeadlineDateLabel.setText(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+        taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().toString());
+        taskDeadlineDateLabel.setText(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().toString());
         taskView.getEngine().loadContent(lastOpenedTask.getText());
     }
 
@@ -587,14 +592,17 @@ public class MainWindowSceneController {
             Task currentlySelectedTask = (Task)tasksListView.getSelectionModel().getSelectedItem();
 
             //update values of StringProperty attributes so changes can be made automatically
+            LocalDateTime deadlineLocalDateTime = Instant.ofEpochMilli(currentlySelectedTask.getTaskDeadlineTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime creationLocalDateTime = Instant.ofEpochMilli(currentlySelectedTask.getTaskCreationTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+
             uniqueIDOfDisplayedTask.setValue(currentlySelectedTask.getTaskID());
             nameOfDisplayedTask.setValue(currentlySelectedTask.getName());
             categoryOfDisplayedTask.setValue(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
-            deadlineOfDisplayedTask.setValue(new Date(currentlySelectedTask.getTaskDeadlineTimestamp()).toString());
+            deadlineOfDisplayedTask.setValue(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().toString());
             isDisplayedTaskCompleted.setValue(currentlySelectedTask.getCompleted());
 
             //update rest of elements from center panel
-            taskCreationDateLabel.setText(new Date(currentlySelectedTask.getTaskCreationTimestamp()).toString());
+            taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().toString());
             taskView.getEngine().loadContent(currentlySelectedTask.getText());
 
             taskCategoryLabel.setText(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
@@ -607,7 +615,6 @@ public class MainWindowSceneController {
      * to disable this button when no task is currently selected.
      */
     private void initRightPanel() {
-        //markTaskAsCompletedButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         markTaskAsCompletedButton.disableProperty().bind(isDisplayedTaskCompleted);
         editTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         moveTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
