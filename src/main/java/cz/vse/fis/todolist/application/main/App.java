@@ -48,6 +48,7 @@ public class App extends Application {
         mainScene = new Scene(applicationScenes.get("login"));
         stage.setScene(mainScene);
         stage.setTitle("To-Do List");
+        stage.setResizable(false);
 
         stage.show();
     }
