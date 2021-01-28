@@ -21,13 +21,17 @@ public class Category {
         this.categoryTasks = categoryTasks == null? new LinkedHashMap<>() : categoryTasks;
     }
 
-    //Getters
+    //Getters and setters
     public String getCategoryName() {
         return categoryName;
     }
 
     public Map<String, Task> getCategoryTasks() {
         return categoryTasks;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     //Class methods

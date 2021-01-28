@@ -321,6 +321,16 @@ public class App extends Application {
     }
 
     /**
+     * Method to change name of category
+     *
+     * @param oldCategoryName name of category which name will be changed
+     * @param newCategoryName new category name
+     */
+    public static void renameCategory(String oldCategoryName, String newCategoryName) {
+        userData.renameCategory(oldCategoryName, newCategoryName);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded

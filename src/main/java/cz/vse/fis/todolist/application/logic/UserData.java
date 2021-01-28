@@ -342,6 +342,20 @@ public class UserData {
     }
 
     /**
+     * Method to change name of category
+     *
+     * @param oldCategoryName name of category which name will be changed
+     * @param newCategoryName new category name
+     */
+    public void renameCategory(String oldCategoryName, String newCategoryName) {
+        Category categoryToRename = userTaskCategories.get(oldCategoryName);
+        categoryToRename.setCategoryName(newCategoryName);
+
+        userTaskCategories.remove(oldCategoryName);
+        userTaskCategories.put(newCategoryName, categoryToRename);
+    }
+
+    /**
      * Method to get all tasks from category ordered by one of sorting option which
      * is specified in SortingOptions class
      *
