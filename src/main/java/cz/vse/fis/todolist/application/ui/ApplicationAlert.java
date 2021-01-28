@@ -49,6 +49,8 @@ public class ApplicationAlert {
     public static final String TASK_SUCCESSFULLY_MOVED_TO_NEWLY_CREATED_CATEGORY_MESSAGE = "All selected tasks were successfully moved to newly created category";
     public static final String NO_TASK_WAS_SELECTED_TO_DELETE_MESSAGE = "Please select at least one task which will be deleted";
     public static final String CATEGORY_NAME_SUCCESSFULLY_CHANGED_MESSAGE = "Category name was successfully changed";
+    public static final String COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_RENAMED_MESSAGE = "Category with completed tasks can not be renamed";
+    public static final String COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_DELETED_MESSAGE = "Category with completed tasks can not be deleted";
     private static final String CONFIRM_TASKS_DELETION_ALERT_MESSAGE = "Selected task(s) will be definitely deleted. Do you want to continue?";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
@@ -60,6 +62,7 @@ public class ApplicationAlert {
     private static final String CONFIRM_MOVING_BACK_WITHOUT_SAVING_CHANGES_MESSAGE = "All made changes will be lost. Do you want you to continue?";
     private static final String RENAME_CATEGORY_DIALOG_TITLE = "Rename category";
     private static final String RENAME_CATEGORY_HEADER_TEXT = "Please enter new name of the category";
+    private static final String CONFIRM_CATEGORY_DELETION_ALERT_MESSAGE = "Selected category and tasks in it will be definitely deleted. Do you want to continue?";
     //create new task window alert messages
     public static final String DEADLINE_IS_SOONER_THAN_ACTUAL_TIME = "Selected deadline is sooner than the actual time. Please adjust your selection";
 
@@ -238,8 +241,8 @@ public class ApplicationAlert {
     }
 
     /**
-     * Method to create alert to inform user that selected tasks are about to delete. User has to confirm
-     * that he wants to delete selected, otherwise no action will be performed
+     * Method to create alert to inform user that selected tasks are about to be deleted. User has to confirm
+     * that he wants to delete selected tasks, otherwise no action will be performed
      *
      * @return alert where user has to confirm that he want to delete all selected tasks
      */
@@ -334,5 +337,22 @@ public class ApplicationAlert {
         });
 
         return dialog;
+    }
+
+    /**
+     * Method to create alert to inform user that selected category is about to be deleted. User has to confirm
+     * that he wants to delete selected category, otherwise no action will be performed
+     *
+     * @return alert where user has to confirm that he want to delete category with all tasks in it
+     */
+    public static final Alert CONFIRM_CATEGORY_DELETION_ALERT() {
+        Alert alert = new Alert(AlertType.NONE);
+        alert.getDialogPane().setContent(new Label(CONFIRM_CATEGORY_DELETION_ALERT_MESSAGE));
+
+        ButtonType confirmButtonType = new ButtonType("Delete selected category with all its tasks", ButtonBar.ButtonData.YES);
+        alert.getButtonTypes().add(confirmButtonType);
+        alert.getButtonTypes().add(ButtonType.CLOSE);
+
+        return alert;
     }
 }

@@ -392,7 +392,21 @@ public class MainWindowSceneController {
 
         //listener to change displayed tasks according to user selection of category and sorting option
         categoriesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedCategory, newSelectedCategory) -> {
-            updateDisplayedTaskAfterNewCategorySelection(newSelectedCategory.toString());
+            if (newSelectedCategory == null) {
+                if (!categories.isEmpty()) {
+                    categoriesComboBox.getSelectionModel().select(0);
+                    String selectedCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+                    updateDisplayedTaskAfterNewCategorySelection(selectedCategory);
+                }
+                else {
+                    Platform.runLater(() -> {
+                        categoriesComboBox.getSelectionModel().clearSelection();
+                    });
+                }
+            }
+            else {
+                updateDisplayedTaskAfterNewCategorySelection(newSelectedCategory.toString());
+            }
         });
         sortTasksComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedSortingOption, newSelectedSortingOption) -> {
             updateDisplayedTaskAfterNewSortingOptionSelection(newSelectedSortingOption.toString());
@@ -728,6 +742,11 @@ public class MainWindowSceneController {
      * @param oldCategoryName name of category which name will be changed
      */
     private void renameCategory(String oldCategoryName) {
+        if (oldCategoryName.equals("Completed tasks")) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_RENAMED_MESSAGE).showAndWait();
+            return;
+        }
+
         ApplicationAlert.RENAME_CATEGORY_DIALOG(oldCategoryName).showAndWait().ifPresent(response -> {
             if (App.doesCategoryAlreadyExist(response.toString())) {
                 ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_MESSAGE).showAndWait();
@@ -736,7 +755,6 @@ public class MainWindowSceneController {
                 String newCategoryName = response.toString();
 
                 //change category name in combo box in left panel
-
                 categories.set(categories.indexOf(oldCategoryName),
                                newCategoryName);
 
@@ -757,6 +775,29 @@ public class MainWindowSceneController {
      * @param categoryName name of category which name will be changed
      */
     private void deleteCategory(String categoryName) {
+        if (categoryName.equals("Completed tasks")) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_DELETED_MESSAGE).showAndWait();
+            return;
+        }
 
+        ApplicationAlert.CONFIRM_CATEGORY_DELETION_ALERT().showAndWait().ifPresent(response -> {
+            if (response.getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                App.deleteCategory(categoryName);
+
+                //check whether currently opened task is not in category which is being deleted
+                if (categoryOfDisplayedTask.get().equals(categoryName)) {
+                    uniqueIDOfDisplayedTask.setValue("");
+                }
+
+                //remove category from observable list
+                categories.remove(categoryName);
+
+                //remove displayed tasks if currently selected category is being deleted
+                if (categoriesComboBox.getSelectionModel().getSelectedItem() != null
+                    && categoriesComboBox.getSelectionModel().getSelectedItem().toString().equals(categoryName)) {
+                    displayedTasks.removeAll();
+                }
+            }
+        });
     }
 }

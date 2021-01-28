@@ -331,6 +331,15 @@ public class App extends Application {
     }
 
     /**
+     * Method to remove category. All tasks currently placed in this category will be also deleted
+     *
+     * @param categoryName name of category which will be deleted together with all its tasks
+     */
+    public static void deleteCategory(String categoryName) {
+        userData.deleteTaskCategory(categoryName);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded
