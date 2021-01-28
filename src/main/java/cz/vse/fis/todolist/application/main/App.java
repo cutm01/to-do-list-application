@@ -287,6 +287,40 @@ public class App extends Application {
     }
 
     /**
+     * Method to get unique ID for newly created task
+     *
+     * @return String representing unique ID for newly created task
+     */
+    public static String getUniqueIDForNewTask() {
+        return userData.createTaskUniqueID();
+    }
+
+    /**
+     * Method to create new task and save it to specified category
+     *
+     * @param taskCategory category name where task will be placed into
+     * @param taskName String representing task name
+     * @param taskText String representing task text
+     * @param taskCreationTimestamp long representing milliseconds since epoch
+     * @param taskDeadlineTimestamp long representing milliseconds since epoch
+     * @param isTaskCompleted true if task is completed, false otherwise
+     * @return instance of newly created task
+     */
+    public static Task createNewTask(String taskCategory,
+                                     String taskName,
+                                     String taskText,
+                                     long taskCreationTimestamp,
+                                     long taskDeadlineTimestamp,
+                                     boolean isTaskCompleted) {
+        return userData.createNewTask(taskCategory,
+                                      taskName,
+                                      taskText,
+                                      taskCreationTimestamp,
+                                      taskDeadlineTimestamp,
+                                      isTaskCompleted);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded

@@ -164,6 +164,34 @@ public class UserData {
         userTaskCategories.get(categoryName).getTaskByUniqueID(taskID).setText(newText);
     }
 
+    /**
+     * Method to create new task and save it to specified category
+     *
+     * @param taskCategory category name where task will be placed into
+     * @param taskName String representing task name
+     * @param taskText String representing task text
+     * @param taskCreationTimestamp long representing milliseconds since epoch
+     * @param taskDeadlineTimestamp long representing milliseconds since epoch
+     * @param isTaskCompleted true if task is completed, false otherwise
+     * @return instance of newly created task
+     */
+    public Task createNewTask(String taskCategory,
+                              String taskName,
+                              String taskText,
+                              long taskCreationTimestamp,
+                              long taskDeadlineTimestamp,
+                              boolean isTaskCompleted) {
+        Task createdTask = new Task(createTaskUniqueID(),
+                                    taskName,
+                                    taskText,
+                                    taskCreationTimestamp,
+                                    taskDeadlineTimestamp,
+                                    isTaskCompleted);
+        userTaskCategories.get(taskCategory).addTask(createdTask);
+
+        return createdTask;
+    }
+
     public String getFirmwareVersion() {
         return firmwareVersion;
     }

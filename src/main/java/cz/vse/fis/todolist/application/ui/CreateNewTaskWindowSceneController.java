@@ -1,5 +1,6 @@
 package cz.vse.fis.todolist.application.ui;
 
+import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.main.App;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
@@ -19,6 +20,7 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -85,6 +87,36 @@ public class CreateNewTaskWindowSceneController {
      * @param actionEvent
      */
     public void createNewTask(ActionEvent actionEvent) {
+        String[] deadlineTime = deadlineTimeTextField.getText().split(":"); //hours at index 0, minutes at index 1
+        int deadlineHours = Integer.parseInt(deadlineTime[0]);
+        int deadlineMinutes = Integer.parseInt(deadlineTime[1]);
+
+        LocalDateTime deadlineLocalDateTime = LocalDateTime.of(deadlineDatePicker.getValue().getYear(),
+                                                                  deadlineDatePicker.getValue().getMonth(),
+                                                                  deadlineDatePicker.getValue().getDayOfMonth(),
+                                                                  deadlineHours,
+                                                                  deadlineMinutes)
+                                                                .atZone(ZoneId.systemDefault())
+                                                                .toLocalDateTime();
+        ZonedDateTime newDeadlineZonedDateTime = deadlineLocalDateTime.atZone(ZoneId.systemDefault());
+        long taskDeadlineTimestamp = newDeadlineZonedDateTime.toInstant().toEpochMilli();
+
+        if (taskDeadlineTimestamp < System.currentTimeMillis()) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.DEADLINE_IS_SOONER_THAN_ACTUAL_TIME).showAndWait();
+        }
+        else {
+            String taskCategory = chooseCategoryComboBox.getSelectionModel().getSelectedItem().toString();
+
+            Task createdTask = App.createNewTask(taskCategory,
+                                                taskNameTextField.getText(),       //task name
+                                                newTaskHTMLEditor.getHtmlText(),    //task text
+                                                System.currentTimeMillis(),         //task creation timestamp
+                                                taskDeadlineTimestamp,              //task deadline timestamp
+                                                false);                            //task completed attribute
+
+            App.setLastOpenedTask(taskCategory, createdTask.getTaskID());
+            initializeMainWindow();
+        }
     }
 
     /**

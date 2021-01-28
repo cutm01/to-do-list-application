@@ -57,6 +57,8 @@ public class ApplicationAlert {
     private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_DIALOG_TITLE = "Move tasks to new category";
     private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_HEADER_TEXT = "Please enter name of the new category where selected tasks will be moved to";
     private static final String CONFIRM_MOVING_BACK_WITHOUT_SAVING_CHANGES_MESSAGE = "All made changes will be lost. Do you want you to continue?";
+    //create new task window alert messages
+    public static final String DEADLINE_IS_SOONER_THAN_ACTUAL_TIME = "Selected deadline is sooner than the actual time. Please adjust your selection";
 
     /**
      * Method to create alert with AlertType.NONE and custom message to inform user about
