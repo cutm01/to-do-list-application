@@ -737,6 +737,44 @@ public class MainWindowSceneController {
     }
 
     /**
+     * Method for moving to manual window of application and its initialization
+     */
+    private void initializeManualWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("manual_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            ManualWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method for moving to settings window of application and its initialization
+     */
+    private void initializeSettingsWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("settings_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            SettingsWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Method to rename category
      *
      * @param oldCategoryName name of category which name will be changed
