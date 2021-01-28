@@ -125,7 +125,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showManualWindow(ActionEvent actionEvent) {
-        App.activateScene("manual");
+        initializeManualWindow();
     }
 
     /**
@@ -134,7 +134,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showSettingsWindow(ActionEvent actionEvent) {
-        App.activateScene("settings");
+        initializeSettingsWindow();
     }
 
     /**
