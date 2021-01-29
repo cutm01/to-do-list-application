@@ -15,9 +15,9 @@
       </HBox>
    </top>
    <left>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="300.0" BorderPane.alignment="CENTER">
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="400.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="settingsMenuListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="300.0" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="settingsMenuListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="400.0" VBox.vgrow="ALWAYS" />
          </children>
       </VBox>
    </left>

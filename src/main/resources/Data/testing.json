@@ -4,9 +4,9 @@
   "password": "testing123",
   "passwordHint": "",
   "avatar": "male",
-  "lastTaskID": 6,
+  "lastTaskID": 7,
   "lastOpenedTask": {
-    "Default category": "-1"
+    "DELETE ME": "6"
   },
   "userTaskCategories": {
     "Completed tasks": {
@@ -75,6 +75,19 @@
     "RENAME ME": {
       "categoryName": "RENAME ME",
       "categoryTasks": {}
+    },
+    "SAMPLE": {
+      "categoryName": "SAMPLE",
+      "categoryTasks": {
+        "7": {
+          "taskID": "7",
+          "name": "Sample task",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003esample task\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611937866093,
+          "taskDeadlineTimestamp": 1611941400000,
+          "completed": false
+        }
+      }
     }
   }
 }
