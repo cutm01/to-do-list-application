@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.*?>
 
-<BorderPane fx:id="rootBorderPane" prefHeight="803.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.MainWindowSceneController">
+<BorderPane stylesheets="main_window_style.css" fx:id="rootBorderPane" prefHeight="803.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.MainWindowSceneController">
    <top>
       <HBox fx:id="topPanel" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" BorderPane.alignment="CENTER">
          <children>
