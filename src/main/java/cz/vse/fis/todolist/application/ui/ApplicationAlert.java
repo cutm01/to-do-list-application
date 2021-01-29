@@ -64,7 +64,14 @@ public class ApplicationAlert {
     private static final String RENAME_CATEGORY_HEADER_TEXT = "Please enter new name of the category";
     private static final String CONFIRM_CATEGORY_DELETION_ALERT_MESSAGE = "Selected category and tasks in it will be definitely deleted. Do you want to continue?";
     //create new task window alert messages
-    public static final String DEADLINE_IS_SOONER_THAN_ACTUAL_TIME = "Selected deadline is sooner than the actual time. Please adjust your selection";
+    public static final String DEADLINE_IS_SOONER_THAN_ACTUAL_TIME_MESSAGE = "Selected deadline is sooner than the actual time. Please adjust your selection";
+    //settings window alert messages
+    public static final String PROVIDED_PASSWORD_IS_INCORRECT_MESSAGE = "You entered wrong password. Please, try again";
+    public static final String PASSWORD_SUCCESSFULLY_CHANGED_MESSAGE = "New password was successfully set";
+    public static final String PASSWORD_HINTS_DO_NOT_MATCH_MESSAGE = "Entered password hints has to be same";
+    public static final String NEW_PASSWORD_HINT_SUCCESSFULLY_CHANGED_MESSAGE = "New password hint was successfully set";
+    public static final String AVATAR_CHANGE_SUCCESS_MESSAGE = "New avatar was successfully changed";
+    public static final String ACCOUNT_WAS_SUCCESSFULLY_DELETED_MESSAGE = "Account was successfully deleted";
 
     /**
      * Method to create alert with AlertType.NONE and custom message to inform user about

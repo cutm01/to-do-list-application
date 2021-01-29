@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.*?>
 
-<BorderPane fx:id="rootBorderPane" prefHeight="803.0" prefWidth="1004.0" stylesheets="main_window_style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.MainWindowSceneController">
+<BorderPane fx:id="rootBorderPane" prefHeight="803.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.MainWindowSceneController">
    <top>
-      <HBox fx:id="topPanel" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" stylesheets="@main_window_style.css" BorderPane.alignment="CENTER">
+      <HBox fx:id="topPanel" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="avatarImageView" fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="usernameLabel" text="Username" />
@@ -21,7 +21,7 @@
       </HBox>
    </top>
    <left>
-      <VBox fx:id="leftPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="250.0" stylesheets="@main_window_style.css" BorderPane.alignment="CENTER">
+      <VBox fx:id="leftPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="250.0" BorderPane.alignment="CENTER">
          <children>
             <ComboBox fx:id="categoriesComboBox" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
             <ComboBox fx:id="sortTasksComboBox" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
@@ -38,7 +38,7 @@
       </VBox>
    </left>
    <right>
-      <VBox fx:id="rightPanel" maxHeight="1.7976931348623157E308" prefHeight="570.0" prefWidth="78.0" stylesheets="@main_window_style.css" BorderPane.alignment="CENTER">
+      <VBox fx:id="rightPanel" maxHeight="1.7976931348623157E308" prefHeight="570.0" prefWidth="78.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="markTaskAsCompletedButton" mnemonicParsing="false" onAction="#markCurrentlyOpenedTaskAsCompleted" />
             <Button fx:id="editTaskButton" mnemonicParsing="false" onAction="#editCurrentlyOpenedTask" />
@@ -47,7 +47,7 @@
          </children></VBox>
    </right>
    <center>
-      <VBox fx:id="centerPanel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@main_window_style.css" BorderPane.alignment="TOP_CENTER">
+      <VBox fx:id="centerPanel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_CENTER">
          <children>
             <HBox id="taskNameHBox" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>

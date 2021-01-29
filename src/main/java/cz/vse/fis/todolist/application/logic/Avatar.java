@@ -33,4 +33,9 @@ public enum Avatar {
     public static Image getImageForAvatar(String avatarIdentifier) {
         return AVATAR_IMAGES.get(avatarIdentifier);
     }
+
+    @Override
+    public String toString() {
+        return avatarIdentifier;
+    }
 }

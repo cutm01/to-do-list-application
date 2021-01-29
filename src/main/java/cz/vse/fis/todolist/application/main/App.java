@@ -48,6 +48,7 @@ public class App extends Application {
         mainScene = new Scene(applicationScenes.get("login"));
         stage.setScene(mainScene);
         stage.setTitle("To-Do List");
+        stage.setResizable(false);
 
         stage.show();
     }
@@ -88,6 +89,15 @@ public class App extends Application {
     }
 
     /**
+     * Method to set new avatar for currently logged in user
+     *
+     * @param newAvatarIdentifier new avatar identifier as specified in Avatar enum
+     */
+    public static void changeAvatar(String newAvatarIdentifier) {
+        userData.setAvatar(newAvatarIdentifier);
+    }
+
+    /**
      * Method to validate login credentials provided by user
      *
      * @param username username input from GUI
@@ -97,6 +107,17 @@ public class App extends Application {
     public static boolean validateLoginCredentials(String username, String password) {
         userData = loadUserData(username);
         return userData != null && userData.areLoginCredentialsValid(username, password);
+    }
+
+    /**
+     * Method to decide whether male avatar is currently set or not. This value is used to set
+     * default value of radio buttons in settings window where user can choose either male or
+     * female version of avatar
+     *
+     * @return true if male avatar is currently set, false otherwise
+     */
+    public static boolean isMaleAvatarCurrentlySet() {
+        return userData.getAvatar().equals(Avatar.MALE.toString());
     }
 
     /**
@@ -138,6 +159,15 @@ public class App extends Application {
      */
     public static void setNewMainSceneParentElement(Parent root) {
         mainScene.setRoot(root);
+    }
+
+    /**
+     * Method to change password hint for currently logged in user
+     *
+     * @param newPasswordHint String representing new password hint which will be set for currently logged in account
+     */
+    public static void changePasswordHint(String newPasswordHint) {
+        userData.setPasswordHint(newPasswordHint);
     }
 
     /**
@@ -279,6 +309,15 @@ public class App extends Application {
     }
 
     /**
+     * Method to set password for currently logged in user
+     *
+     * @param newPassword new password to set
+     */
+    public static void changePassword(String newPassword) {
+        userData.setPassword(newPassword);
+    }
+
+    /**
      * Method to change task text
      *
      * @param categoryName name of category where task is currently placed
@@ -287,6 +326,15 @@ public class App extends Application {
      */
     public static void changeTaskText(String categoryName, String taskID, String newText) {
         userData.changeTaskText(categoryName, taskID, newText);
+    }
+
+    /**
+     * Method to get password for currently logged in user
+     *
+     * @return String representing password of currently logged in user
+     */
+    public static String getPasswordForCurrentlyLogedInUser() {
+        return userData.getPassword();
     }
 
     /**

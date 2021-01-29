@@ -30,7 +30,7 @@ class ReadUpdateFileTest {
             userData.addTaskToCategory(task, "Category");
         }
     }
-    
+
     @Test
     @DisplayName("test uniqueness of created task IDs")
     void uniqueTaskIDs() {
@@ -53,6 +53,4 @@ class ReadUpdateFileTest {
 
         assertEquals(expectedDate, actualDate);
     }
-
-
 }
