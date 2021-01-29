@@ -57,8 +57,10 @@ public class App extends Application {
     public void stop() {
         //set last opened task index to -1 and therefore "No task is currently selected" view will be displayed next time
         //category name does not play any specific role later while initializing application next time
-        setLastOpenedTask("Default category", "-1");
-        savePerformedChanges();
+        if(userData != null) {
+            setLastOpenedTask("Default category", "-1");
+            savePerformedChanges();
+        }
     }
 
     /**
