@@ -7,6 +7,16 @@ import javafx.util.Pair;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * This class represents user data and contains methods for editing user data in UserData instance.
+ *
+ * This class also has two constructors. One for creating instance with default data for new user and second for
+ * creating instance with user data loaded from already existing JSON file.
+ *
+ * @author  Petr Cafourek
+ * @version 1.0
+ * @since   2021-28-01
+ */
 public class UserData {
     //following attributes are written into JSON file containing user data
     @Expose
@@ -31,6 +41,15 @@ public class UserData {
         lastOpenedTask.put("category1", "1");
     }
 
+    /**
+     * Constructor for creating instance with default data for new user
+     *
+     * @param  username  users unique username which is used for naming JSON file
+     * @param  password  hash with users password
+     * @param  passwordHint  users password hint for recovering password
+     * @param  avatar  users chosen avatar type
+     * @param lastTaskID unique ID of last created task
+     */
     public UserData(String username, String password, String passwordHint, String avatar, long lastTaskID) {
         this.username = username;
         this.password = password;
@@ -40,7 +59,7 @@ public class UserData {
     }
 
     /**
-     * Method for creating new instance of UserData filled with data obtained from JSON file
+     * Constructor for creating new instance of UserData filled with data obtained from JSON file
      *
      * @param username name of the JSON file which be will be data obtained from
      */
@@ -192,10 +211,10 @@ public class UserData {
         return createdTask;
     }
 
+    //getters and setters
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
-
 
     public void setFirmwareVersion(String firmwareVersion) {
         this.firmwareVersion = firmwareVersion;

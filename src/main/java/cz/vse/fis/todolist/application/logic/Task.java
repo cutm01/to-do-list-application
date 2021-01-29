@@ -7,6 +7,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 import java.util.Comparator;
 import java.util.Date;
 
+/**
+ * This class represents user task and contains methods for editing task in Task instance.
+ *
+ * @author  Petr Cafourek
+ * @version 1.0
+ * @since   2021-28-01
+ */
 public class Task {
     @Expose
     private String taskID;
@@ -31,6 +38,16 @@ public class Task {
         selected = new SimpleBooleanProperty(false);
     }
 
+    /**
+     * Constructor for creating instance of new task
+     *
+     * @param  taskID  task ID used for internal reference
+     * @param  name  name created by user displayed as name in gui
+     * @param  text  main text written by user
+     * @param  taskCreationTimestamp  task date of creation represented as timestamp in milliseconds from Epoch
+     * @param  taskDeadlineTimestamp  datetime of task deadline represented as timestamp in milliseconds from Epoch
+     * @param  completed  boolean containing whether task was completed or not
+     */
     public Task(String taskID, String name, String text, long taskCreationTimestamp, long taskDeadlineTimestamp, Boolean completed) {
         this.taskID = taskID;
         this.name = name;

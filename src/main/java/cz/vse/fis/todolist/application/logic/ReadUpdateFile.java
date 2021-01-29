@@ -5,10 +5,26 @@ import com.google.gson.GsonBuilder;
 
 import java.io.*;
 
+/**
+ * This class consists of methods implementing logic for reading from JSON file and writing into JSON file.
+ * UserData object is created from JSON file.
+ *
+ * @author  Petr Cafourek
+ * @version 1.0.0
+ * @since   2021-28-01
+ */
 public class ReadUpdateFile {
 
+    //path to dictionary containing JSON files
     public static String USER_DATA_PATH = "src/main/resources/Data/";
 
+
+    /**
+     * Returns an UserData instance created by Reader from user JSON file.
+     *
+     * @param  username  an absolute URL giving the base location of the image
+     * @return UserData  istance representing data of one user from JSON file
+     */
 
     public static UserData readDataFromJSON(String username)
     {
@@ -25,6 +41,11 @@ public class ReadUpdateFile {
         return null;
     }
 
+    /**
+     * This method creates or overwrites (update) JSON files containing data from users with UserData instance.
+     *
+     * @param  userData  instance representing data of one user which will overwrite / create JSON file
+     */
     public static void writeDataToJSON(UserData userData)
     {
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
