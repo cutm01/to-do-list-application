@@ -142,7 +142,7 @@ public class CreateNewTaskWindowSceneController {
      * text field input is empty or invalid (i.e. does not meet correct format)
      */
     private void addValidationListeners() {
-        rootBorderPane.getStylesheets().add("/validation_error_style.css");
+        rootBorderPane.getStylesheets().add("validation_error_style");
 
         //task name text field is empty right after initialization, therefore validation-error style class is set
         taskNameTextField.getStyleClass().add("validation-error");

@@ -1,0 +1,17 @@
+{
+  "firmwareVersion": "1.0.0",
+  "username": "newUser",
+  "password": "password123",
+  "passwordHint": "",
+  "avatar": "male",
+  "lastTaskID": 0,
+  "lastOpenedTask": {
+    "": "-1"
+  },
+  "userTaskCategories": {
+    "Completed tasks": {
+      "categoryName": "Completed tasks",
+      "categoryTasks": {}
+    }
+  }
+}
