@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.ManualWindowSceneController">
    <top>
@@ -11,7 +11,7 @@
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
             <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Manual" />
-            <Button mnemonicParsing="false" onAction="#showMainWindow" text="Back to main window" />
+            <Button mnemonicParsing="false" text="Back to main window" />
          </children>
       </HBox>
    </top>
@@ -25,7 +25,9 @@
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
          <content>
-            <WebView fx:id="manualChapterView" prefHeight="-1.0" prefWidth="-1.0" />
+            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <Text fx:id="chapterText" text="Text to choosen chapter from left menu" VBox.vgrow="ALWAYS" />
+            </VBox>
          </content></ScrollPane>
    </center>
 </BorderPane>
