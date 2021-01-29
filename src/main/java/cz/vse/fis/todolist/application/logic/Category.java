@@ -133,7 +133,19 @@ public class Category {
      */
     public List<Task> getListOfTasksInAlphabeticalOrder() {
         List<Task> alphabeticalOrder = new ArrayList<>(categoryTasks.values());
-        alphabeticalOrder.sort(Comparator.comparing(Task::getName));
+
+        Collections.sort(alphabeticalOrder, new Comparator<Task>() {
+            @Override
+            public int compare(Task task1, Task task2) {
+                return extractInt(task1.getName()) - extractInt(task2.getName());
+            }
+
+            int extractInt(String taskName) {
+                String number = taskName.replaceAll("\\D", "");
+
+                return number.isEmpty() ? 0 : Integer.parseInt(number);
+            }
+        });
 
         return alphabeticalOrder;
     }
@@ -144,8 +156,8 @@ public class Category {
      * @return List of all tasks from category ordered by task's name in alphabetical order
      */
     public List<Task> getListOfTasksInUnalphabeticalOrder() {
-        List<Task> unalphabeticalOrder = new ArrayList<>(categoryTasks.values());
-        unalphabeticalOrder.sort(Comparator.comparing(Task::getName).reversed());
+        List<Task> unalphabeticalOrder = getListOfTasksInAlphabeticalOrder();
+        Collections.reverse(unalphabeticalOrder);
 
         return unalphabeticalOrder;
     }
