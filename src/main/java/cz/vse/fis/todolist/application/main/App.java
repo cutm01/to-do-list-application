@@ -106,15 +106,6 @@ public class App extends Application {
     }
 
     /**
-     * Method to set new avatar for currently logged in user
-     *
-     * @param newAvatarIdentifier new avatar identifier as specified in Avatar enum
-     */
-    public static void changeAvatar(String newAvatarIdentifier) {
-        userData.setAvatar(newAvatarIdentifier);
-    }
-
-    /**
      * Method to validate login credentials provided by user. Used in login window
      *
      * @param username username input from GUI
@@ -146,17 +137,6 @@ public class App extends Application {
      */
     public static boolean checkPasswordForLoggedInUser(String username, String password) {
         return userData.areLoginCredentialsValid(username, password);
-    }
-
-    /**
-     * Method to decide whether male avatar is currently set or not. This value is used to set
-     * default value of radio buttons in settings window where user can choose either male or
-     * female version of avatar
-     *
-     * @return true if male avatar is currently set, false otherwise
-     */
-    public static boolean isMaleAvatarCurrentlySet() {
-        return userData.getAvatar().equals(Avatar.MALE.toString());
     }
 
     /**
