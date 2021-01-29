@@ -3,30 +3,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.LoginWindowSceneController">
+<AnchorPane stylesheets="login_window_style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.LoginWindowSceneController">
    <children>
       <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
          <children>
-            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <HBox id="login_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
-                  <Label text="Login" />
+                  <Label id="login" text="Login" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <HBox id="username_box" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Username:" />
-                  <TextField fx:id="usernameTextField" onAction="#validateLoginCredentials" />
+                  <TextField fx:id="usernameTextField" styleClass="field" onAction="#validateLoginCredentials" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <HBox id="password_box" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <Label text="Password:" />
-                  <PasswordField fx:id="passwordField" onAction="#validateLoginCredentials" />
+                  <PasswordField fx:id="passwordField" styleClass="field" onAction="#validateLoginCredentials" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <HBox id="button_box" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
-                  <Button mnemonicParsing="false" onAction="#showPasswordHint" text="Password hint" />
+                  <Button mnemonicParsing="false" onAction="#showPasswordHint" text="Hint" />
                   <Button mnemonicParsing="false" onAction="#validateLoginCredentials" text="Log in" />
                   <Button mnemonicParsing="false" onAction="#showRegisterWindow" text="Register" />
                   <Button mnemonicParsing="false" onAction="#closeApplication" text="Cancel" />
