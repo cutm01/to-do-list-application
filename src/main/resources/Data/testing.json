@@ -1,36 +1,55 @@
 {
   "firmwareVersion": "1.0.0",
-  "username": "petr",
-  "password": "cafourek",
+  "username": "testing",
+  "password": "testing123",
   "passwordHint": "",
   "avatar": "male",
   "lastTaskID": 2,
+  "lastOpenedTask": {
+    "Default category": "-1"
+  },
   "userTaskCategories": {
-    "category1": {
-      "categoryName": "category1",
+    "Completed tasks": {
+      "categoryName": "Completed tasks",
+      "categoryTasks": {}
+    },
+    "RENAME ME": {
+      "categoryName": "RENAME ME",
+      "categoryTasks": {}
+    },
+    "DELETE ME": {
+      "categoryName": "DELETE ME",
       "categoryTasks": {
-        "1": {
-          "taskID": "1",
-          "name": "task1",
-          "text": "text1",
-          "taskCreationTimestamp": 646444,
-          "taskDeadlineTimestamp": 55545141,
+        "2": {
+          "taskID": "2",
+          "name": "This task will be deleted",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003e\u003cspan style\u003d\"font-size: -webkit-xxx-large;\"\u003eThis task will be deleted together with its category :(\u003c/span\u003e\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611921033562,
+          "taskDeadlineTimestamp": 1611921600000,
           "completed": false
         }
       }
     },
-    "category2": {
-      "categoryName": "category2",
+    "TEST": {
+      "categoryName": "TEST",
+      "categoryTasks": {}
+    },
+    "SORT ME": {
+      "categoryName": "SORT ME",
       "categoryTasks": {
-        "2": {
-          "taskID": "2",
-          "name": "task2",
-          "text": "text2",
-          "taskCreationTimestamp": 646444,
-          "taskDeadlineTimestamp": 55545141,
+        "1": {
+          "taskID": "1",
+          "name": "Sort me task 1",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003e\u003cspan style\u003d\"font-size: -webkit-xxx-large;\"\u003eSort me task 1\u003c/span\u003e\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611920989505,
+          "taskDeadlineTimestamp": 1611925200000,
           "completed": false
         }
       }
+    },
+    "SAMPLE": {
+      "categoryName": "SAMPLE",
+      "categoryTasks": {}
     }
   }
 }
