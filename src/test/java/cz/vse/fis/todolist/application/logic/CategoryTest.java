@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * CategoryTest contains unit tests for sorting methods from class Category
  */
-class CategoryTest {
+public class CategoryTest {
 
     private Category category;
     private List<Task> tasksInAlphabeticalOrderFromOldestToNewest;
