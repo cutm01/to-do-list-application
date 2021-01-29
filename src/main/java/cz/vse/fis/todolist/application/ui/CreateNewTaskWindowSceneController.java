@@ -102,7 +102,7 @@ public class CreateNewTaskWindowSceneController {
         long taskDeadlineTimestamp = newDeadlineZonedDateTime.toInstant().toEpochMilli();
 
         if (taskDeadlineTimestamp < System.currentTimeMillis()) {
-            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.DEADLINE_IS_SOONER_THAN_ACTUAL_TIME).showAndWait();
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.DEADLINE_IS_SOONER_THAN_ACTUAL_TIME_MESSAGE).showAndWait();
         }
         else {
             String taskCategory = chooseCategoryComboBox.getSelectionModel().getSelectedItem().toString();

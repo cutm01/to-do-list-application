@@ -3,10 +3,7 @@ package cz.vse.fis.todolist.application.logic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 
 public class ReadUpdateFile {
 
@@ -37,5 +34,16 @@ public class ReadUpdateFile {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Method to delete JSON file with user data. It is used when user decide to delete
+     * his account
+     *
+     * @param username username of account to delete
+     */
+    public static void deleteFileWithUserData(String username) {
+        File userDataFile = new File(USER_DATA_PATH + username + ".json");
+        userDataFile.delete();
     }
 }
