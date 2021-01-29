@@ -327,7 +327,7 @@ public class SettingsWindowSceneController {
 
         newPasswordHintTextField.textProperty().addListener((obsVal, oldVal, newVal) -> {
             newPasswordHintTextField.getStyleClass().remove("validation-error");
-            if (newVal.isEmpty() || newVal.matches("\\s*")) {oldPasswordField.getStyleClass().add("validation-error");}
+            if (newVal.isEmpty() || newVal.matches("\\s*")) {newPasswordHintTextField.getStyleClass().add("validation-error");}
             else {newPasswordHintTextField.getStyleClass().remove("validation-error");}
         });
 
