@@ -1,0 +1,93 @@
+{
+  "firmwareVersion": "1.0.0",
+  "username": "testing",
+  "password": "testing123",
+  "passwordHint": "",
+  "avatar": "male",
+  "lastTaskID": 7,
+  "lastOpenedTask": {
+    "DELETE ME": "6"
+  },
+  "userTaskCategories": {
+    "Completed tasks": {
+      "categoryName": "Completed tasks",
+      "categoryTasks": {
+        "5": {
+          "taskID": "5",
+          "name": "Sample task",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003e\u003cspan style\u003d\"color: rgb(0, 128, 128); font-size: xx-large;\"\u003eThis is sample task\u003c/span\u003e\u003c/p\u003e\u003cp style\u003d\"text-align: left;\"\u003e\u003cul\u003e\u003cli\u003e\u003cspan style\u003d\"caret-color: rgb(0, 128, 128); color: rgb(0, 128, 128); font-size: xx-large;\"\u003ebullet points\u003c/span\u003e\u003c/li\u003e\u003cli\u003e\u003cspan style\u003d\"caret-color: rgb(0, 128, 128); color: rgb(0, 128, 128); font-size: xx-large;\"\u003ebullet points\u003c/span\u003e\u003c/li\u003e\u003c/ul\u003e\u003cp\u003e\u003cspan style\u003d\"caret-color: rgb(0, 128, 128); color: rgb(0, 128, 128); font-size: xx-large;\"\u003e\u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003cp\u003e\u003col\u003e\u003cli\u003e\u003cspan style\u003d\"caret-color: rgb(0, 128, 128); color: rgb(0, 128, 128); font-size: xx-large;\"\u003enumbered list\u003c/span\u003e\u003c/li\u003e\u003c/ol\u003e\u003cp\u003e\u003cspan style\u003d\"caret-color: rgb(0, 128, 128); color: rgb(0, 128, 128); font-size: xx-large;\"\u003e\u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003chr\u003e\u003cp\u003e\u003cspan style\u003d\"caret-color: rgb(0, 128, 128); color: rgb(0, 128, 128); font-size: xx-large;\"\u003e\u003cbr\u003e\u003c/span\u003e\u003c/p\u003e\u003c/p\u003e\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611936923895,
+          "taskDeadlineTimestamp": 1611939600000,
+          "completed": true
+        }
+      }
+    },
+    "DELETE ME": {
+      "categoryName": "DELETE ME",
+      "categoryTasks": {
+        "2": {
+          "taskID": "2",
+          "name": "This task will be deleted",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003e\u003cspan style\u003d\"font-size: -webkit-xxx-large;\"\u003eThis task will be deleted together with its category :(\u003c/span\u003e\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611921033562,
+          "taskDeadlineTimestamp": 1611921600000,
+          "completed": false
+        },
+        "6": {
+          "taskID": "6",
+          "name": "test",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611937121354,
+          "taskDeadlineTimestamp": 1611937200000,
+          "completed": false
+        }
+      }
+    },
+    "SORT ME": {
+      "categoryName": "SORT ME",
+      "categoryTasks": {
+        "1": {
+          "taskID": "1",
+          "name": "Sort me task 1",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003e\u003cspan style\u003d\"font-size: -webkit-xxx-large;\"\u003eSort me task 1\u003c/span\u003e\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611920989505,
+          "taskDeadlineTimestamp": 1611925200000,
+          "completed": false
+        },
+        "3": {
+          "taskID": "3",
+          "name": "Sort me task 10",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003eJust random text here\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611936692141,
+          "taskDeadlineTimestamp": 1611939600000,
+          "completed": false
+        },
+        "4": {
+          "taskID": "4",
+          "name": "Sort me task 2",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003e\u003cspan style\u003d\"font-size: x-large;\"\u003eSort me task 2\u003c/span\u003e\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611936731365,
+          "taskDeadlineTimestamp": 1611938100000,
+          "completed": false
+        }
+      }
+    },
+    "RENAME ME": {
+      "categoryName": "RENAME ME",
+      "categoryTasks": {}
+    },
+    "SAMPLE": {
+      "categoryName": "SAMPLE",
+      "categoryTasks": {
+        "7": {
+          "taskID": "7",
+          "name": "Sample task",
+          "text": "\u003chtml dir\u003d\"ltr\"\u003e\u003chead\u003e\u003c/head\u003e\u003cbody contenteditable\u003d\"true\"\u003e\u003cp style\u003d\"text-align: center;\"\u003esample task\u003c/p\u003e\u003c/body\u003e\u003c/html\u003e",
+          "taskCreationTimestamp": 1611937866093,
+          "taskDeadlineTimestamp": 1611941400000,
+          "completed": false
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane stylesheets="main_window_style.css" fx:id="rootBorderPane" prefHeight="803.0" prefWidth="1004.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.MainWindowSceneController">
    <top>
-      <TextField text="To-Do List Application" BorderPane.alignment="CENTER" />
+      <HBox fx:id="topPanel" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefHeight="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="avatarImageView" fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="usernameLabel" text="Username" />
+            <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#showCreateNewTaskWindow" />
+            <Button fx:id="newCategoryButton" mnemonicParsing="false" onAction="#showNewCategoryDialog" />
+            <Button fx:id="manualButton" mnemonicParsing="false" onAction="#showManualWindow" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#showSettingsWindow" />
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logOut" />
+         </children>
+      </HBox>
    </top>
+   <left>
+      <VBox fx:id="leftPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="250.0" BorderPane.alignment="CENTER">
+         <children>
+            <ComboBox fx:id="categoriesComboBox" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <ComboBox fx:id="sortTasksComboBox" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="tasksListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="397.0" prefWidth="239.0" VBox.vgrow="ALWAYS" />
+            <HBox id="leftPanelHBox" alignment="CENTER_LEFT">
+               <children>
+                  <CheckBox fx:id="markAllTasksCheckBox" mnemonicParsing="false" prefHeight="23.0" prefWidth="9.0" />
+                  <Button id="selectedCompleteButton" mnemonicParsing="false" onAction="#markSelectedTasksAsCompleted" />
+                  <Button id="selectedMoveExistButton" mnemonicParsing="false" onAction="#moveSelectedTasksToExistingCategory" />
+                  <Button id="selectedMoveNewButton" mnemonicParsing="false" onAction="#moveSelectedTasksToNewCategory" />
+                  <Button id="selectedDeleteButton" mnemonicParsing="false" onAction="#deleteSelectedTasks" />
+               </children></HBox>
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <VBox fx:id="rightPanel" maxHeight="1.7976931348623157E308" prefHeight="570.0" prefWidth="78.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="markTaskAsCompletedButton" mnemonicParsing="false" onAction="#markCurrentlyOpenedTaskAsCompleted" />
+            <Button fx:id="editTaskButton" mnemonicParsing="false" onAction="#editCurrentlyOpenedTask" />
+            <Button fx:id="moveTaskButton" mnemonicParsing="false" onAction="#moveCurrentlyOpenedTaskToExistingCategory" />
+            <Button fx:id="deleteTaskButton" mnemonicParsing="false" onAction="#deleteCurrentlyOpenedTask" />
+         </children></VBox>
+   </right>
+   <center>
+      <VBox fx:id="centerPanel" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="TOP_CENTER">
+         <children>
+            <HBox id="taskNameHBox" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label fx:id="taskNameLabel" text="Task Name" />
+               </children>
+            </HBox>
+            <HBox id="taskHBox" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label alignment="CENTER" text="Category:" />
+                  <Label fx:id="taskCategoryLabel" text="CategoryName" />
+                  <Label alignment="CENTER" text="Created on:" />
+                  <Label fx:id="taskCreationDateLabel" text="CreationDate" />
+                  <Label text="Deadline:" />
+                  <Label fx:id="taskDeadlineDateLabel" text="DeadlineDate" />
+               </children>
+            </HBox>
+            <ScrollPane fx:id="currentlyOpenedTask" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <WebView fx:id="taskView" prefHeight="-1.0" prefWidth="-1.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox fx:id="bottomPanel" fillHeight="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

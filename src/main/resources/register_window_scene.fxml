@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane stylesheets="general_window_style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.RegisterWindowSceneController">
+   <children>
+      <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <HBox id="register_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label id="title" text="Register" />
+               </children>
+            </HBox>
+            <HBox styleClass="HBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label text="Username *:" />
+                  <TextField fx:id="usernameTextField" promptText="6-25 characters" styleClass="field"/>
+               </children>
+            </HBox>
+            <HBox styleClass="HBox" layoutX="10.0" layoutY="53.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label text="Password *:" />
+                  <PasswordField fx:id="passwordField" promptText="at least 10 characters" styleClass="field"/>
+               </children>
+            </HBox>
+            <HBox styleClass="HBox" layoutX="10.0" layoutY="104.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label text="Confirm password *:" />
+                  <PasswordField fx:id="confirmPasswordField" promptText="confirm your password" styleClass="field"/>
+               </children>
+            </HBox>
+            <HBox styleClass="HBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Label text="Password hint:" />
+                  <TextField fx:id="passwordHintTextField" promptText="different from password" styleClass="field"/>
+               </children>
+            </HBox>
+            <HBox id="button_box" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#createNewUserAccount" text="Create" />
+                  <Button mnemonicParsing="false" onAction="#showLoginWindow" text="Cancel" />
+               </children>
+            </HBox>
+            <Label id="mandatory_label" text="* mandatory fields" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

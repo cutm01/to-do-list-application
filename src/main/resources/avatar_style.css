@@ -1,0 +1,33 @@
+. {
+    -fx-font-family: Arial;
+    -fx-text-alignment: center_left;
+}
+#Vbox {
+    -fx-background-color: white;
+    -fx-border-width: 1 0 0 0;
+    -fx-border-color: grey;
+}
+#avatar_label {
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+}
+#button_box {
+    -fx-padding: 0 20 0 0;
+}
+.button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 3,2,2,3;
+    -fx-background-radius: 0;
+    -fx-padding: 10 25 10 25;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 15;
+}
+.button:hover {
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+.radio-button {
+    -fx-padding: 0 50 0 50;
+}

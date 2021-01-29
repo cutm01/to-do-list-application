@@ -1,0 +1,152 @@
+. {
+    -fx-font-family: Arial;
+    -fx-text-alignment: center_left;
+}
+
+.BorderPane {
+    -fx-pref-width: 850;
+    -fx-pref-height: 350;
+    -fx-background-color: white;
+}
+.HBox {
+    -fx-alignment: top-right;
+    -fx-padding: 0 35 0 0;
+}
+.label {
+    -fx-font-size: 17;
+}
+#task_label {
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+#task_box {
+    -fx-background-color: white;
+    -fx-padding: 0 10 20 10;
+}
+#taskNameTextField, #deadlineTimeTextField {
+    -fx-padding: 5 5 2 5;
+    -fx-border-insets: 0 0 -2 5;
+    -fx-background-insets: 0 0 0 5;
+    -fx-font-size: 15;
+    -fx-border-color: grey;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+}
+#deadlineDatePicker {
+    -fx-padding: 5 5 0 5;
+    -fx-border-insets: 0 0 3 5;
+    -fx-background-insets: 0 0 0 5;
+    -fx-font-size: 15;
+    -fx-border-color: grey;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+}
+#deadlineDatePicker .arrow-button {
+    -fx-background-color: transparent;
+}
+#deadlineDatePicker .arrow-button:hover {
+    -fx-cursor: hand;
+}
+#taskNameTextField:focused, #deadlineTimeTextField:focused, #deadlineDatePicker:focused {
+    -fx-border-color: #3e8eac;
+}
+#button_box {
+    -fx-background-color: white;
+    -fx-padding: 5;
+    -fx-spacing: 5;
+}
+.button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 3,2,2,3;
+    -fx-background-radius: 0;
+    -fx-padding: 10 25 10 25;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 15;
+}
+.button:hover {
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-background-insets: 3,2,2,3;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-spacing: 5;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 15;
+}
+.combo-box:hover
+{
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+.html-editor .tool-bar
+{
+    -fx-padding: 5;
+    -fx-background-color: white;
+    -fx-alignment: top-center;
+    -fx-border-insets: 0;
+    -fx-background-insets: 0;
+}
+.html-editor .button, .html-editor .toggle-button
+{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 10 15 10 15;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 15;
+}
+.html-editor .button:hover, .html-editor .toggle-button:hover
+{
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+.html-editor-background
+{
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 10;
+}
+.html-editor-background:hover
+{
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+
+.html-editor-foreground
+{
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 10;
+}
+.html-editor-foreground:hover
+{
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+
+.validation-error {
+    -fx-text-box-border: #DBB1B1 ;
+    -fx-control-inner-background: #FFF0F0 ;
+    -fx-focus-color: #FF2020 ;
+    -fx-faint-focus-color: #FF202020 ;
+}

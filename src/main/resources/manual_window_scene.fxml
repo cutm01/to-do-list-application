@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.*?>
+
+<BorderPane prefHeight="600" prefWidth="820" stylesheets="manual_settings_window_style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.vse.fis.todolist.application.ui.ManualWindowSceneController">
+   <top>
+      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="HBox" stylesheets="manual_settings_window_style.css" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="80" fitWidth="80" pickOnBounds="true" preserveRatio="true" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Manual" />
+            <Button mnemonicParsing="false" onAction="#showMainWindow" text="Back to main window" />
+         </children>
+      </HBox>
+   </top>
+   <left>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="300.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="manualMenuListView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="300.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+         <content>
+            <WebView fx:id="manualChapterView" prefHeight="-1.0" prefWidth="-1.0" />
+         </content></ScrollPane>
+   </center>
+</BorderPane>

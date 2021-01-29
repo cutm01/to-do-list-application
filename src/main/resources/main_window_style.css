@@ -1,0 +1,196 @@
+. {
+    -fx-font-family: Arial;
+    -fx-text-alignment: center_left;
+}
+.BorderPane {
+    -fx-pref-width: 1000;
+    -fx-pref-height: 800;
+    -fx-background-color: white;
+
+}
+.label {
+    -fx-font-size: 17;
+}
+.button:hover {
+    -fx-cursor: hand;
+}
+/* Top panel */
+#topPanel {
+    -fx-padding: 0 10 0 10;
+    -fx-pref-height: 100;
+    -fx-background-color: white;
+    -fx-border-width: 1 0 1 0;
+    -fx-border-color: grey;
+}
+#avatarImageView {
+
+}
+#usernameLabel {
+    -fx-font-size: 30;
+    -fx-font-weight: bold;
+    -fx-padding: 0 400 0 10;
+}
+#topPanel .button {
+    -fx-background-size: 50;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 50%;
+    -fx-background-color: transparent;
+    -fx-pref-width: 50;
+    -fx-pref-height: 50;
+}
+#newTaskButton {
+    -fx-background-image: url('add-file.png');
+    -fx-padding: 0 10 0 0;
+}
+#newCategoryButton {
+    -fx-background-image: url('add-folder.png');
+    -fx-border-width: 0 3 0 0;
+    -fx-border-color: black;
+    -fx-padding: 0 80 0 0;
+}
+#manualButton {
+    -fx-background-image: url('information.png');
+    -fx-padding: 0 30 0 45;
+}
+#settingsButton {
+    -fx-background-image: url('settings.png');
+}
+#logoutButton {
+    -fx-background-image: url('exit.png');
+    -fx-padding: 0 0 0 80;
+}
+/* Left panel */
+#leftPanel {
+    -fx-padding: 5;
+    -fx-pref-width: 250;
+    -fx-background-color: white;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-color: grey;
+}
+#leftPanel .button {
+    -fx-background-size: 40;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 100%;
+    -fx-background-color: transparent;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+}
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-background-insets: 3,2,2,3;
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-spacing: 5;
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: black;
+    -fx-font-size: 15;
+}
+.combo-box:hover
+{
+    -fx-cursor: hand;
+    -fx-text-fill: #3e8eac;
+    -fx-border-color: #3e8eac;
+}
+
+#categoriesComboBox {
+    -fx-border-width: 1 1 0 1;
+}
+#sortTasksComboBox {
+
+}
+#tasksListView {
+    -fx-padding: 5;
+}
+#leftPanelHBox {
+ -fx-padding: 5;
+}
+#markAllTasksCheckBox .box {
+    -fx-pref-width: 20;
+    -fx-pref-height: 20;
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+    -fx-border-radius: 0;
+}
+#selectedCompleteButton {
+    -fx-background-image: url('checking.png');
+    -fx-border-width: 0 0 0 3;
+    -fx-border-color: black;
+    -fx-padding: 0 20 0 30;
+}
+#selectedMoveExistButton {
+    -fx-background-image: url('folder.png');
+    -fx-padding: 0 0 0 45;
+}
+#selectedMoveNewButton {
+    -fx-background-image: url('add-folder.png');
+    -fx-padding: 0 0 0 50;
+}
+#selectedDeleteButton {
+    -fx-background-image: url('trashcan.png');
+    -fx-padding: 0 0 0 50;
+}
+/* Right panel */
+#rightPanel {
+    -fx-padding: 5;
+    -fx-pref-width: 55;
+    -fx-background-color: white;
+    -fx-border-width: 0 0 0 1;
+    -fx-border-color: grey;
+}
+#rightPanel .button {
+    -fx-background-size: 40;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 100%;
+    -fx-background-color: transparent;
+    -fx-pref-width: 40;
+    -fx-pref-height: 40;
+}
+#markTaskAsCompletedButton {
+    -fx-padding: 50 0 0 0;
+    -fx-background-image: url('checking.png');
+    -fx-border-width: 0 0 3 0;
+    -fx-border-color: black;
+}
+#editTaskButton {
+    -fx-background-image: url('pen.png');
+    -fx-padding: 0 0 40 0;
+}
+#moveTaskButton {
+    -fx-background-image: url('folder.png');
+    -fx-padding: 0 0 30 0;
+}
+#deleteTaskButton {
+    -fx-background-image: url('trashcan.png');
+    -fx-padding: 40 0 0 0;
+}
+/* Center panel */
+#centerPanel {
+ -fx-padding: 5;
+    -fx-background-color: white;
+}
+#taskNameHBox {
+
+}
+#taskNameLabel {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+#taskHBox {
+
+}
+#taskHBox .label {
+    -fx-padding: 5 5 5 0;
+}
+#currentlyOpenedTask {
+    -fx-border-width: 0;
+}
+#taskView {
+    -fx-border-width: 0;
+}
+
+
+
+
+
