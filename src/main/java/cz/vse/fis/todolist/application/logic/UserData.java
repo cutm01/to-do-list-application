@@ -322,7 +322,7 @@ public class UserData {
      * @return true if password hint is set, false otherwise
      */
     public boolean isPasswordHintSet() {
-        return passwordHint != null || passwordHint.equals("");
+        return passwordHint != null && !passwordHint.equals("");
     }
 
     /**
