@@ -22,7 +22,7 @@ public class UserData {
     @Expose
     private AtomicLong lastTaskID;     //incremented whenever new task is added to ensure unique task IDs
     @Expose
-    private Map<String, String> lastOpenedTask; //<category name, task id>...GUI center panel is initialized with this task
+    private Map<String, String> lastOpenedTask = new HashMap<>(); //<category name, task id>...GUI center panel is initialized with this task
     @Expose
     private Map<String, Category> userTaskCategories = new LinkedHashMap<>();
 
@@ -237,7 +237,7 @@ public class UserData {
      * Method to get last opened tasks before user logged out or closed application. Used to
      * to set content of center panel in GUI
      *
-     * @return last opened task instance
+     * @return last opened task instance or null for accounts without any task or when no task was previously displayed
      */
     public Task getLastOpenedTask() {
         String category = "";
@@ -245,6 +245,11 @@ public class UserData {
         for (Map.Entry<String, String> categoryNameTaskIDEntry : lastOpenedTask.entrySet()) {
             category = categoryNameTaskIDEntry.getKey();
             taskID = categoryNameTaskIDEntry.getValue();
+        }
+
+        //account is without any task or no task was previously displayed
+        if (taskID.equals("-1")) {
+            return null;
         }
 
         return getTaskFromCategory(category, taskID);

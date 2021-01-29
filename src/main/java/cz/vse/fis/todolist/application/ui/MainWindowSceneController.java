@@ -611,6 +611,13 @@ public class MainWindowSceneController {
      */
     private void initCenterPanel() {
         Task lastOpenedTask = App.getLastOpenedTask();
+
+        //init center panel with "No task is currently displayed view"
+        if (lastOpenedTask == null) {
+            initEmptyCenterPanel();
+            return;
+        }
+
         String lastOpenedTaskCategory = App.getLastOpenedTaskCategory();
         LocalDateTime creationLocalDateTime = Instant.ofEpochMilli(lastOpenedTask.getTaskCreationTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         LocalDateTime deadlineLocalDateTime = Instant.ofEpochMilli(lastOpenedTask.getTaskDeadlineTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
@@ -648,6 +655,22 @@ public class MainWindowSceneController {
     }
 
     /**
+     * Method to init center panel of main window with "No task is currently displayed" view
+     * when account does not contain any taks to display or no task was previously selected
+     */
+    private void initEmptyCenterPanel() {
+        //initialize StringProperties of currently displayed task in center panel with empty values
+        uniqueIDOfDisplayedTask = new SimpleStringProperty("");
+        nameOfDisplayedTask = new SimpleStringProperty("");
+        categoryOfDisplayedTask = new SimpleStringProperty("");
+        deadlineOfDisplayedTask = new SimpleStringProperty("");
+        isDisplayedTaskCompleted = new SimpleBooleanProperty(true);
+
+        //method will update center panel with "No task is currently displayed" view
+        updateTaskViewInCenterPanel();
+    }
+
+    /**
      * Method to update center panel of main window which contains currently displayed task.
      * If previous currently displayed task was removed (and therefore uniqueIDOfDisplayedTask set to empty String),
      * task view in center panel will be update to inform user about this action.
@@ -660,7 +683,7 @@ public class MainWindowSceneController {
             taskCategoryLabel.setText("-----");
             taskCreationDateLabel.setText("-----");
             taskDeadlineDateLabel.setText("-----");
-            taskView.getEngine().loadContent("<p style=\"text-align: center;\">It looks like you deleted the previously displayed task</p>\n"
+            taskView.getEngine().loadContent("<p style=\"text-align: center;\">It looks like you deleted the previously displayed task or you currently don't have any existing task</p>\n"
                                              + "<p style=\"text-align: center;\">Feel free to selected another task from the left panel of the "
                                              + "application or create a completely new one to keep track of your duties :)</p>");
             isDisplayedTaskCompleted.setValue(true);

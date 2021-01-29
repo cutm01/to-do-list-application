@@ -62,6 +62,9 @@ public class App extends Application {
      */
     public static void createNewAccount(String username, String password, String confirmPassword, String passwordHint) {
         UserData newAccountData = new UserData(username, password, passwordHint, Avatar.MALE.getAvatarIdentifier(), 0);
+        newAccountData.createTaskCategory("Completed tasks");
+        newAccountData.setLastOpenedTask("Completed tasks", "-1");
+
         ReadUpdateFile.writeDataToJSON(newAccountData);
     }
 
