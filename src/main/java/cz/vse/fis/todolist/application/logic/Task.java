@@ -21,7 +21,7 @@ public class Task {
     @Expose
     private Boolean completed;
 
-    private BooleanProperty selected;
+    private BooleanProperty selected = new SimpleBooleanProperty(false);
 
     /**
      * Constructor to set default values to attributes which are not present in JSON

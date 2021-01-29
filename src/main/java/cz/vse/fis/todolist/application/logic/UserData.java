@@ -131,6 +131,67 @@ public class UserData {
         deleteTaskFromCategory(task, fromCategory);
     }
 
+    /**
+     * Method to rename task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task that will be renamed
+     * @param newName new name of task
+     */
+    public void renameTask(String categoryName, String taskID, String newName) {
+        userTaskCategories.get(categoryName).renameTask(taskID, newName);
+    }
+
+    /**
+     * Method to set new deadline timestamp for task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which deadline timestamp will be changed
+     * @param newDeadlineTimestamp new deadline timestamp
+     */
+    public void changeTaskDeadlineTimestamp(String categoryName, String taskID, long newDeadlineTimestamp) {
+        userTaskCategories.get(categoryName).getTaskByUniqueID(taskID).setTaskDeadlineTimestamp(newDeadlineTimestamp);
+    }
+
+    /**
+     * Method to change task text
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which text will be changed
+     * @param newText new task text
+     */
+    public void changeTaskText(String categoryName, String taskID, String newText) {
+        userTaskCategories.get(categoryName).getTaskByUniqueID(taskID).setText(newText);
+    }
+
+    /**
+     * Method to create new task and save it to specified category
+     *
+     * @param taskCategory category name where task will be placed into
+     * @param taskName String representing task name
+     * @param taskText String representing task text
+     * @param taskCreationTimestamp long representing milliseconds since epoch
+     * @param taskDeadlineTimestamp long representing milliseconds since epoch
+     * @param isTaskCompleted true if task is completed, false otherwise
+     * @return instance of newly created task
+     */
+    public Task createNewTask(String taskCategory,
+                              String taskName,
+                              String taskText,
+                              long taskCreationTimestamp,
+                              long taskDeadlineTimestamp,
+                              boolean isTaskCompleted) {
+        Task createdTask = new Task(createTaskUniqueID(),
+                                    taskName,
+                                    taskText,
+                                    taskCreationTimestamp,
+                                    taskDeadlineTimestamp,
+                                    isTaskCompleted);
+        userTaskCategories.get(taskCategory).addTask(createdTask);
+
+        return createdTask;
+    }
+
     public String getFirmwareVersion() {
         return firmwareVersion;
     }
@@ -266,6 +327,32 @@ public class UserData {
      */
     public List<String> getUserCategoryNames() {
         return new ArrayList<>(userTaskCategories.keySet());
+    }
+
+    /**
+     * Method to set information about last opened task before user logged out, closed application or
+     * moved to another window of application
+     *
+     * @param categoryName category name where last opened task is placed
+     * @param taskID unique ID of last opened task
+     */
+    public void setLastOpenedTask(String categoryName, String taskID) {
+        lastOpenedTask.clear();
+        lastOpenedTask.put(categoryName, taskID);
+    }
+
+    /**
+     * Method to change name of category
+     *
+     * @param oldCategoryName name of category which name will be changed
+     * @param newCategoryName new category name
+     */
+    public void renameCategory(String oldCategoryName, String newCategoryName) {
+        Category categoryToRename = userTaskCategories.get(oldCategoryName);
+        categoryToRename.setCategoryName(newCategoryName);
+
+        userTaskCategories.remove(oldCategoryName);
+        userTaskCategories.put(newCategoryName, categoryToRename);
     }
 
     /**

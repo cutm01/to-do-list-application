@@ -48,7 +48,10 @@ public class ApplicationAlert {
     public static final String CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_NO_TASKS_MOVED_MESSAGE = "Category with same name already exists. No tasks were moved";
     public static final String TASK_SUCCESSFULLY_MOVED_TO_NEWLY_CREATED_CATEGORY_MESSAGE = "All selected tasks were successfully moved to newly created category";
     public static final String NO_TASK_WAS_SELECTED_TO_DELETE_MESSAGE = "Please select at least one task which will be deleted";
-    public static final String CONFIRM_TASKS_DELETION_ALERT_MESSAGE = "Selected task(s) will be definitely deleted. Do you want to continue?";
+    public static final String CATEGORY_NAME_SUCCESSFULLY_CHANGED_MESSAGE = "Category name was successfully changed";
+    public static final String COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_RENAMED_MESSAGE = "Category with completed tasks can not be renamed";
+    public static final String COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_DELETED_MESSAGE = "Category with completed tasks can not be deleted";
+    private static final String CONFIRM_TASKS_DELETION_ALERT_MESSAGE = "Selected task(s) will be definitely deleted. Do you want to continue?";
     private static final String CREATE_NEW_CATEGORY_DIALOG_TITLE = "Create new category";
     private static final String CREATE_NEW_CATEGORY_HEADER_TEXT = "Please enter name of the new category";
     private static final String NEW_CATEGORY_NAME_RESTRICTIONS = "Category name has to be between 1 and 30 characters long and can contain only alphanumeric characters, whitespaces or underscores";
@@ -56,6 +59,12 @@ public class ApplicationAlert {
     private static final String CHOOSE_CATEGORY_DIALOG_TEXT = "Please choose one category where task(s) will be moved to";
     private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_DIALOG_TITLE = "Move tasks to new category";
     private static final String CREATE_NEW_CATEGORY_TO_MOVE_TASKS_HEADER_TEXT = "Please enter name of the new category where selected tasks will be moved to";
+    private static final String CONFIRM_MOVING_BACK_WITHOUT_SAVING_CHANGES_MESSAGE = "All made changes will be lost. Do you want you to continue?";
+    private static final String RENAME_CATEGORY_DIALOG_TITLE = "Rename category";
+    private static final String RENAME_CATEGORY_HEADER_TEXT = "Please enter new name of the category";
+    private static final String CONFIRM_CATEGORY_DELETION_ALERT_MESSAGE = "Selected category and tasks in it will be definitely deleted. Do you want to continue?";
+    //create new task window alert messages
+    public static final String DEADLINE_IS_SOONER_THAN_ACTUAL_TIME = "Selected deadline is sooner than the actual time. Please adjust your selection";
 
     /**
      * Method to create alert with AlertType.NONE and custom message to inform user about
@@ -232,8 +241,8 @@ public class ApplicationAlert {
     }
 
     /**
-     * Method to create alert to inform user that selected tasks are about to delete. User has to confirm
-     * that he wants to delete selected, otherwise no action will be performed
+     * Method to create alert to inform user that selected tasks are about to be deleted. User has to confirm
+     * that he wants to delete selected tasks, otherwise no action will be performed
      *
      * @return alert where user has to confirm that he want to delete all selected tasks
      */
@@ -249,6 +258,23 @@ public class ApplicationAlert {
     }
 
     /**
+     * Method to create alert to inform user that all performed changes while editing task will not be save.
+     * User has to confirm that he really want to move back to main window without saving changes in edited task
+     *
+     * @return alert where user has to confirm that he want to move back to main window without saving changes
+     */
+    public static final Alert CHANGES_WILL_NOT_BE_SAVED_ALERT() {
+        Alert alert = new Alert(AlertType.NONE);
+        alert.getDialogPane().setContent(new Label(CONFIRM_MOVING_BACK_WITHOUT_SAVING_CHANGES_MESSAGE));
+
+        ButtonType confirmButtonType = new ButtonType("Move back to main window", ButtonBar.ButtonData.YES);
+        alert.getButtonTypes().add(confirmButtonType);
+        alert.getButtonTypes().add(ButtonType.CLOSE);
+
+        return alert;
+    }
+
+    /**
      * Method to create JavaFX alert in cases when user wants to know his password hint
      * and password hint was set
      *
@@ -256,5 +282,77 @@ public class ApplicationAlert {
      */
     public static final Alert SHOW_PASSWORD_HINT_ALERT(String passwordHint) {
         return ALERT_WITH_CUSTOM_MESSAGE(PASSWORD_HINT_IS_SET_MESSAGE + passwordHint);
+    }
+
+    /**
+     * Method to create dialog for changing name of category. User has to input new name between 1 and 30 characters long
+     * containing only alphanumeric characters, whitespaces or underscores
+     *
+     * @param oldCategoryName name of category which name will be changed
+     * @return dialog where user has to enter new name of category
+     */
+    public static final Dialog RENAME_CATEGORY_DIALOG(String oldCategoryName) {
+        Dialog<String> dialog = new Dialog<>();
+
+        dialog.setTitle(RENAME_CATEGORY_DIALOG_TITLE);
+        dialog.setHeaderText(RENAME_CATEGORY_HEADER_TEXT);
+        dialog.setGraphic(new ImageView(ApplicationAlert.class.getResource(NEW_CATEGORY_DIALOG_ICON).toString()));
+
+        //add buttons
+        ButtonType renameButtonType = new ButtonType("Rename", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(renameButtonType, ButtonType.CANCEL);
+
+        //create grid pane with content
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField categoryName = new TextField();
+        categoryName.setText(oldCategoryName);
+        grid.add(new Label(NEW_CATEGORY_NAME_RESTRICTIONS), 0, 0);
+        grid.add(categoryName, 0,1);
+
+        //disable create button when no input was provided or category name does not meet criteria for length or format
+        Node renameButton = dialog.getDialogPane().lookupButton(renameButtonType);
+        renameButton.setDisable(true);
+
+        categoryName.textProperty().addListener((observable, oldValue, newValue) -> {
+            renameButton.setDisable(newValue.trim().isEmpty()
+                                    || !newValue.trim().matches("[a-zA-Z0-9\\s_]{1,30}")
+                                    || newValue.equals(oldCategoryName));
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+        //focus on category name text field
+        Platform.runLater(categoryName::requestFocus);
+
+        //get the result
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == renameButtonType) {
+                return categoryName.getText().trim();
+            }
+            return null;
+        });
+
+        return dialog;
+    }
+
+    /**
+     * Method to create alert to inform user that selected category is about to be deleted. User has to confirm
+     * that he wants to delete selected category, otherwise no action will be performed
+     *
+     * @return alert where user has to confirm that he want to delete category with all tasks in it
+     */
+    public static final Alert CONFIRM_CATEGORY_DELETION_ALERT() {
+        Alert alert = new Alert(AlertType.NONE);
+        alert.getDialogPane().setContent(new Label(CONFIRM_CATEGORY_DELETION_ALERT_MESSAGE));
+
+        ButtonType confirmButtonType = new ButtonType("Delete selected category with all its tasks", ButtonBar.ButtonData.YES);
+        alert.getButtonTypes().add(confirmButtonType);
+        alert.getButtonTypes().add(ButtonType.CLOSE);
+
+        return alert;
     }
 }

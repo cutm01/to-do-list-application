@@ -18,16 +18,28 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.skin.ComboBoxListViewSkin;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import org.w3c.dom.events.MouseEvent;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 /**
@@ -37,6 +49,7 @@ import java.util.*;
  */
 public class MainWindowSceneController {
     //scene elements, bottom panel of root borderpane is absent
+    public BorderPane rootBorderPane;
     //top panel
     public ImageView avatarImageView;
     public Label usernameLabel;
@@ -84,7 +97,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showCreateNewTaskWindow(ActionEvent actionEvent) {
-        App.activateScene("create_new_task");
+        initializeCreateTaskWindow();
     }
 
     /**
@@ -112,7 +125,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showManualWindow(ActionEvent actionEvent) {
-        App.activateScene("manual");
+        initializeManualWindow();
     }
 
     /**
@@ -121,7 +134,7 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void showSettingsWindow(ActionEvent actionEvent) {
-        App.activateScene("settings");
+        initializeSettingsWindow();
     }
 
     /**
@@ -312,7 +325,8 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void editCurrentlyOpenedTask(ActionEvent actionEvent) {
-        App.activateScene("edit_task");
+        App.setLastOpenedTask(categoryOfDisplayedTask.getValue(), uniqueIDOfDisplayedTask.getValue());
+        initializeEditTaskWindow();
     }
 
     /**
@@ -378,7 +392,21 @@ public class MainWindowSceneController {
 
         //listener to change displayed tasks according to user selection of category and sorting option
         categoriesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedCategory, newSelectedCategory) -> {
-            updateDisplayedTaskAfterNewCategorySelection(newSelectedCategory.toString());
+            if (newSelectedCategory == null) {
+                if (!categories.isEmpty()) {
+                    categoriesComboBox.getSelectionModel().select(0);
+                    String selectedCategory = categoriesComboBox.getSelectionModel().getSelectedItem().toString();
+                    updateDisplayedTaskAfterNewCategorySelection(selectedCategory);
+                }
+                else {
+                    Platform.runLater(() -> {
+                        categoriesComboBox.getSelectionModel().clearSelection();
+                    });
+                }
+            }
+            else {
+                updateDisplayedTaskAfterNewCategorySelection(newSelectedCategory.toString());
+            }
         });
         sortTasksComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldSelectedSortingOption, newSelectedSortingOption) -> {
             updateDisplayedTaskAfterNewSortingOptionSelection(newSelectedSortingOption.toString());
@@ -418,9 +446,66 @@ public class MainWindowSceneController {
     }
 
     private void populateCategoriesComboBox() {
+        rootBorderPane.getStylesheets().add("/buttons.css");
         categories.setAll(App.getCategoriesForAccount());
+
         categoriesComboBox.setItems(categories);
         categoriesComboBox.setPromptText("Categories");
+
+        categoriesComboBox.setCellFactory(lv -> new ListCell<String>() {
+            private HBox graphic;
+
+            //this is the constructor for the anonymous class
+            {
+                Label label = new Label();
+                label.textProperty().bind(itemProperty());
+                //set max width to infinity so the buttons are displayed at the right of ListCell
+                label.setMaxWidth(Double.POSITIVE_INFINITY);
+                //modify the hiding behavior of the ComboBox to allow clicking on the button,
+                //ComboBox will hide when the label is clicked (i.e. item selected)
+                label.setOnMouseClicked(event -> categoriesComboBox.hide());
+
+                Button renameTaskButton = new Button();
+                Button deleteTaskButton = new Button();
+                renameTaskButton.setGraphic(new ImageView(new Image("/edit.png")));
+                deleteTaskButton.setGraphic(new ImageView(new Image("/delete.png")));
+                renameTaskButton.getStyleClass().add("rename-category-button");
+                deleteTaskButton.getStyleClass().add("delete-category-button");
+
+                renameTaskButton.setOnAction(event -> {
+                    renameCategory(getItem());
+                });
+
+                deleteTaskButton.setOnAction(event -> {
+                    deleteCategory(getItem());
+                });
+
+                //create HBox which will be used as ListCell graphic
+                graphic = new HBox(label, renameTaskButton, deleteTaskButton);
+                graphic.setHgrow(label, Priority.ALWAYS);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(graphic);
+                }
+            }
+        });
+
+        //set a custom skin, otherwise the ComboBox disappears before the click on button is registered
+        ComboBoxListViewSkin<String> skin = new ComboBoxListViewSkin<String>(categoriesComboBox);
+        skin.setHideOnClick(false);
+        categoriesComboBox.setSkin(skin);
+
+        //since hide on click was disable, ComboBox has to be hide everytime when its selected item changes
+        categoriesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            categoriesComboBox.hide();
+        });
     }
 
     private void populateSortTasksComboBox() {
@@ -527,12 +612,14 @@ public class MainWindowSceneController {
     private void initCenterPanel() {
         Task lastOpenedTask = App.getLastOpenedTask();
         String lastOpenedTaskCategory = App.getLastOpenedTaskCategory();
+        LocalDateTime creationLocalDateTime = Instant.ofEpochMilli(lastOpenedTask.getTaskCreationTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        LocalDateTime deadlineLocalDateTime = Instant.ofEpochMilli(lastOpenedTask.getTaskDeadlineTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
         //initialize StringProperties of currently displayed task in center panel
         uniqueIDOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getTaskID());
         nameOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getName());
         categoryOfDisplayedTask = new SimpleStringProperty(lastOpenedTaskCategory);
-        deadlineOfDisplayedTask = new SimpleStringProperty(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+        deadlineOfDisplayedTask = new SimpleStringProperty(deadlineLocalDateTime.toLocalDate().toString()  + " " + deadlineLocalDateTime.toLocalTime().toString());
         isDisplayedTaskCompleted = new SimpleBooleanProperty(lastOpenedTask.getCompleted());
 
         //add listener to currently displayed task StringProperties so center panel can be dynamically changed
@@ -555,8 +642,8 @@ public class MainWindowSceneController {
         //initialize center panel
         taskNameLabel.setText(lastOpenedTask.getName());
         taskCategoryLabel.setText(lastOpenedTaskCategory);
-        taskCreationDateLabel.setText(new Date(lastOpenedTask.getTaskCreationTimestamp()).toString());
-        taskDeadlineDateLabel.setText(new Date(lastOpenedTask.getTaskDeadlineTimestamp()).toString());
+        taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().toString());
+        taskDeadlineDateLabel.setText(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().toString());
         taskView.getEngine().loadContent(lastOpenedTask.getText());
     }
 
@@ -582,14 +669,17 @@ public class MainWindowSceneController {
             Task currentlySelectedTask = (Task)tasksListView.getSelectionModel().getSelectedItem();
 
             //update values of StringProperty attributes so changes can be made automatically
+            LocalDateTime deadlineLocalDateTime = Instant.ofEpochMilli(currentlySelectedTask.getTaskDeadlineTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            LocalDateTime creationLocalDateTime = Instant.ofEpochMilli(currentlySelectedTask.getTaskCreationTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+
             uniqueIDOfDisplayedTask.setValue(currentlySelectedTask.getTaskID());
             nameOfDisplayedTask.setValue(currentlySelectedTask.getName());
             categoryOfDisplayedTask.setValue(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
-            deadlineOfDisplayedTask.setValue(new Date(currentlySelectedTask.getTaskDeadlineTimestamp()).toString());
+            deadlineOfDisplayedTask.setValue(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().toString());
             isDisplayedTaskCompleted.setValue(currentlySelectedTask.getCompleted());
 
             //update rest of elements from center panel
-            taskCreationDateLabel.setText(new Date(currentlySelectedTask.getTaskCreationTimestamp()).toString());
+            taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().toString());
             taskView.getEngine().loadContent(currentlySelectedTask.getText());
 
             taskCategoryLabel.setText(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
@@ -602,10 +692,150 @@ public class MainWindowSceneController {
      * to disable this button when no task is currently selected.
      */
     private void initRightPanel() {
-        //markTaskAsCompletedButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         markTaskAsCompletedButton.disableProperty().bind(isDisplayedTaskCompleted);
         editTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         moveTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
         deleteTaskButton.disableProperty().bind(Bindings.isEmpty(uniqueIDOfDisplayedTask));
+    }
+
+    /**
+     * Method for moving to edit task window of application and its initialization with currently opened task
+     */
+    private void initializeEditTaskWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("edit_task_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            EditTaskWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method for moving to create task window of application and its initialization
+     */
+    private void initializeCreateTaskWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("create_new_task_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            CreateNewTaskWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method for moving to manual window of application and its initialization
+     */
+    private void initializeManualWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("manual_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            ManualWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method for moving to settings window of application and its initialization
+     */
+    private void initializeSettingsWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            InputStream sceneInputStream = App.class.getClassLoader().getResourceAsStream("settings_window_scene.fxml");
+            Parent root = fxmlLoader.load(sceneInputStream);
+
+            SettingsWindowSceneController controller = fxmlLoader.getController();
+            controller.init();
+
+            App.setNewMainSceneParentElement(root);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to rename category
+     *
+     * @param oldCategoryName name of category which name will be changed
+     */
+    private void renameCategory(String oldCategoryName) {
+        if (oldCategoryName.equals("Completed tasks")) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_RENAMED_MESSAGE).showAndWait();
+            return;
+        }
+
+        ApplicationAlert.RENAME_CATEGORY_DIALOG(oldCategoryName).showAndWait().ifPresent(response -> {
+            if (App.doesCategoryAlreadyExist(response.toString())) {
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.CATEGORY_WITH_SAME_NAME_ALREADY_EXISTS_MESSAGE).showAndWait();
+            }
+            else {
+                String newCategoryName = response.toString();
+
+                //change category name in combo box in left panel
+                categories.set(categories.indexOf(oldCategoryName),
+                               newCategoryName);
+
+                //check whether currently opened task is not in category which is being renamed
+                if (categoryOfDisplayedTask.get().equals(oldCategoryName)) {
+                    categoryOfDisplayedTask.setValue(newCategoryName);
+                }
+
+                App.renameCategory(oldCategoryName, newCategoryName);
+                ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.CATEGORY_NAME_SUCCESSFULLY_CHANGED_MESSAGE).showAndWait();
+            }
+        });
+    }
+
+    /**
+     * Method to delete category. All tasks which are currently in category will be deleted too
+     *
+     * @param categoryName name of category which name will be changed
+     */
+    private void deleteCategory(String categoryName) {
+        if (categoryName.equals("Completed tasks")) {
+            ApplicationAlert.ALERT_WITH_CUSTOM_MESSAGE(ApplicationAlert.COMPLETED_TASKS_CATEGORY_CAN_NOT_BE_DELETED_MESSAGE).showAndWait();
+            return;
+        }
+
+        ApplicationAlert.CONFIRM_CATEGORY_DELETION_ALERT().showAndWait().ifPresent(response -> {
+            if (response.getButtonData().equals(ButtonBar.ButtonData.YES)) {
+                App.deleteCategory(categoryName);
+
+                //check whether currently opened task is not in category which is being deleted
+                if (categoryOfDisplayedTask.get().equals(categoryName)) {
+                    uniqueIDOfDisplayedTask.setValue("");
+                }
+
+                //remove category from observable list
+                categories.remove(categoryName);
+
+                //remove displayed tasks if currently selected category is being deleted
+                if (categoriesComboBox.getSelectionModel().getSelectedItem() != null
+                    && categoriesComboBox.getSelectionModel().getSelectedItem().toString().equals(categoryName)) {
+                    displayedTasks.removeAll();
+                }
+            }
+        });
     }
 }

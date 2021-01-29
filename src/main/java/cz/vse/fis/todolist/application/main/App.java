@@ -244,6 +244,103 @@ public class App extends Application {
     }
 
     /**
+     * Method to set information about last opened task before user logged out, closed application or
+     * moved to another window of application
+     *
+     * @param categoryName category name where last opened task is placed
+     * @param taskID unique ID of last opened task
+     */
+    public static void setLastOpenedTask(String categoryName, String taskID) {
+        userData.setLastOpenedTask(categoryName, taskID);
+    }
+
+    /**
+     * Method to rename task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task that will be renamed
+     * @param newName new name of task
+     */
+    public static void renameTask(String categoryName, String taskID, String newName) {
+        userData.renameTask(categoryName, taskID, newName);
+    }
+
+    /**
+     * Method to set new deadline timestamp for task
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which deadline timestamp will be changed
+     * @param newDeadlineTimestamp new deadline timestamp
+     */
+    public static void changeTaskDeadlineTimestamp(String categoryName, String taskID, long newDeadlineTimestamp) {
+        userData.changeTaskDeadlineTimestamp(categoryName, taskID, newDeadlineTimestamp);
+    }
+
+    /**
+     * Method to change task text
+     *
+     * @param categoryName name of category where task is currently placed
+     * @param taskID unique ID of task which text will be changed
+     * @param newText new task text
+     */
+    public static void changeTaskText(String categoryName, String taskID, String newText) {
+        userData.changeTaskText(categoryName, taskID, newText);
+    }
+
+    /**
+     * Method to get unique ID for newly created task
+     *
+     * @return String representing unique ID for newly created task
+     */
+    public static String getUniqueIDForNewTask() {
+        return userData.createTaskUniqueID();
+    }
+
+    /**
+     * Method to create new task and save it to specified category
+     *
+     * @param taskCategory category name where task will be placed into
+     * @param taskName String representing task name
+     * @param taskText String representing task text
+     * @param taskCreationTimestamp long representing milliseconds since epoch
+     * @param taskDeadlineTimestamp long representing milliseconds since epoch
+     * @param isTaskCompleted true if task is completed, false otherwise
+     * @return instance of newly created task
+     */
+    public static Task createNewTask(String taskCategory,
+                                     String taskName,
+                                     String taskText,
+                                     long taskCreationTimestamp,
+                                     long taskDeadlineTimestamp,
+                                     boolean isTaskCompleted) {
+        return userData.createNewTask(taskCategory,
+                                      taskName,
+                                      taskText,
+                                      taskCreationTimestamp,
+                                      taskDeadlineTimestamp,
+                                      isTaskCompleted);
+    }
+
+    /**
+     * Method to change name of category
+     *
+     * @param oldCategoryName name of category which name will be changed
+     * @param newCategoryName new category name
+     */
+    public static void renameCategory(String oldCategoryName, String newCategoryName) {
+        userData.renameCategory(oldCategoryName, newCategoryName);
+    }
+
+    /**
+     * Method to remove category. All tasks currently placed in this category will be also deleted
+     *
+     * @param categoryName name of category which will be deleted together with all its tasks
+     */
+    public static void deleteCategory(String categoryName) {
+        userData.deleteTaskCategory(categoryName);
+    }
+
+    /**
      * Method to load user information stored in JSON file
      *
      * @param username username which data will be loaded
