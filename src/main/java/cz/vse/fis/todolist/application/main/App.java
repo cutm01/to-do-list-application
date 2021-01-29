@@ -4,6 +4,7 @@ import cz.vse.fis.todolist.application.logic.Avatar;
 import cz.vse.fis.todolist.application.logic.ReadUpdateFile;
 import cz.vse.fis.todolist.application.logic.Task;
 import cz.vse.fis.todolist.application.logic.UserData;
+import cz.vse.fis.todolist.application.ui.ApplicationAlert;
 import cz.vse.fis.todolist.application.ui.LoginWindowSceneController;
 import cz.vse.fis.todolist.application.ui.MainWindowSceneController;
 import javafx.application.Application;
@@ -52,6 +53,14 @@ public class App extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() {
+        //set last opened task index to -1 and therefore "No task is currently selected" view will be displayed next time
+        //category name does not play any specific role later while initializing application next time
+        setLastOpenedTask("Default category", "-1");
+        savePerformedChanges();
+    }
+
     /**
      * Method for creating new user account
      *
@@ -97,7 +106,16 @@ public class App extends Application {
     }
 
     /**
-     * Method to validate login credentials provided by user
+     * Method to set new avatar for currently logged in user
+     *
+     * @param newAvatarIdentifier new avatar identifier as specified in Avatar enum
+     */
+    public static void changeAvatar(String newAvatarIdentifier) {
+        userData.setAvatar(newAvatarIdentifier);
+    }
+
+    /**
+     * Method to validate login credentials provided by user. Used in login window
      *
      * @param username username input from GUI
      * @param password password input from GUI
@@ -106,6 +124,28 @@ public class App extends Application {
     public static boolean validateLoginCredentials(String username, String password) {
         userData = loadUserData(username);
         return userData != null && userData.areLoginCredentialsValid(username, password);
+    }
+
+    /**
+     * Method to decide whether male avatar is currently set or not. This value is used to set
+     * default value of radio buttons in settings window where user can choose either male or
+     * female version of avatar
+     *
+     * @return true if male avatar is currently set, false otherwise
+     */
+    public static boolean isMaleAvatarCurrentlySet() {
+        return userData.getAvatar().equals(Avatar.MALE.toString());
+    }
+
+    /**
+     * Method to validate password provided by user. Used in settings window
+     *
+     * @param username username input from GUI
+     * @param password password input from GUI
+     * @return true if password is valid, false otherwise
+     */
+    public static boolean checkPasswordForLoggedInUser(String username, String password) {
+        return userData.areLoginCredentialsValid(username, password);
     }
 
     /**

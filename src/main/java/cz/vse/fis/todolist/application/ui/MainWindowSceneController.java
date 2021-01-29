@@ -27,6 +27,7 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.skin.ComboBoxListViewSkin;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
@@ -40,6 +41,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
@@ -144,6 +146,9 @@ public class MainWindowSceneController {
      * @param actionEvent
      */
     public void logOut(ActionEvent actionEvent) {
+        String lastOpenedTaskID = uniqueIDOfDisplayedTask.getValue().equals("") || uniqueIDOfDisplayedTask.getValue().equals("-1") ? "-1" : uniqueIDOfDisplayedTask.getValue();
+        App.setLastOpenedTask(categoryOfDisplayedTask.getValue(), lastOpenedTaskID);
+
         App.savePerformedChanges();
         App.activateScene("login");
     }
@@ -525,18 +530,18 @@ public class MainWindowSceneController {
         StringConverter<Task> converter = new StringConverter<Task>() {
             @Override
             public String toString(Task task) {
+                LocalDateTime creationLocalDateTime = Instant.ofEpochMilli(task.getTaskCreationTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+                LocalDateTime deadlineLocalDateTime = Instant.ofEpochMilli(task.getTaskDeadlineTimestamp()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+
                 //get task text which will be displayed in ListView cell,
                 //if task name or text is longer than 25 characters, show just first 25 characters followed by dots
                 String taskName = task.getName().length() > 25 ? task.getName().toUpperCase().substring(0,25).concat("...")
                                                                : task.getName().toUpperCase();
-                String taskText = task.getText().length() > 25 ? task.getText().substring(0,25).concat("...")
-                                                               : task.getText();
                 String delimiter = "-".repeat(45);
-                String creationTime =  "CREATED: " + new Date(task.getTaskCreationTimestamp()).toString();
-                String deadline = "DEADLINE: " + new Date(task.getTaskDeadlineTimestamp()).toString();
+                String creationTime =  "CREATED: " + creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString();
+                String deadline = "DEADLINE: " + deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString();
 
                 return taskName + "\n"
-                       + taskText + "\n"
                        + delimiter + "\n"
                        + creationTime + "\n"
                        + deadline + "\n"
@@ -626,7 +631,7 @@ public class MainWindowSceneController {
         uniqueIDOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getTaskID());
         nameOfDisplayedTask = new SimpleStringProperty(lastOpenedTask.getName());
         categoryOfDisplayedTask = new SimpleStringProperty(lastOpenedTaskCategory);
-        deadlineOfDisplayedTask = new SimpleStringProperty(deadlineLocalDateTime.toLocalDate().toString()  + " " + deadlineLocalDateTime.toLocalTime().toString());
+        deadlineOfDisplayedTask = new SimpleStringProperty(deadlineLocalDateTime.toLocalDate().toString()  + " " + deadlineLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString());
         isDisplayedTaskCompleted = new SimpleBooleanProperty(lastOpenedTask.getCompleted());
 
         //add listener to currently displayed task StringProperties so center panel can be dynamically changed
@@ -636,22 +641,28 @@ public class MainWindowSceneController {
 
         nameOfDisplayedTask.addListener((observableValue, oldName, newName) -> {
             taskNameLabel.setText(newName);
+            //updateTaskViewInCenterPanel();
         });
 
         categoryOfDisplayedTask.addListener((observableValue, oldCategoryName, newCategoryName) -> {
             taskCategoryLabel.setText(newCategoryName);
+            //updateTaskViewInCenterPanel();
         });
 
         deadlineOfDisplayedTask.addListener((observableValue, oldDeadline, newDeadline) -> {
             taskDeadlineDateLabel.setText(newDeadline);
+            //updateTaskViewInCenterPanel();
         });
 
         //initialize center panel
         taskNameLabel.setText(lastOpenedTask.getName());
         taskCategoryLabel.setText(lastOpenedTaskCategory);
-        taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().toString());
-        taskDeadlineDateLabel.setText(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().toString());
+        taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString());
+        taskDeadlineDateLabel.setText(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString());
         taskView.getEngine().loadContent(lastOpenedTask.getText());
+
+        taskView.setDisable(true);
+       // taskView.addEventFilter(KeyEvent.ANY, KeyEvent::consume);
     }
 
     /**
@@ -686,6 +697,7 @@ public class MainWindowSceneController {
             taskView.getEngine().loadContent("<p style=\"text-align: center;\">It looks like you deleted the previously displayed task or you currently don't have any existing task</p>\n"
                                              + "<p style=\"text-align: center;\">Feel free to selected another task from the left panel of the "
                                              + "application or create a completely new one to keep track of your duties :)</p>");
+            taskView.setDisable(true);
             isDisplayedTaskCompleted.setValue(true);
         }
         else {
@@ -698,12 +710,13 @@ public class MainWindowSceneController {
             uniqueIDOfDisplayedTask.setValue(currentlySelectedTask.getTaskID());
             nameOfDisplayedTask.setValue(currentlySelectedTask.getName());
             categoryOfDisplayedTask.setValue(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
-            deadlineOfDisplayedTask.setValue(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().toString());
+            deadlineOfDisplayedTask.setValue(deadlineLocalDateTime.toLocalDate().toString() + " " + deadlineLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString());
             isDisplayedTaskCompleted.setValue(currentlySelectedTask.getCompleted());
 
             //update rest of elements from center panel
-            taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().toString());
+            taskCreationDateLabel.setText(creationLocalDateTime.toLocalDate().toString() + " " + creationLocalDateTime.toLocalTime().truncatedTo(ChronoUnit.MINUTES).toString());
             taskView.getEngine().loadContent(currentlySelectedTask.getText());
+            taskView.setDisable(true);
 
             taskCategoryLabel.setText(categoriesComboBox.getSelectionModel().getSelectedItem().toString());
         }
