@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +24,7 @@ class ReadUpdateFileTest {
         userData = new UserData("username", "password", "passwordHint", "male", 0);
         userData.createTaskCategory("Category");
 
-        tasks = new ArrayList<>();
+        tasks = new LinkedList<>();
         for(int i = 0; i < 3; ++i) {
             Task task = new Task(userData.createTaskUniqueID(), "name " + i, "text " + i, timestamp, timestamp, false);
             tasks.add(task);
@@ -34,9 +35,9 @@ class ReadUpdateFileTest {
     @Test
     @DisplayName("test uniqueness of created task IDs")
     void uniqueTaskIDs() {
-        assertEquals(tasks.get(0).taskID, userData.getTaskCategory().get("Category").get("1").getTaskID());
-        assertEquals(tasks.get(1).taskID, userData.getTaskCategory().get("Category").get("2").getTaskID());
-        assertEquals(tasks.get(2).taskID, userData.getTaskCategory().get("Category").get("3").getTaskID());
+        assertEquals(tasks.get(0).getTaskID(), userData.getUserCategory("Category").getTaskByUniqueID("1").getTaskID());
+        assertEquals(tasks.get(1).getTaskID(), userData.getUserCategory("Category").getTaskByUniqueID("2").getTaskID());
+        assertEquals(tasks.get(2).getTaskID(), userData.getUserCategory("Category").getTaskByUniqueID("3").getTaskID());
     }
 
     @Test
@@ -46,9 +47,8 @@ class ReadUpdateFileTest {
 
         Date expectedDate = new Date(timestamp);
         Date actualDate = new Date(ReadUpdateFile.readDataFromJSON("username")
-                                   .getTaskCategory()
-                                   .get("Category")
-                                   .get("1")
+                                   .getUserCategory("Category")
+                                   .getTaskByUniqueID("1")
                                    .getTaskCreationTimestamp());
 
         assertEquals(expectedDate, actualDate);
